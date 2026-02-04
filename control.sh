@@ -88,9 +88,11 @@ show_menu() {
     echo ""
     echo -e "  ${YELLOW}4)${NC} Git: View changes"
     echo -e "  ${YELLOW}5)${NC} Git: Commit & Push"
+    echo -e "  ${YELLOW}6)${NC} Git: Quick Push (no prompt)"
     echo ""
-    echo -e "  ${BLUE}6)${NC} Install/Update Dependencies"
-    echo -e "  ${BLUE}7)${NC} Build for Production"
+    echo -e "  ${BLUE}7)${NC} Run Tests (unit)"
+    echo -e "  ${BLUE}8)${NC} Open E2E Test Runner (browser)"
+    echo -e "  ${BLUE}9)${NC} Install/Update Dependencies"
     echo ""
     echo -e "  ${RED}0)${NC} Exit"
     echo ""
@@ -265,22 +267,74 @@ install_deps() {
     echo -e "${GREEN}Done!${NC}"
 }
 
-# Build for production
-build_prod() {
-    echo -e "${YELLOW}Building for production...${NC}"
-    npm run build
+# Quick push (no commit, just push existing commits)
+git_quick_push() {
+    echo ""
+    unpushed_count=$(git rev-list --count @{u}..HEAD 2>/dev/null || echo "0")
+
+    if [ "$unpushed_count" -eq 0 ]; then
+        echo -e "${GREEN}Nothing to push - already up to date.${NC}"
+        return
+    fi
+
+    echo -e "${CYAN}$unpushed_count commit(s) to push:${NC}"
+    git log --oneline @{u}..HEAD
+    echo ""
+
+    echo -e "${YELLOW}Pushing to GitHub...${NC}"
+    git push 2>&1
 
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Build complete! Output in ./dist/${NC}"
+        echo -e "${GREEN}Successfully pushed to GitHub!${NC}"
+        echo -e "${GREEN}Vercel will auto-deploy in ~60 seconds.${NC}"
+        echo ""
+        echo -e "${CYAN}Test runner will be available at:${NC}"
+        echo -e "  ${BLUE}https://lost-worlds-web.vercel.app/test-runner.html${NC}"
     else
-        echo -e "${RED}Build failed.${NC}"
+        echo -e "${RED}Push failed. Check your git credentials.${NC}"
     fi
+}
+
+# Run unit tests
+run_tests() {
+    echo -e "${YELLOW}Running unit tests...${NC}"
+    npm run test:run
+
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}All tests passed!${NC}"
+    else
+        echo -e "${RED}Some tests failed.${NC}"
+    fi
+}
+
+# Open E2E test runner
+open_test_runner() {
+    echo ""
+    echo -e "${CYAN}Opening E2E Test Runner...${NC}"
+    echo ""
+    echo -e "The test runner opens the game in two iframes and automatically"
+    echo -e "runs through the multiplayer flow (create room, join, battle)."
+    echo ""
+
+    # Check if we're running locally or use Vercel
+    if port_in_use 5173 || port_in_use 5174; then
+        local_port=$(port_in_use 5173 && echo "5173" || echo "5174")
+        echo -e "${YELLOW}Local server detected - using local test runner${NC}"
+        open "http://localhost:$local_port/test-runner.html" 2>/dev/null
+    else
+        echo -e "${YELLOW}Opening Vercel test runner...${NC}"
+        open "https://lost-worlds-web.vercel.app/test-runner.html" 2>/dev/null
+    fi
+
+    echo ""
+    echo -e "${GREEN}Test runner opened in browser.${NC}"
+    echo -e "Click 'Run All Tests' to start the automated tests."
 }
 
 # Main loop
 while true; do
     show_menu
-    echo -n "Enter choice [0-7]: "
+    echo -n "Enter choice [0-9]: "
     read choice </dev/tty
 
     case $choice in
@@ -310,12 +364,22 @@ while true; do
             read </dev/tty
             ;;
         6)
-            install_deps
+            git_quick_push
             echo -n "Press Enter to continue..."
             read </dev/tty
             ;;
         7)
-            build_prod
+            run_tests
+            echo -n "Press Enter to continue..."
+            read </dev/tty
+            ;;
+        8)
+            open_test_runner
+            echo -n "Press Enter to continue..."
+            read </dev/tty
+            ;;
+        9)
+            install_deps
             echo -n "Press Enter to continue..."
             read </dev/tty
             ;;
