@@ -49,7 +49,14 @@ export const MultiplayerLobby: React.FC<MultiplayerLobbyProps> = ({
     });
 
     return () => {
-      socket.removeAllListeners();
+      // Only remove listeners this component set up - NOT all listeners
+      // BattleViewNew needs opponent-ready and moves-revealed to stay active
+      const sock = socket.getSocket();
+      if (sock) {
+        sock.off('guest-joined');
+        sock.off('battle-start');
+        sock.off('opponent-disconnected');
+      }
     };
   }, [onBattleStart]);
 
