@@ -130,9 +130,15 @@ function createInitialState(bodyPoints: number): CharacterState {
   return {
     bodyPoints,
     maxBodyPoints: bodyPoints,
-    isExtendedRange: false,
+    isExtendedRange: true,  // Combat starts at extended range (far apart)
     hasWeapon: true,
-    activeRestrictions: [],
+    activeRestrictions: [
+      {
+        restriction: { type: 'ONLY_CATEGORY', categories: ['EXTENDED_RANGE'] },
+        duration: 1,
+        source: 'Starting at extended range',
+      }
+    ],
     damageModifiers: [],
     currentPicture: null,
   };

@@ -7,7 +7,7 @@
 import React from 'react';
 import { useGameStore } from './state/gameStore';
 import { MenuView } from './ui/components/MenuView';
-import { BattleView } from './ui/components/BattleView';
+import { BattleViewNew } from './ui/components/BattleViewNew';
 
 const App: React.FC = () => {
   const { mode } = useGameStore();
@@ -15,7 +15,7 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900">
       {mode === 'menu' && <MenuView />}
-      {(mode === 'battle' || mode === 'gameover') && <BattleView />}
+      {(mode === 'battle' || mode === 'gameover') && <BattleViewNew />}
     </div>
   );
 };
