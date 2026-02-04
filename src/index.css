@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/* Custom game styles */
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  /* Prevent pull-to-refresh on mobile */
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  /* Prevent text selection on game elements */
+  -webkit-user-select: none;
+  user-select: none;
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
+}
+
+/* Allow text selection on inputs */
+input, textarea, select {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+/* Mobile touch improvements */
+button, .clickable {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Safe area support for notched phones */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Mobile-friendly scrollable tables */
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+}
+
+/* Maneuver color classes */
+.maneuver-red { --maneuver-color: #dc2626; --maneuver-text: white; }
+.maneuver-blue { --maneuver-color: #2563eb; --maneuver-text: white; }
+.maneuver-orange { --maneuver-color: #ea580c; --maneuver-text: white; }
+.maneuver-green { --maneuver-color: #16a34a; --maneuver-text: white; }
+.maneuver-yellow { --maneuver-color: #eab308; --maneuver-text: black; }
+.maneuver-white { --maneuver-color: #f5f5f5; --maneuver-text: black; }
+.maneuver-black { --maneuver-color: #1f2937; --maneuver-text: white; }
+.maneuver-brown { --maneuver-color: #78350f; --maneuver-text: white; }
+
+/* Animation for combat results */
+@keyframes pulse-damage {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.animate-damage {
+  animation: pulse-damage 0.3s ease-in-out;
+}
+
+/* Responsive font sizes */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+}
