@@ -41,10 +41,26 @@ show_status() {
     fi
 
     # Git status
+    has_changes=false
+    has_unpushed=false
+
     if git status --porcelain | grep -q .; then
+        has_changes=true
+    fi
+
+    unpushed=$(git rev-list --count @{u}..HEAD 2>/dev/null || echo "0")
+    if [ "$unpushed" -gt 0 ]; then
+        has_unpushed=true
+    fi
+
+    if [ "$has_changes" = true ] && [ "$has_unpushed" = true ]; then
+        echo -e "  Git:            ${YELLOW}● Uncommitted + $unpushed to push${NC}"
+    elif [ "$has_changes" = true ]; then
         echo -e "  Git:            ${YELLOW}● Uncommitted changes${NC}"
+    elif [ "$has_unpushed" = true ]; then
+        echo -e "  Git:            ${CYAN}● $unpushed commit(s) to push${NC}"
     else
-        echo -e "  Git:            ${GREEN}● Clean${NC}"
+        echo -e "  Git:            ${GREEN}● Clean & synced${NC}"
     fi
     echo ""
 }
@@ -166,43 +182,74 @@ git_status() {
 git_push() {
     echo ""
 
-    # Check for changes
-    if ! git status --porcelain | grep -q .; then
-        echo -e "${GREEN}No changes to commit!${NC}"
+    # Check for uncommitted changes
+    has_changes=false
+    if git status --porcelain | grep -q .; then
+        has_changes=true
+    fi
+
+    # Check for unpushed commits
+    has_unpushed=false
+    unpushed_count=$(git rev-list --count @{u}..HEAD 2>/dev/null || echo "0")
+    if [ "$unpushed_count" -gt 0 ]; then
+        has_unpushed=true
+    fi
+
+    # Nothing to do?
+    if [ "$has_changes" = false ] && [ "$has_unpushed" = false ]; then
+        echo -e "${GREEN}Everything is up to date!${NC}"
+        echo -e "No uncommitted changes and no unpushed commits."
         return
     fi
 
-    echo -e "${CYAN}Changes to commit:${NC}"
-    git status --short
-    echo ""
+    # Show what we have
+    if [ "$has_changes" = true ]; then
+        echo -e "${CYAN}Uncommitted changes:${NC}"
+        git status --short
+        echo ""
 
-    echo -n "Enter commit message (or 'cancel'): "
-    read msg </dev/tty
+        echo -n "Enter commit message (or 'cancel'): "
+        read msg </dev/tty
 
-    if [ "$msg" = "cancel" ] || [ -z "$msg" ]; then
-        echo -e "${YELLOW}Cancelled.${NC}"
-        return
+        if [ "$msg" = "cancel" ]; then
+            echo -e "${YELLOW}Cancelled.${NC}"
+            return
+        fi
+
+        if [ -n "$msg" ]; then
+            echo -e "${YELLOW}Adding files...${NC}"
+            git add -A
+
+            echo -e "${YELLOW}Committing...${NC}"
+            git commit -m "$msg"
+
+            if [ $? -ne 0 ]; then
+                echo -e "${RED}Commit failed.${NC}"
+                return
+            fi
+        fi
     fi
 
-    echo -e "${YELLOW}Adding files...${NC}"
-    git add -A
+    # Check again for unpushed (including any new commit)
+    unpushed_count=$(git rev-list --count @{u}..HEAD 2>/dev/null || echo "0")
 
-    echo -e "${YELLOW}Committing...${NC}"
-    git commit -m "$msg"
+    if [ "$unpushed_count" -gt 0 ]; then
+        echo ""
+        echo -e "${CYAN}$unpushed_count commit(s) to push:${NC}"
+        git log --oneline @{u}..HEAD
+        echo ""
 
-    if [ $? -ne 0 ]; then
-        echo -e "${RED}Commit failed.${NC}"
-        return
-    fi
+        echo -e "${YELLOW}Pushing to GitHub...${NC}"
+        git push 2>&1
 
-    echo -e "${YELLOW}Pushing to GitHub...${NC}"
-    git push 2>&1
-
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Successfully pushed to GitHub!${NC}"
-        echo -e "${GREEN}Vercel will auto-deploy in ~60 seconds.${NC}"
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}Successfully pushed to GitHub!${NC}"
+            echo -e "${GREEN}Vercel will auto-deploy in ~60 seconds.${NC}"
+        else
+            echo -e "${RED}Push failed. You may need to run: git push --set-upstream origin master${NC}"
+        fi
     else
-        echo -e "${RED}Push failed. You may need to run: git push --set-upstream origin master${NC}"
+        echo -e "${GREEN}Nothing to push.${NC}"
     fi
 }
 

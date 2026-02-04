@@ -50,13 +50,9 @@ export const MenuView: React.FC = () => {
   };
 
   const handleMultiplayerBattleStart = (isHost: boolean, opponentCharacter: string) => {
-    // For multiplayer, we'll use a special flow
-    // The host is player 1, guest is player 2
-    if (isHost) {
-      startBattle(player1Char, opponentCharacter, false);
-    } else {
-      startBattle(player1Char, opponentCharacter, false);
-    }
+    // For multiplayer, use the multiplayer-specific start function
+    const { startMultiplayerBattle } = useGameStore.getState();
+    startMultiplayerBattle(player1Char, opponentCharacter, isHost);
     setShowMultiplayerLobby(false);
   };
 

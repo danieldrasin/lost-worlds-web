@@ -9,9 +9,10 @@
  * Mobile: Bottom tabs (View | Move | History)
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGameStore, getValidMovesForCharacter } from '../../state/gameStore';
 import { PicturePage } from './PicturePage';
+import * as socket from '../../multiplayer/socket';
 import type { Maneuver, BattleExchange } from '../../domain/types';
 
 type MobileTab = 'view' | 'move' | 'history';
@@ -20,14 +21,45 @@ export const BattleViewNew: React.FC = () => {
   const {
     battle,
     isVsAI,
+    isMultiplayer,
+    isHost,
+    opponentReady,
+    waitingForOpponent,
     player1Selection,
     selectManeuver,
     executeExchange,
+    setWaitingForOpponent,
+    setOpponentReady,
+    applyMultiplayerExchange,
     resetGame,
     mode,
   } = useGameStore();
 
   const [mobileTab, setMobileTab] = useState<MobileTab>('view');
+
+  // Set up multiplayer event listeners
+  useEffect(() => {
+    if (!isMultiplayer) return;
+
+    // Opponent has submitted their move (but we don't see it yet)
+    socket.onOpponentReady(() => {
+      console.log('Opponent is ready!');
+      setOpponentReady(true);
+    });
+
+    // Both moves revealed - resolve the exchange
+    socket.onMovesRevealed(({ hostMove, guestMove }) => {
+      console.log('Moves revealed:', { hostMove, guestMove });
+      // I'm player1 in my view, so my move depends on whether I'm host
+      const myMove = isHost ? hostMove : guestMove;
+      const oppMove = isHost ? guestMove : hostMove;
+      applyMultiplayerExchange(myMove, oppMove);
+    });
+
+    return () => {
+      // Clean up listeners when component unmounts or multiplayer changes
+    };
+  }, [isMultiplayer, isHost, setOpponentReady, applyMultiplayerExchange]);
 
   if (!battle) {
     return <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">No battle in progress</div>;
@@ -43,7 +75,7 @@ export const BattleViewNew: React.FC = () => {
   const opponentPicture = lastExchange?.player2Result.picturePage;
 
   const validMoves = getValidMovesForCharacter(myCharacter);
-  const canFight = player1Selection !== null;
+  const canFight = player1Selection !== null && !waitingForOpponent;
 
   const handleSelectMove = (maneuver: Maneuver) => {
     selectManeuver('player1', maneuver);
@@ -53,8 +85,23 @@ export const BattleViewNew: React.FC = () => {
     }
   };
 
-  const handleFight = () => {
-    executeExchange();
+  const handleFight = async () => {
+    if (isMultiplayer) {
+      // In multiplayer, send move to server and wait
+      if (!player1Selection) return;
+
+      setWaitingForOpponent(true);
+      const result = await socket.submitMove(player1Selection);
+
+      if (!result.success) {
+        console.error('Failed to submit move:', result.error);
+        setWaitingForOpponent(false);
+      }
+      // The exchange will be resolved when we receive 'moves-revealed' event
+    } else {
+      // Local game - execute immediately
+      executeExchange();
+    }
   };
 
   return (
@@ -68,6 +115,7 @@ export const BattleViewNew: React.FC = () => {
         oppHP={opponent.state.bodyPoints}
         oppMaxHP={opponent.state.maxBodyPoints}
         isVsAI={isVsAI}
+        isMultiplayer={isMultiplayer}
         round={battle.round}
         onNewGame={resetGame}
       />
@@ -99,15 +147,25 @@ export const BattleViewNew: React.FC = () => {
               <div className="text-green-400 mb-2">
                 Selected: <span className="font-bold">{player1Selection.name}</span>
               </div>
-              <button
-                onClick={handleFight}
-                disabled={!canFight || isGameOver}
-                className="px-8 py-3 bg-red-600 text-white font-bold text-xl rounded-lg
-                         hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed
-                         transition-colors shadow-lg"
-              >
-                ⚔️ FIGHT!
-              </button>
+              {waitingForOpponent ? (
+                <div className="px-8 py-3 bg-yellow-600 text-white font-bold text-xl rounded-lg">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+                    Waiting for opponent...
+                    {opponentReady && <span className="text-green-300">✓ Ready!</span>}
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={handleFight}
+                  disabled={!canFight || isGameOver}
+                  className="px-8 py-3 bg-red-600 text-white font-bold text-xl rounded-lg
+                           hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed
+                           transition-colors shadow-lg"
+                >
+                  ⚔️ FIGHT!
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -166,6 +224,8 @@ export const BattleViewNew: React.FC = () => {
               canFight={canFight}
               isGameOver={isGameOver}
               onFight={handleFight}
+              waitingForOpponent={waitingForOpponent}
+              opponentReady={opponentReady}
             />
           )}
           {mobileTab === 'move' && (
@@ -229,12 +289,13 @@ interface StatusBarProps {
   oppHP: number;
   oppMaxHP: number;
   isVsAI: boolean;
+  isMultiplayer?: boolean;
   round: number;
   onNewGame: () => void;
 }
 
 const StatusBar: React.FC<StatusBarProps> = ({
-  myName, myHP, myMaxHP, oppName, oppHP, oppMaxHP, isVsAI, round, onNewGame
+  myName, myHP, myMaxHP, oppName, oppHP, oppMaxHP, isVsAI, isMultiplayer, round, onNewGame
 }) => (
   <div className="bg-gray-800 border-b border-gray-700 px-4 py-2 safe-area-top">
     <div className="flex items-center justify-between max-w-4xl mx-auto">
@@ -264,6 +325,7 @@ const StatusBar: React.FC<StatusBarProps> = ({
         <span className="text-red-400 font-bold text-sm truncate max-w-24">
           {oppName}
           {isVsAI && <span className="text-gray-500 text-xs ml-1">AI</span>}
+          {isMultiplayer && <span className="text-green-400 text-xs ml-1">🌐</span>}
         </span>
       </div>
     </div>
@@ -384,10 +446,13 @@ interface MobileViewTabProps {
   canFight: boolean;
   isGameOver: boolean;
   onFight: () => void;
+  waitingForOpponent?: boolean;
+  opponentReady?: boolean;
 }
 
 const MobileViewTab: React.FC<MobileViewTabProps> = ({
-  opponentPicture, opponent, lastExchange, selectedMove, canFight, isGameOver, onFight
+  opponentPicture, opponent, lastExchange, selectedMove, canFight, isGameOver, onFight,
+  waitingForOpponent = false, opponentReady = false
 }) => (
   <div className="flex flex-col h-full">
     <div className="flex-1 flex flex-col items-center justify-center">
@@ -419,18 +484,28 @@ const MobileViewTab: React.FC<MobileViewTabProps> = ({
           Your move: <span className="font-bold">{selectedMove.name}</span>
         </div>
       )}
-      <button
-        onClick={onFight}
-        disabled={!canFight || isGameOver}
-        className={`
-          w-full max-w-xs py-4 font-bold text-xl rounded-lg transition-colors shadow-lg
-          ${canFight && !isGameOver
-            ? 'bg-red-600 text-white hover:bg-red-700'
-            : 'bg-gray-700 text-gray-400 cursor-not-allowed'}
-        `}
-      >
-        ⚔️ FIGHT!
-      </button>
+      {waitingForOpponent ? (
+        <div className="w-full max-w-xs py-4 mx-auto bg-yellow-600 text-white font-bold text-xl rounded-lg">
+          <div className="flex items-center justify-center gap-2">
+            <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+            Waiting...
+            {opponentReady && <span className="text-green-300">✓</span>}
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={onFight}
+          disabled={!canFight || isGameOver}
+          className={`
+            w-full max-w-xs py-4 font-bold text-xl rounded-lg transition-colors shadow-lg
+            ${canFight && !isGameOver
+              ? 'bg-red-600 text-white hover:bg-red-700'
+              : 'bg-gray-700 text-gray-400 cursor-not-allowed'}
+          `}
+        >
+          ⚔️ FIGHT!
+        </button>
+      )}
     </div>
   </div>
 );

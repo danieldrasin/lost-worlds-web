@@ -18,6 +18,12 @@ interface GameState {
   battle: Battle | null;
   isVsAI: boolean;
 
+  // Multiplayer state
+  isMultiplayer: boolean;
+  isHost: boolean;
+  opponentReady: boolean;
+  waitingForOpponent: boolean;
+
   // Selection state
   player1Selection: Maneuver | null;
   player2Selection: Maneuver | null;
@@ -29,8 +35,12 @@ interface GameState {
   // Actions
   initialize: () => Promise<void>;
   startBattle: (player1Id: string, player2Id: string, vsAI: boolean) => Promise<void>;
+  startMultiplayerBattle: (myCharId: string, oppCharId: string, isHost: boolean) => Promise<void>;
   selectManeuver: (player: 'player1' | 'player2', maneuver: Maneuver) => void;
   executeExchange: () => void;
+  setWaitingForOpponent: (waiting: boolean) => void;
+  setOpponentReady: (ready: boolean) => void;
+  applyMultiplayerExchange: (myMove: Maneuver, oppMove: Maneuver) => void;
   resetGame: () => void;
 
   // AI
@@ -43,6 +53,10 @@ export const useGameStore = create<GameState>((set, get) => ({
   availableCharacters: [],
   battle: null,
   isVsAI: false,
+  isMultiplayer: false,
+  isHost: false,
+  opponentReady: false,
+  waitingForOpponent: false,
   player1Selection: null,
   player2Selection: null,
   isLoading: false,
@@ -82,6 +96,10 @@ export const useGameStore = create<GameState>((set, get) => ({
       set({
         battle,
         isVsAI: vsAI,
+        isMultiplayer: false,
+        isHost: false,
+        opponentReady: false,
+        waitingForOpponent: false,
         mode: 'battle',
         player1Selection: null,
         player2Selection: null,
@@ -89,6 +107,44 @@ export const useGameStore = create<GameState>((set, get) => ({
       });
     } catch (err) {
       set({ error: `Failed to start battle: ${err}`, isLoading: false });
+    }
+  },
+
+  // Start a multiplayer battle
+  startMultiplayerBattle: async (myCharId: string, oppCharId: string, isHost: boolean) => {
+    set({ isLoading: true, error: null });
+    try {
+      const [myChar, oppChar] = await Promise.all([
+        loadCharacter(myCharId),
+        loadCharacter(oppCharId),
+      ]);
+
+      // In multiplayer, player1 is always "me" (local player)
+      const battle: Battle = {
+        id: `battle_mp_${Date.now()}`,
+        player1: myChar,
+        player2: oppChar,
+        round: 0,
+        status: 'AWAITING_MOVES',
+        history: [],
+        winner: null,
+        isVsAI: false,
+      };
+
+      set({
+        battle,
+        isVsAI: false,
+        isMultiplayer: true,
+        isHost,
+        opponentReady: false,
+        waitingForOpponent: false,
+        mode: 'battle',
+        player1Selection: null,
+        player2Selection: null,
+        isLoading: false,
+      });
+    } catch (err) {
+      set({ error: `Failed to start multiplayer battle: ${err}`, isLoading: false });
     }
   },
 
@@ -138,11 +194,47 @@ export const useGameStore = create<GameState>((set, get) => ({
     }
   },
 
+  // Multiplayer helpers
+  setWaitingForOpponent: (waiting: boolean) => {
+    set({ waitingForOpponent: waiting });
+  },
+
+  setOpponentReady: (ready: boolean) => {
+    set({ opponentReady: ready });
+  },
+
+  // Apply exchange when both moves are revealed in multiplayer
+  applyMultiplayerExchange: (myMove: Maneuver, oppMove: Maneuver) => {
+    const { battle } = get();
+    if (!battle) return;
+
+    try {
+      // Resolve the exchange (my move is player1, opp move is player2)
+      const exchange = resolveExchange(battle, myMove, oppMove);
+      const newBattle = applyExchange(battle, exchange);
+
+      set({
+        battle: newBattle,
+        player1Selection: null,
+        player2Selection: null,
+        opponentReady: false,
+        waitingForOpponent: false,
+        mode: newBattle.status === 'GAME_OVER' ? 'gameover' : 'battle',
+      });
+    } catch (err) {
+      set({ error: `Failed to resolve exchange: ${err}` });
+    }
+  },
+
   // Reset game
   resetGame: () => {
     set({
       mode: 'menu',
       battle: null,
+      isMultiplayer: false,
+      isHost: false,
+      opponentReady: false,
+      waitingForOpponent: false,
       player1Selection: null,
       player2Selection: null,
       error: null,
