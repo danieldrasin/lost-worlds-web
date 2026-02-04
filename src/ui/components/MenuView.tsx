@@ -10,6 +10,15 @@ import { MultiplayerLobby } from './MultiplayerLobby';
 
 type GameMode = 'ai' | 'local' | 'online';
 
+// Character name helper - defined at module level to avoid hoisting issues
+const characterDisplayName = (id: string): string => {
+  const names: Record<string, string> = {
+    'man-in-chainmail': 'Man in Chainmail',
+    'hill-troll': 'Hill Troll with Club',
+  };
+  return names[id] || id;
+};
+
 export const MenuView: React.FC = () => {
   const { availableCharacters, startBattle, isLoading, error, initialize } = useGameStore();
 
@@ -65,14 +74,6 @@ export const MenuView: React.FC = () => {
       />
     );
   }
-
-  const characterDisplayName = (id: string): string => {
-    const names: Record<string, string> = {
-      'man-in-chainmail': 'Man in Chainmail',
-      'hill-troll': 'Hill Troll with Club',
-    };
-    return names[id] || id;
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-800 to-gray-900 flex items-center justify-center p-4">
