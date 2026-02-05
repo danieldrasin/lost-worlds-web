@@ -6,6 +6,20 @@
 
 cd "$(dirname "$0")"
 
+# Store script path and initial modification time for auto-refresh
+SCRIPT_PATH="$0"
+SCRIPT_MTIME=$(stat -f %m "$SCRIPT_PATH" 2>/dev/null || stat -c %Y "$SCRIPT_PATH" 2>/dev/null)
+
+# Auto-refresh: re-exec if script was modified
+check_for_updates() {
+    local current_mtime=$(stat -f %m "$SCRIPT_PATH" 2>/dev/null || stat -c %Y "$SCRIPT_PATH" 2>/dev/null)
+    if [ "$current_mtime" != "$SCRIPT_MTIME" ]; then
+        echo -e "${CYAN}Control panel updated - reloading...${NC}"
+        sleep 1
+        exec "$SCRIPT_PATH"
+    fi
+}
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -343,6 +357,7 @@ open_test_runner() {
 
 # Main loop
 while true; do
+    check_for_updates  # Auto-reload if script was modified
     show_menu
     echo -n "Enter choice [0-9]: "
     read choice </dev/tty
