@@ -4,7 +4,8 @@
  * Handles creating/joining multiplayer rooms.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import * as socket from '../../multiplayer/socket';
 
 interface MultiplayerLobbyProps {
@@ -12,6 +13,7 @@ interface MultiplayerLobbyProps {
   availableCharacters: { id: string; name: string }[];
   onBattleStart: (isHost: boolean, opponentCharacter: string) => void;
   onBack: () => void;
+  initialRoomCode?: string; // For auto-joining via URL parameter
 }
 
 export const MultiplayerLobby: React.FC<MultiplayerLobbyProps> = ({
@@ -19,12 +21,51 @@ export const MultiplayerLobby: React.FC<MultiplayerLobbyProps> = ({
   availableCharacters,
   onBattleStart,
   onBack,
+  initialRoomCode,
 }) => {
   const [mode, setMode] = useState<'menu' | 'creating' | 'waiting' | 'joining'>('menu');
   const [roomCode, setRoomCode] = useState('');
   const [joinCode, setJoinCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  // Generate the shareable URL for this room
+  const getShareUrl = useCallback((code: string) => {
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}?room=${code}`;
+  }, []);
+
+  // Copy link to clipboard
+  const copyLinkToClipboard = useCallback(async () => {
+    const url = getShareUrl(roomCode);
+    try {
+      await navigator.clipboard.writeText(url);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  }, [roomCode, getShareUrl]);
+
+  // Native share (mobile)
+  const shareLink = useCallback(async () => {
+    const url = getShareUrl(roomCode);
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Lost Worlds Battle',
+          text: 'Join my Lost Worlds battle!',
+          url: url,
+        });
+      } catch (err) {
+        // User cancelled or share failed - fall back to copy
+        copyLinkToClipboard();
+      }
+    } else {
+      copyLinkToClipboard();
+    }
+  }, [roomCode, getShareUrl, copyLinkToClipboard]);
 
   useEffect(() => {
     // Connect to server
@@ -59,6 +100,22 @@ export const MultiplayerLobby: React.FC<MultiplayerLobbyProps> = ({
       }
     };
   }, [onBattleStart]);
+
+  // Auto-join if initial room code is provided (from URL parameter)
+  useEffect(() => {
+    if (initialRoomCode && isConnected && mode === 'menu') {
+      setJoinCode(initialRoomCode);
+      // Auto-trigger join after a short delay to ensure connection is stable
+      const timer = setTimeout(async () => {
+        setError(null);
+        const result = await socket.joinRoom(initialRoomCode, selectedCharacter);
+        if (!result.success) {
+          setError(result.error || 'Failed to join room');
+        }
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [initialRoomCode, isConnected, mode, selectedCharacter]);
 
   const handleCreateRoom = async () => {
     setMode('creating');
@@ -196,7 +253,7 @@ export const MultiplayerLobby: React.FC<MultiplayerLobbyProps> = ({
           <div className="text-center py-4">
             <p className="text-gray-400 mb-4">Share this code with your opponent:</p>
 
-            <div className="bg-gray-900 rounded-xl p-6 mb-6">
+            <div className="bg-gray-900 rounded-xl p-6 mb-4">
               <div className="text-5xl font-mono font-bold text-white tracking-widest mb-2">
                 {roomCode}
               </div>
@@ -204,8 +261,44 @@ export const MultiplayerLobby: React.FC<MultiplayerLobbyProps> = ({
                 onClick={() => navigator.clipboard.writeText(roomCode)}
                 className="text-blue-400 hover:text-blue-300 text-sm"
               >
-                📋 Copy to clipboard
+                📋 Copy code
               </button>
+            </div>
+
+            {/* QR Code */}
+            <div className="bg-white rounded-xl p-4 mb-4 inline-block">
+              <QRCodeSVG
+                value={getShareUrl(roomCode)}
+                size={160}
+                level="M"
+                includeMargin={false}
+              />
+            </div>
+
+            <p className="text-gray-500 text-sm mb-4">
+              Scan QR code or share link to join
+            </p>
+
+            {/* Share buttons */}
+            <div className="flex gap-2 justify-center mb-6">
+              <button
+                onClick={copyLinkToClipboard}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  linkCopied
+                    ? 'bg-green-600 text-white'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
+              >
+                {linkCopied ? '✓ Link Copied!' : '🔗 Copy Link'}
+              </button>
+              {typeof navigator.share === 'function' && (
+                <button
+                  onClick={shareLink}
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700"
+                >
+                  📤 Share
+                </button>
+              )}
             </div>
 
             <div className="flex items-center justify-center text-gray-400 mb-6">

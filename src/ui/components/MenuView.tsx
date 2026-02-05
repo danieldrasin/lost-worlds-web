@@ -26,10 +26,27 @@ export const MenuView: React.FC = () => {
   const [player2Char, setPlayer2Char] = useState<string>('');
   const [gameMode, setGameMode] = useState<GameMode>('ai');
   const [showMultiplayerLobby, setShowMultiplayerLobby] = useState(false);
+  const [initialRoomCode, setInitialRoomCode] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     initialize();
   }, [initialize]);
+
+  // Check for room code in URL parameters
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomCode = urlParams.get('room');
+    if (roomCode) {
+      // Clean the URL without reloading the page
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+
+      // Set up for auto-join
+      setInitialRoomCode(roomCode.toUpperCase());
+      setGameMode('online');
+      setShowMultiplayerLobby(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (availableCharacters.length > 0) {
@@ -66,7 +83,11 @@ export const MenuView: React.FC = () => {
           name: characterDisplayName(id)
         }))}
         onBattleStart={handleMultiplayerBattleStart}
-        onBack={() => setShowMultiplayerLobby(false)}
+        onBack={() => {
+          setShowMultiplayerLobby(false);
+          setInitialRoomCode(undefined); // Clear auto-join code on back
+        }}
+        initialRoomCode={initialRoomCode}
       />
     );
   }
