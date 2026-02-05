@@ -255,7 +255,7 @@ describe('Battle Mechanics', () => {
         { player1Move: 'Charge', player2Move: 'Charge' },  // Extended range
       ];
 
-      const { battle, results } = runScriptedBattle(
+      const { results } = runScriptedBattle(
         'man-in-chainmail',
         'hill-troll',
         script

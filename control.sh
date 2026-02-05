@@ -281,6 +281,16 @@ git_quick_push() {
     git log --oneline @{u}..HEAD
     echo ""
 
+    # Run build first to catch TypeScript errors
+    echo -e "${YELLOW}Running build to verify...${NC}"
+    if ! npm run build > /dev/null 2>&1; then
+        echo -e "${RED}Build failed! Fix errors before pushing:${NC}"
+        npm run build 2>&1
+        return 1
+    fi
+    echo -e "${GREEN}Build passed!${NC}"
+    echo ""
+
     echo -e "${YELLOW}Pushing to GitHub...${NC}"
     git push 2>&1
 
