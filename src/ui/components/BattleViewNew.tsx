@@ -36,6 +36,36 @@ export const BattleViewNew: React.FC = () => {
   } = useGameStore();
 
   const [mobileTab, setMobileTab] = useState<MobileTab>('view');
+  const [isConnected, setIsConnected] = useState(true);
+
+  // Track socket connection status for multiplayer
+  useEffect(() => {
+    if (!isMultiplayer) return;
+
+    const sock = socket.getSocket();
+    if (sock) {
+      // Set initial state
+      setIsConnected(sock.connected);
+
+      // Listen for connection changes
+      const handleConnect = () => {
+        console.log('Socket reconnected');
+        setIsConnected(true);
+      };
+      const handleDisconnect = () => {
+        console.log('Socket disconnected');
+        setIsConnected(false);
+      };
+
+      sock.on('connect', handleConnect);
+      sock.on('disconnect', handleDisconnect);
+
+      return () => {
+        sock.off('connect', handleConnect);
+        sock.off('disconnect', handleDisconnect);
+      };
+    }
+  }, [isMultiplayer]);
 
   // Set up multiplayer event listeners
   useEffect(() => {
@@ -75,7 +105,8 @@ export const BattleViewNew: React.FC = () => {
   const opponentPicture = lastExchange?.player2Result.picturePage;
 
   const validMoves = getValidMovesForCharacter(myCharacter);
-  const canFight = player1Selection !== null && !waitingForOpponent;
+  // In multiplayer, also require connection to fight
+  const canFight = player1Selection !== null && !waitingForOpponent && (!isMultiplayer || isConnected);
 
   const handleSelectMove = (maneuver: Maneuver) => {
     selectManeuver('player1', maneuver);
@@ -120,6 +151,15 @@ export const BattleViewNew: React.FC = () => {
         onNewGame={resetGame}
       />
 
+      {/* Connection Warning Banner */}
+      {isMultiplayer && !isConnected && (
+        <div className="bg-red-900/90 border-b border-red-700 px-4 py-2 text-center">
+          <span className="text-red-200 text-sm">
+            ⚠️ Disconnected from server - reconnecting...
+          </span>
+        </div>
+      )}
+
       {/* Game Over Overlay */}
       {isGameOver && (
         <GameOverOverlay
@@ -153,6 +193,13 @@ export const BattleViewNew: React.FC = () => {
                     <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
                     Waiting for opponent...
                     {opponentReady && <span className="text-green-300">✓ Ready!</span>}
+                  </div>
+                </div>
+              ) : isMultiplayer && !isConnected ? (
+                <div className="px-8 py-3 bg-red-800 text-white font-bold text-xl rounded-lg">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="animate-pulse w-3 h-3 bg-red-400 rounded-full" />
+                    Reconnecting...
                   </div>
                 </div>
               ) : (
@@ -226,6 +273,8 @@ export const BattleViewNew: React.FC = () => {
               onFight={handleFight}
               waitingForOpponent={waitingForOpponent}
               opponentReady={opponentReady}
+              isMultiplayer={isMultiplayer}
+              isConnected={isConnected}
             />
           )}
           {mobileTab === 'move' && (
@@ -448,11 +497,13 @@ interface MobileViewTabProps {
   onFight: () => void;
   waitingForOpponent?: boolean;
   opponentReady?: boolean;
+  isMultiplayer?: boolean;
+  isConnected?: boolean;
 }
 
 const MobileViewTab: React.FC<MobileViewTabProps> = ({
   opponentPicture, opponent, lastExchange, selectedMove, canFight, isGameOver, onFight,
-  waitingForOpponent = false, opponentReady = false
+  waitingForOpponent = false, opponentReady = false, isMultiplayer = false, isConnected = true
 }) => (
   <div className="flex flex-col h-full">
     <div className="flex-1 flex flex-col items-center justify-center">
@@ -490,6 +541,13 @@ const MobileViewTab: React.FC<MobileViewTabProps> = ({
             <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
             Waiting...
             {opponentReady && <span className="text-green-300">✓</span>}
+          </div>
+        </div>
+      ) : isMultiplayer && !isConnected ? (
+        <div className="w-full max-w-xs py-4 mx-auto bg-red-800 text-white font-bold text-xl rounded-lg">
+          <div className="flex items-center justify-center gap-2">
+            <div className="animate-pulse w-3 h-3 bg-red-400 rounded-full" />
+            Reconnecting...
           </div>
         </div>
       ) : (
