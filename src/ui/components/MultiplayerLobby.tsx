@@ -276,7 +276,7 @@ export const MultiplayerLobby: React.FC<MultiplayerLobbyProps> = ({
             </div>
 
             <p className="text-gray-500 text-sm mb-4">
-              Scan QR code or share link to join
+              📱 Scan QR code or share link to join instantly!
             </p>
 
             {/* Share buttons */}
