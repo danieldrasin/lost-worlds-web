@@ -48,7 +48,9 @@ export interface PicturePageDefinition {
   damage: number | null;
   restriction: Restriction;
   effects: Effect[];
-  imageUrl?: string;
+  imageUrl?: string;          // Legacy single image URL
+  imageUrlBW?: string;        // Black & white version
+  imageUrlColor?: string;     // Color version
 }
 
 /**

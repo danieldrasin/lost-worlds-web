@@ -106,7 +106,9 @@ export interface PicturePageResult {
   damage: number | null;       // null = no damage
   restriction: Restriction;     // Movement/action restrictions
   effects: Effect[];           // Additional effects (modifiers, weapon loss, etc.)
-  imageUrl?: string;           // URL to the picture for this page
+  imageUrl?: string;           // URL to the picture for this page (legacy single image)
+  imageUrlBW?: string;         // URL to black & white version of the image
+  imageUrlColor?: string;      // URL to color version of the image
 }
 
 /**

@@ -7,131 +7,1839 @@
     {
       "category": "DOWN_SWING",
       "moves": [
-        { "name": "Bash", "color": "orange", "normalPage": 36, "extendedPage": 50, "modifier": 4 },
-        { "name": "Smash", "color": "orange", "normalPage": 24, "extendedPage": 50, "modifier": 3 }
+        {
+          "name": "Bash",
+          "color": "orange",
+          "normalPage": 36,
+          "extendedPage": 50,
+          "modifier": 4
+        },
+        {
+          "name": "Smash",
+          "color": "orange",
+          "normalPage": 24,
+          "extendedPage": 50,
+          "modifier": 3
+        }
       ]
     },
     {
       "category": "SIDE_SWING",
       "moves": [
-        { "name": "Strong", "color": "orange", "normalPage": 28, "extendedPage": 64, "modifier": 2 },
-        { "name": "High", "color": "red", "normalPage": 10, "extendedPage": 64, "modifier": 1 },
-        { "name": "Low", "color": "blue", "normalPage": 2, "extendedPage": 58, "modifier": 1 }
+        {
+          "name": "Strong",
+          "color": "orange",
+          "normalPage": 28,
+          "extendedPage": 64,
+          "modifier": 2
+        },
+        {
+          "name": "High",
+          "color": "red",
+          "normalPage": 10,
+          "extendedPage": 64,
+          "modifier": 1
+        },
+        {
+          "name": "Low",
+          "color": "blue",
+          "normalPage": 2,
+          "extendedPage": 58,
+          "modifier": 1
+        }
       ]
     },
     {
       "category": "THRUST",
       "moves": [
-        { "name": "High", "color": "red", "normalPage": 32, "extendedPage": 54, "modifier": -1 },
-        { "name": "Low", "color": "blue", "normalPage": 14, "extendedPage": 54, "modifier": -1 }
+        {
+          "name": "High",
+          "color": "red",
+          "normalPage": 32,
+          "extendedPage": 54,
+          "modifier": -1
+        },
+        {
+          "name": "Low",
+          "color": "blue",
+          "normalPage": 14,
+          "extendedPage": 54,
+          "modifier": -1
+        }
       ]
     },
     {
       "category": "RAGE",
       "moves": [
-        { "name": "Bite", "color": "orange", "normalPage": 44, "extendedPage": 60, "modifier": 2 },
-        { "name": "Grab", "color": "blue", "normalPage": 48, "extendedPage": 60, "modifier": 2 },
-        { "name": "Throw", "color": "red", "normalPage": 6, "extendedPage": 60, "modifier": 4 }
+        {
+          "name": "Bite",
+          "color": "orange",
+          "normalPage": 44,
+          "extendedPage": 60,
+          "modifier": 2
+        },
+        {
+          "name": "Grab",
+          "color": "blue",
+          "normalPage": 48,
+          "extendedPage": 60,
+          "modifier": 2
+        },
+        {
+          "name": "Throw",
+          "color": "red",
+          "normalPage": 6,
+          "extendedPage": 60,
+          "modifier": 4
+        }
       ]
     },
     {
       "category": "SPECIAL",
       "moves": [
-        { "name": "Kick", "color": "blue", "normalPage": 34, "extendedPage": 56, "modifier": 2 },
-        { "name": "Wild Swing", "color": "yellow", "normalPage": 40, "extendedPage": 58, "modifier": 4 },
-        { "name": "Dislodge Weapon", "color": "blue", "normalPage": 30, "extendedPage": 58, "modifier": -4 },
-        { "name": "Retrieve Weapon", "color": "green", "normalPage": 46, "extendedPage": 52, "modifier": -6 }
+        {
+          "name": "Kick",
+          "color": "blue",
+          "normalPage": 34,
+          "extendedPage": 56,
+          "modifier": 2
+        },
+        {
+          "name": "Wild Swing",
+          "color": "yellow",
+          "normalPage": 40,
+          "extendedPage": 58,
+          "modifier": 4
+        },
+        {
+          "name": "Dislodge Weapon",
+          "color": "blue",
+          "normalPage": 30,
+          "extendedPage": 58,
+          "modifier": -4
+        },
+        {
+          "name": "Retrieve Weapon",
+          "color": "green",
+          "normalPage": 46,
+          "extendedPage": 52,
+          "modifier": -6
+        }
       ]
     },
     {
       "category": "JUMP",
       "moves": [
-        { "name": "Up", "color": "green", "normalPage": 18, "extendedPage": 52, "modifier": -6 },
-        { "name": "Dodge", "color": "yellow", "normalPage": 8, "extendedPage": 52, "modifier": -4 },
-        { "name": "Duck", "color": "green", "normalPage": 20, "extendedPage": 52, "modifier": -5 },
-        { "name": "Away", "color": "yellow", "normalPage": 16, "extendedPage": 62, "modifier": -4 }
+        {
+          "name": "Up",
+          "color": "green",
+          "normalPage": 18,
+          "extendedPage": 52,
+          "modifier": -6
+        },
+        {
+          "name": "Dodge",
+          "color": "yellow",
+          "normalPage": 8,
+          "extendedPage": 52,
+          "modifier": -4
+        },
+        {
+          "name": "Duck",
+          "color": "green",
+          "normalPage": 20,
+          "extendedPage": 52,
+          "modifier": -5
+        },
+        {
+          "name": "Away",
+          "color": "yellow",
+          "normalPage": 16,
+          "extendedPage": 62,
+          "modifier": -4
+        }
       ]
     },
     {
       "category": "EXTENDED_RANGE",
       "moves": [
-        { "name": "Charge", "color": "white", "normalPage": 50, "extendedPage": 50, "modifier": 5 },
-        { "name": "Swing High", "color": "black", "normalPage": 64, "extendedPage": 64, "modifier": 2 },
-        { "name": "Swing Low", "color": "black", "normalPage": 58, "extendedPage": 58, "modifier": 2 },
-        { "name": "Thrust High", "color": "white", "normalPage": 54, "extendedPage": 54, "modifier": 1 },
-        { "name": "Rage Throw", "color": "white", "normalPage": 60, "extendedPage": 60, "modifier": 3 },
-        { "name": "Block & Close", "color": "brown", "normalPage": 56, "extendedPage": 56, "modifier": 0 },
-        { "name": "Dodge", "color": "brown", "normalPage": 52, "extendedPage": 52, "modifier": -5 },
-        { "name": "Jump Back", "color": "brown", "normalPage": 62, "extendedPage": 62, "modifier": -5 }
+        {
+          "name": "Charge",
+          "color": "white",
+          "normalPage": 50,
+          "extendedPage": 50,
+          "modifier": 5
+        },
+        {
+          "name": "Swing High",
+          "color": "black",
+          "normalPage": 64,
+          "extendedPage": 64,
+          "modifier": 2
+        },
+        {
+          "name": "Swing Low",
+          "color": "black",
+          "normalPage": 58,
+          "extendedPage": 58,
+          "modifier": 2
+        },
+        {
+          "name": "Thrust High",
+          "color": "white",
+          "normalPage": 54,
+          "extendedPage": 54,
+          "modifier": 1
+        },
+        {
+          "name": "Rage Throw",
+          "color": "white",
+          "normalPage": 60,
+          "extendedPage": 60,
+          "modifier": 3
+        },
+        {
+          "name": "Block & Close",
+          "color": "brown",
+          "normalPage": 56,
+          "extendedPage": 56,
+          "modifier": 0
+        },
+        {
+          "name": "Dodge",
+          "color": "brown",
+          "normalPage": 52,
+          "extendedPage": 52,
+          "modifier": -5
+        },
+        {
+          "name": "Jump Back",
+          "color": "brown",
+          "normalPage": 62,
+          "extendedPage": 62,
+          "modifier": -5
+        }
       ]
     }
   ],
   "picturePages": [
-    { "number": 1, "title": "Jumping Away", "isExtendedRange": false, "damage": null, "restriction": { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [{ "type": "NEXT_TURN_DAMAGE_MODIFIER", "amount": 2 }] },
-    { "number": 3, "title": "Swinging High", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["red"] }, { "type": "NO_CATEGORY", "categories": ["THRUST", "EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 5, "title": "Swinging Low", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_CATEGORY", "categories": ["THRUST", "EXTENDED_RANGE"] }, { "type": "NO_COLOR", "colors": ["blue"] }] }, "effects": [] },
-    { "number": 7, "title": "Dazed", "isExtendedRange": false, "damage": 7, "restriction": { "type": "ONLY_CATEGORY", "categories": ["RAGE"] }, "effects": [] },
-    { "number": 9, "title": "Thrusting High", "isExtendedRange": false, "damage": null, "restriction": { "type": "NO_CATEGORY", "categories": ["SIDE_SWING", "EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 11, "title": "Thrusting Low", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["red"] }, { "type": "NO_CATEGORY", "categories": ["SIDE_SWING", "EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 13, "title": "Leg Wound", "isExtendedRange": false, "damage": 4, "restriction": { "type": "ONLY_COLOR", "colors": ["green", "yellow"] }, "effects": [] },
-    { "number": 15, "title": "Swinging Down", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["blue", "red"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 17, "title": "Kicked Off Balance", "isExtendedRange": false, "damage": 0, "restriction": { "type": "ONLY_COLOR", "colors": ["green", "yellow"] }, "effects": [] },
-    { "number": 19, "title": "Struck Off Balance", "isExtendedRange": false, "damage": 0, "restriction": { "type": "ONLY_COLOR", "colors": ["green", "yellow"] }, "effects": [] },
-    { "number": 21, "title": "Turned Around", "isExtendedRange": false, "damage": 0, "restriction": { "type": "ONLY_COLOR", "colors": ["yellow"] }, "effects": [] },
-    { "number": 23, "title": "Behind You", "isExtendedRange": false, "damage": null, "restriction": { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 25, "title": "Kicking", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["blue", "yellow"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 27, "title": "Weapon Dislodged", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "ONLY_CATEGORY", "categories": ["JUMP", "RAGE"] }, { "type": "ONLY_COLOR", "colors": ["brown"] }, { "type": "ONLY_NAME", "names": ["KICK", "RETRIEVE"] }, { "type": "NO_NAME", "names": ["THROW"] }] }, "effects": [{ "type": "LOSE_WEAPON" }, { "type": "NO_EXTENDED_RANGE" }] },
-    { "number": 29, "title": "Ducking", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["orange", "red"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 31, "title": "Arm Wound", "isExtendedRange": false, "damage": 4, "restriction": { "type": "ONLY_COLOR", "colors": ["green", "yellow"] }, "effects": [] },
-    { "number": 33, "title": "Dodging", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_CATEGORY", "categories": ["THRUST", "EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 35, "title": "Extended Range Body Wound", "isExtendedRange": true, "damage": 5, "restriction": { "type": "AND", "children": [{ "type": "ONLY_COLOR", "colors": ["brown"] }, { "type": "ONLY_NAME", "names": ["CHARGE"] }] }, "effects": [] },
-    { "number": 37, "title": "Jumping up", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["blue"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 39, "title": "Charging", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["green", "yellow"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 41, "title": "Knocked Down", "isExtendedRange": false, "damage": 1, "restriction": { "type": "ONLY_CATEGORY", "categories": ["JUMP"] }, "effects": [] },
-    { "number": 43, "title": "Retrieving Weapon", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["red", "orange"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [{ "type": "RETRIEVE_WEAPON" }] },
-    { "number": 45, "title": "Parrying High", "isExtendedRange": false, "damage": -5, "restriction": { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 47, "title": "Extended Range Leg Wound", "isExtendedRange": true, "damage": 4, "restriction": { "type": "ONLY_COLOR", "colors": ["brown"] }, "effects": [] },
-    { "number": 49, "title": "Parrying Low", "isExtendedRange": false, "damage": -5, "restriction": { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 51, "title": "Enraged Throw", "isExtendedRange": false, "damage": 0, "restriction": { "type": "AND", "children": [{ "type": "ONLY_CATEGORY", "categories": ["JUMP", "RAGE"] }, { "type": "ONLY_COLOR", "colors": ["brown"] }, { "type": "ONLY_NAME", "names": ["KICK", "RETRIEVE"] }, { "type": "NO_NAME", "names": ["THROW"] }] }, "effects": [{ "type": "LOSE_WEAPON" }, { "type": "NO_EXTENDED_RANGE" }, { "type": "ALTERNATE_RESULT", "condition": "IF_SCORING_DAMAGE", "pageNumber": 41 }] },
-    { "number": 53, "title": "Body Wound", "isExtendedRange": false, "damage": 5, "restriction": { "type": "OR", "children": [{ "type": "ONLY_COLOR", "colors": ["green", "yellow"] }, { "type": "ONLY_CATEGORY", "categories": ["RAGE"] }] }, "effects": [] },
-    { "number": 55, "title": "Extended Range Attacking", "isExtendedRange": true, "damage": null, "restriction": { "type": "ONLY_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 57, "title": "Extended Range Blocking & Regenerating", "isExtendedRange": true, "damage": null, "restriction": { "type": "ONLY_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [{ "type": "HEALING", "amount": 2, "condition": "IF_NO_DAMAGE_TAKEN" }] },
-    { "number": 59, "title": "Enraged Bite", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "ONLY_CATEGORY", "categories": ["JUMP", "RAGE"] }, { "type": "ONLY_COLOR", "colors": ["brown"] }, { "type": "ONLY_NAME", "names": ["KICK", "RETRIEVE"] }, { "type": "NO_NAME", "names": ["THROW"] }] }, "effects": [{ "type": "LOSE_WEAPON" }, { "type": "NO_EXTENDED_RANGE" }, { "type": "ALTERNATE_RESULT", "condition": "IF_SCORING_DAMAGE", "pageNumber": 31 }] },
-    { "number": 61, "title": "Extended Range Enraged", "isExtendedRange": true, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "ONLY_CATEGORY", "categories": ["JUMP", "RAGE"] }, { "type": "ONLY_COLOR", "colors": ["brown"] }, { "type": "ONLY_NAME", "names": ["KICK", "RETRIEVE"] }, { "type": "NO_NAME", "names": ["THROW"] }] }, "effects": [{ "type": "LOSE_WEAPON" }, { "type": "ONLY_EXTENDED_RANGE" }, { "type": "ALTERNATE_RESULT", "condition": "IF_SCORING_DAMAGE", "pageNumber": 41 }] },
-    { "number": 63, "title": "Enraged Grab", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "ONLY_CATEGORY", "categories": ["JUMP", "RAGE"] }, { "type": "ONLY_COLOR", "colors": ["brown"] }, { "type": "ONLY_NAME", "names": ["KICK", "RETRIEVE"] }, { "type": "NO_NAME", "names": ["THROW"] }] }, "effects": [{ "type": "LOSE_WEAPON" }, { "type": "NO_EXTENDED_RANGE" }, { "type": "ALTERNATE_RESULT", "condition": "IF_SCORING_DAMAGE", "pageNumber": 41 }] }
+    {
+      "number": 1,
+      "title": "Jumping Away",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [
+        {
+          "type": "NEXT_TURN_DAMAGE_MODIFIER",
+          "amount": 2
+        }
+      ],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 3,
+      "title": "Swinging High",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "red"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "THRUST",
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 5,
+      "title": "Swinging Low",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "THRUST",
+              "EXTENDED_RANGE"
+            ]
+          },
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "blue"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 7,
+      "title": "Dazed",
+      "isExtendedRange": false,
+      "damage": 7,
+      "restriction": {
+        "type": "ONLY_CATEGORY",
+        "categories": [
+          "RAGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 9,
+      "title": "Thrusting High",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "SIDE_SWING",
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 11,
+      "title": "Thrusting Low",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "red"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "SIDE_SWING",
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 13,
+      "title": "Leg Wound",
+      "isExtendedRange": false,
+      "damage": 4,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "green",
+          "yellow"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 15,
+      "title": "Swinging Down",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "blue",
+              "red"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/swinging_down_bw.webp",
+      "imageUrlColor": "/images/hill-troll/swinging_down_color.webp"
+    },
+    {
+      "number": 17,
+      "title": "Kicked Off Balance",
+      "isExtendedRange": false,
+      "damage": 0,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "green",
+          "yellow"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 19,
+      "title": "Struck Off Balance",
+      "isExtendedRange": false,
+      "damage": 0,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "green",
+          "yellow"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 21,
+      "title": "Turned Around",
+      "isExtendedRange": false,
+      "damage": 0,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "yellow"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 23,
+      "title": "Behind You",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 25,
+      "title": "Kicking",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "blue",
+              "yellow"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 27,
+      "title": "Weapon Dislodged",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "ONLY_CATEGORY",
+            "categories": [
+              "JUMP",
+              "RAGE"
+            ]
+          },
+          {
+            "type": "ONLY_COLOR",
+            "colors": [
+              "brown"
+            ]
+          },
+          {
+            "type": "ONLY_NAME",
+            "names": [
+              "KICK",
+              "RETRIEVE"
+            ]
+          },
+          {
+            "type": "NO_NAME",
+            "names": [
+              "THROW"
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "LOSE_WEAPON"
+        },
+        {
+          "type": "NO_EXTENDED_RANGE"
+        }
+      ],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 29,
+      "title": "Ducking",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "orange",
+              "red"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 31,
+      "title": "Arm Wound",
+      "isExtendedRange": false,
+      "damage": 4,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "green",
+          "yellow"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 33,
+      "title": "Dodging",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "THRUST",
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 35,
+      "title": "Extended Range Body Wound",
+      "isExtendedRange": true,
+      "damage": 5,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "ONLY_COLOR",
+            "colors": [
+              "brown"
+            ]
+          },
+          {
+            "type": "ONLY_NAME",
+            "names": [
+              "CHARGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 37,
+      "title": "Jumping up",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "blue"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 39,
+      "title": "Charging",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "green",
+              "yellow"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 41,
+      "title": "Knocked Down",
+      "isExtendedRange": false,
+      "damage": 1,
+      "restriction": {
+        "type": "ONLY_CATEGORY",
+        "categories": [
+          "JUMP"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/knocked_down_bw.webp",
+      "imageUrlColor": "/images/hill-troll/knocked_down_color.webp"
+    },
+    {
+      "number": 43,
+      "title": "Retrieving Weapon",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "red",
+              "orange"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "RETRIEVE_WEAPON"
+        }
+      ],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 45,
+      "title": "Parrying High",
+      "isExtendedRange": false,
+      "damage": -5,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 47,
+      "title": "Extended Range Leg Wound",
+      "isExtendedRange": true,
+      "damage": 4,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "brown"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 49,
+      "title": "Parrying Low",
+      "isExtendedRange": false,
+      "damage": -5,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 51,
+      "title": "Enraged Throw",
+      "isExtendedRange": false,
+      "damage": 0,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "ONLY_CATEGORY",
+            "categories": [
+              "JUMP",
+              "RAGE"
+            ]
+          },
+          {
+            "type": "ONLY_COLOR",
+            "colors": [
+              "brown"
+            ]
+          },
+          {
+            "type": "ONLY_NAME",
+            "names": [
+              "KICK",
+              "RETRIEVE"
+            ]
+          },
+          {
+            "type": "NO_NAME",
+            "names": [
+              "THROW"
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "LOSE_WEAPON"
+        },
+        {
+          "type": "NO_EXTENDED_RANGE"
+        },
+        {
+          "type": "ALTERNATE_RESULT",
+          "condition": "IF_SCORING_DAMAGE",
+          "pageNumber": 41
+        }
+      ],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 53,
+      "title": "Body Wound",
+      "isExtendedRange": false,
+      "damage": 5,
+      "restriction": {
+        "type": "OR",
+        "children": [
+          {
+            "type": "ONLY_COLOR",
+            "colors": [
+              "green",
+              "yellow"
+            ]
+          },
+          {
+            "type": "ONLY_CATEGORY",
+            "categories": [
+              "RAGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 55,
+      "title": "Extended Range Attacking",
+      "isExtendedRange": true,
+      "damage": null,
+      "restriction": {
+        "type": "ONLY_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 57,
+      "title": "Extended Range Blocking & Regenerating",
+      "isExtendedRange": true,
+      "damage": null,
+      "restriction": {
+        "type": "ONLY_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [
+        {
+          "type": "HEALING",
+          "amount": 2,
+          "condition": "IF_NO_DAMAGE_TAKEN"
+        }
+      ],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 59,
+      "title": "Enraged Bite",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "ONLY_CATEGORY",
+            "categories": [
+              "JUMP",
+              "RAGE"
+            ]
+          },
+          {
+            "type": "ONLY_COLOR",
+            "colors": [
+              "brown"
+            ]
+          },
+          {
+            "type": "ONLY_NAME",
+            "names": [
+              "KICK",
+              "RETRIEVE"
+            ]
+          },
+          {
+            "type": "NO_NAME",
+            "names": [
+              "THROW"
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "LOSE_WEAPON"
+        },
+        {
+          "type": "NO_EXTENDED_RANGE"
+        },
+        {
+          "type": "ALTERNATE_RESULT",
+          "condition": "IF_SCORING_DAMAGE",
+          "pageNumber": 31
+        }
+      ],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 61,
+      "title": "Extended Range Enraged",
+      "isExtendedRange": true,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "ONLY_CATEGORY",
+            "categories": [
+              "JUMP",
+              "RAGE"
+            ]
+          },
+          {
+            "type": "ONLY_COLOR",
+            "colors": [
+              "brown"
+            ]
+          },
+          {
+            "type": "ONLY_NAME",
+            "names": [
+              "KICK",
+              "RETRIEVE"
+            ]
+          },
+          {
+            "type": "NO_NAME",
+            "names": [
+              "THROW"
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "LOSE_WEAPON"
+        },
+        {
+          "type": "ONLY_EXTENDED_RANGE"
+        },
+        {
+          "type": "ALTERNATE_RESULT",
+          "condition": "IF_SCORING_DAMAGE",
+          "pageNumber": 41
+        }
+      ],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    },
+    {
+      "number": 63,
+      "title": "Enraged Grab",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "ONLY_CATEGORY",
+            "categories": [
+              "JUMP",
+              "RAGE"
+            ]
+          },
+          {
+            "type": "ONLY_COLOR",
+            "colors": [
+              "brown"
+            ]
+          },
+          {
+            "type": "ONLY_NAME",
+            "names": [
+              "KICK",
+              "RETRIEVE"
+            ]
+          },
+          {
+            "type": "NO_NAME",
+            "names": [
+              "THROW"
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "LOSE_WEAPON"
+        },
+        {
+          "type": "NO_EXTENDED_RANGE"
+        },
+        {
+          "type": "ALTERNATE_RESULT",
+          "condition": "IF_SCORING_DAMAGE",
+          "pageNumber": 41
+        }
+      ],
+      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+    }
   ],
   "lookupPages": [
-    { "number": 2, "mapping": { "2": 49, "4": 0, "6": 51, "8": 13, "10": 13, "12": 0, "14": 49, "16": 57, "18": 37, "20": 31, "22": 0, "24": 13, "26": 0, "28": 13, "30": 49, "32": 13, "34": 41, "36": 13, "38": 0, "40": 49, "42": 0, "44": 59, "46": 27, "48": 13 } },
-    { "number": 4, "mapping": { "2": 5, "4": 0, "6": 51, "8": 33, "10": 3, "12": 0, "14": 11, "16": 57, "18": 37, "20": 19, "22": 0, "24": 15, "26": 0, "28": 3, "30": 15, "32": 9, "34": 19, "36": 15, "38": 0, "40": 5, "42": 0, "44": 59, "46": 43, "48": 63 } },
-    { "number": 6, "mapping": { "2": 53, "4": 0, "6": 53, "8": 33, "10": 3, "12": 0, "14": 49, "16": 53, "18": 13, "20": 29, "22": 0, "24": 31, "26": 0, "28": 45, "30": 5, "32": 45, "34": 13, "36": 53, "38": 0, "40": 31, "42": 0, "44": 59, "46": 53, "48": 63 } },
-    { "number": 8, "mapping": { "2": 5, "4": 0, "6": 51, "8": 33, "10": 3, "12": 0, "14": 23, "16": 57, "18": 37, "20": 29, "22": 0, "24": 3, "26": 0, "28": 3, "30": 3, "32": 9, "34": 41, "36": 15, "38": 0, "40": 5, "42": 0, "44": 59, "46": 43, "48": 63 } },
-    { "number": 10, "mapping": { "2": 31, "4": 0, "6": 51, "8": 53, "10": 45, "12": 0, "14": 7, "16": 57, "18": 13, "20": 23, "22": 0, "24": 45, "26": 0, "28": 31, "30": 3, "32": 53, "34": 25, "36": 31, "38": 0, "40": 53, "42": 0, "44": 59, "46": 43, "48": 63 } },
-    { "number": 12, "mapping": { "2": 31, "4": 0, "6": 51, "8": 31, "10": 53, "12": 0, "14": 11, "16": 57, "18": 13, "20": 19, "22": 0, "24": 19, "26": 0, "28": 31, "30": 3, "32": 45, "34": 25, "36": 31, "38": 0, "40": 53, "42": 0, "44": 59, "46": 29, "48": 63 } },
-    { "number": 14, "mapping": { "2": 49, "4": 0, "6": 53, "8": 23, "10": 13, "12": 0, "14": 13, "16": 13, "18": 37, "20": 53, "22": 0, "24": 13, "26": 0, "28": 13, "30": 5, "32": 13, "34": 13, "36": 13, "38": 0, "40": 49, "42": 0, "44": 59, "46": 53, "48": 63 } },
-    { "number": 16, "mapping": { "2": 55, "4": 0, "6": 51, "8": 57, "10": 55, "12": 0, "14": 11, "16": 57, "18": 61, "20": 61, "22": 0, "24": 19, "26": 0, "28": 21, "30": 55, "32": 9, "34": 41, "36": 41, "38": 0, "40": 21, "42": 0, "44": 61, "46": 43, "48": 61 } },
-    { "number": 18, "mapping": { "2": 5, "4": 0, "6": 51, "8": 33, "10": 3, "12": 0, "14": 11, "16": 57, "18": 37, "20": 29, "22": 0, "24": 15, "26": 0, "28": 5, "30": 3, "32": 9, "34": 41, "36": 15, "38": 0, "40": 21, "42": 0, "44": 59, "46": 43, "48": 63 } },
-    { "number": 20, "mapping": { "2": 5, "4": 0, "6": 51, "8": 33, "10": 21, "12": 0, "14": 11, "16": 57, "18": 37, "20": 29, "22": 0, "24": 15, "26": 0, "28": 21, "30": 3, "32": 9, "34": 25, "36": 15, "38": 0, "40": 5, "42": 0, "44": 59, "46": 43, "48": 63 } },
-    { "number": 22, "mapping": { "2": 19, "4": 0, "6": 51, "8": 23, "10": 13, "12": 0, "14": 13, "16": 13, "18": 37, "20": 53, "22": 0, "24": 15, "26": 0, "28": 3, "30": 5, "32": 31, "34": 25, "36": 13, "38": 0, "40": 49, "42": 0, "44": 59, "46": 43, "48": 63 } },
-    { "number": 24, "mapping": { "2": 53, "4": 0, "6": 51, "8": 33, "10": 45, "12": 0, "14": 11, "16": 1, "18": 53, "20": 7, "22": 0, "24": 7, "26": 0, "28": 53, "30": 3, "32": 45, "34": 53, "36": 15, "38": 0, "40": 21, "42": 0, "44": 7, "46": 41, "48": 63 } },
-    { "number": 26, "mapping": { "2": 5, "4": 0, "6": 51, "8": 33, "10": 3, "12": 0, "14": 11, "16": 57, "18": 19, "20": 19, "22": 0, "24": 15, "26": 0, "28": 5, "30": 3, "32": 9, "34": 25, "36": 15, "38": 0, "40": 5, "42": 0, "44": 19, "46": 43, "48": 63 } },
-    { "number": 28, "mapping": { "2": 7, "4": 0, "6": 51, "8": 53, "10": 3, "12": 0, "14": 11, "16": 23, "18": 53, "20": 23, "22": 0, "24": 53, "26": 0, "28": 19, "30": 31, "32": 9, "34": 25, "36": 31, "38": 0, "40": 41, "42": 0, "44": 59, "46": 29, "48": 63 } },
-    { "number": 30, "mapping": { "2": 49, "4": 0, "6": 51, "8": 33, "10": 3, "12": 0, "14": 11, "16": 57, "18": 37, "20": 29, "22": 0, "24": 15, "26": 0, "28": 3, "30": 27, "32": 27, "34": 25, "36": 15, "38": 0, "40": 5, "42": 0, "44": 59, "46": 27, "48": 63 } },
-    { "number": 32, "mapping": { "2": 53, "4": 0, "6": 51, "8": 33, "10": 3, "12": 0, "14": 53, "16": 53, "18": 13, "20": 29, "22": 0, "24": 45, "26": 0, "28": 53, "30": 3, "32": 31, "34": 25, "36": 53, "38": 0, "40": 31, "42": 0, "44": 59, "46": 43, "48": 53 } },
-    { "number": 34, "mapping": { "2": 5, "4": 0, "6": 51, "8": 33, "10": 3, "12": 0, "14": 11, "16": 1, "18": 37, "20": 29, "22": 0, "24": 15, "26": 0, "28": 17, "30": 3, "32": 17, "34": 25, "36": 41, "38": 0, "40": 41, "42": 0, "44": 59, "46": 27, "48": 17 } },
-    { "number": 36, "mapping": { "2": 5, "4": 0, "6": 7, "8": 33, "10": 3, "12": 0, "14": 11, "16": 1, "18": 7, "20": 7, "22": 0, "24": 15, "26": 0, "28": 7, "30": 27, "32": 9, "34": 7, "36": 41, "38": 0, "40": 7, "42": 0, "44": 59, "46": 7, "48": 63 } },
-    { "number": 38, "mapping": { "2": 31, "4": 0, "6": 51, "8": 53, "10": 19, "12": 0, "14": 7, "16": 57, "18": 13, "20": 29, "22": 0, "24": 19, "26": 0, "28": 5, "30": 5, "32": 45, "34": 25, "36": 31, "38": 0, "40": 5, "42": 0, "44": 59, "46": 43, "48": 63 } },
-    { "number": 40, "mapping": { "2": 49, "4": 0, "6": 51, "8": 33, "10": 3, "12": 0, "14": 49, "16": 23, "18": 23, "20": 53, "22": 0, "24": 23, "26": 0, "28": 3, "30": 5, "32": 9, "34": 25, "36": 41, "38": 0, "40": 5, "42": 0, "44": 59, "46": 43, "48": 63 } },
-    { "number": 42, "mapping": { "2": 19, "4": 0, "6": 51, "8": 13, "10": 13, "12": 0, "14": 19, "16": 57, "18": 19, "20": 31, "22": 0, "24": 13, "26": 0, "28": 13, "30": 5, "32": 9, "34": 41, "36": 13, "38": 0, "40": 49, "42": 0, "44": 13, "46": 27, "48": 63 } },
-    { "number": 44, "mapping": { "2": 5, "4": 0, "6": 51, "8": 33, "10": 45, "12": 0, "14": 31, "16": 57, "18": 7, "20": 53, "22": 0, "24": 31, "26": 0, "28": 31, "30": 31, "32": 45, "34": 13, "36": 53, "38": 0, "40": 31, "42": 0, "44": 59, "46": 27, "48": 63 } },
-    { "number": 46, "mapping": { "2": 5, "4": 0, "6": 51, "8": 33, "10": 3, "12": 0, "14": 11, "16": 1, "18": 37, "20": 29, "22": 0, "24": 15, "26": 0, "28": 3, "30": 15, "32": 9, "34": 25, "36": 15, "38": 0, "40": 5, "42": 0, "44": 59, "46": 43, "48": 63 } },
-    { "number": 48, "mapping": { "2": 5, "4": 0, "6": 51, "8": 31, "10": 45, "12": 0, "14": 49, "16": 57, "18": 31, "20": 19, "22": 0, "24": 31, "26": 0, "28": 31, "30": 31, "32": 9, "34": 25, "36": 31, "38": 0, "40": 13, "42": 0, "44": 59, "46": 53, "48": 63 } },
-    { "number": 50, "mapping": { "50": 45, "52": 23, "54": 9, "56": 53, "58": 41, "60": 51, "62": 19, "64": 19 } },
-    { "number": 52, "mapping": { "50": 21, "52": 57, "54": 9, "56": 57, "58": 5, "60": 51, "62": 57, "64": 55 } },
-    { "number": 54, "mapping": { "50": 53, "52": 33, "54": 45, "56": 17, "58": 35, "60": 51, "62": 35, "64": 3 } },
-    { "number": 56, "mapping": { "50": 39, "52": 57, "54": 9, "56": 45, "58": 55, "60": 61, "62": 57, "64": 3 } },
-    { "number": 58, "mapping": { "50": 39, "52": 33, "54": 55, "56": 47, "58": 5, "60": 13, "62": 57, "64": 55 } },
-    { "number": 60, "mapping": { "50": 13, "52": 33, "54": 13, "56": 57, "58": 5, "60": 51, "62": 57, "64": 47 } },
-    { "number": 62, "mapping": { "50": 39, "52": 57, "54": 55, "56": 57, "58": 55, "60": 61, "62": 57, "64": 55 } },
-    { "number": 64, "mapping": { "50": 7, "52": 35, "54": 53, "56": 45, "58": 55, "60": 61, "62": 57, "64": 3 } }
+    {
+      "number": 2,
+      "mapping": {
+        "2": 49,
+        "4": 0,
+        "6": 51,
+        "8": 13,
+        "10": 13,
+        "12": 0,
+        "14": 49,
+        "16": 57,
+        "18": 37,
+        "20": 31,
+        "22": 0,
+        "24": 13,
+        "26": 0,
+        "28": 13,
+        "30": 49,
+        "32": 13,
+        "34": 41,
+        "36": 13,
+        "38": 0,
+        "40": 49,
+        "42": 0,
+        "44": 59,
+        "46": 27,
+        "48": 13
+      }
+    },
+    {
+      "number": 4,
+      "mapping": {
+        "2": 5,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 11,
+        "16": 57,
+        "18": 37,
+        "20": 19,
+        "22": 0,
+        "24": 15,
+        "26": 0,
+        "28": 3,
+        "30": 15,
+        "32": 9,
+        "34": 19,
+        "36": 15,
+        "38": 0,
+        "40": 5,
+        "42": 0,
+        "44": 59,
+        "46": 43,
+        "48": 63
+      }
+    },
+    {
+      "number": 6,
+      "mapping": {
+        "2": 53,
+        "4": 0,
+        "6": 53,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 49,
+        "16": 53,
+        "18": 13,
+        "20": 29,
+        "22": 0,
+        "24": 31,
+        "26": 0,
+        "28": 45,
+        "30": 5,
+        "32": 45,
+        "34": 13,
+        "36": 53,
+        "38": 0,
+        "40": 31,
+        "42": 0,
+        "44": 59,
+        "46": 53,
+        "48": 63
+      }
+    },
+    {
+      "number": 8,
+      "mapping": {
+        "2": 5,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 23,
+        "16": 57,
+        "18": 37,
+        "20": 29,
+        "22": 0,
+        "24": 3,
+        "26": 0,
+        "28": 3,
+        "30": 3,
+        "32": 9,
+        "34": 41,
+        "36": 15,
+        "38": 0,
+        "40": 5,
+        "42": 0,
+        "44": 59,
+        "46": 43,
+        "48": 63
+      }
+    },
+    {
+      "number": 10,
+      "mapping": {
+        "2": 31,
+        "4": 0,
+        "6": 51,
+        "8": 53,
+        "10": 45,
+        "12": 0,
+        "14": 7,
+        "16": 57,
+        "18": 13,
+        "20": 23,
+        "22": 0,
+        "24": 45,
+        "26": 0,
+        "28": 31,
+        "30": 3,
+        "32": 53,
+        "34": 25,
+        "36": 31,
+        "38": 0,
+        "40": 53,
+        "42": 0,
+        "44": 59,
+        "46": 43,
+        "48": 63
+      }
+    },
+    {
+      "number": 12,
+      "mapping": {
+        "2": 31,
+        "4": 0,
+        "6": 51,
+        "8": 31,
+        "10": 53,
+        "12": 0,
+        "14": 11,
+        "16": 57,
+        "18": 13,
+        "20": 19,
+        "22": 0,
+        "24": 19,
+        "26": 0,
+        "28": 31,
+        "30": 3,
+        "32": 45,
+        "34": 25,
+        "36": 31,
+        "38": 0,
+        "40": 53,
+        "42": 0,
+        "44": 59,
+        "46": 29,
+        "48": 63
+      }
+    },
+    {
+      "number": 14,
+      "mapping": {
+        "2": 49,
+        "4": 0,
+        "6": 53,
+        "8": 23,
+        "10": 13,
+        "12": 0,
+        "14": 13,
+        "16": 13,
+        "18": 37,
+        "20": 53,
+        "22": 0,
+        "24": 13,
+        "26": 0,
+        "28": 13,
+        "30": 5,
+        "32": 13,
+        "34": 13,
+        "36": 13,
+        "38": 0,
+        "40": 49,
+        "42": 0,
+        "44": 59,
+        "46": 53,
+        "48": 63
+      }
+    },
+    {
+      "number": 16,
+      "mapping": {
+        "2": 55,
+        "4": 0,
+        "6": 51,
+        "8": 57,
+        "10": 55,
+        "12": 0,
+        "14": 11,
+        "16": 57,
+        "18": 61,
+        "20": 61,
+        "22": 0,
+        "24": 19,
+        "26": 0,
+        "28": 21,
+        "30": 55,
+        "32": 9,
+        "34": 41,
+        "36": 41,
+        "38": 0,
+        "40": 21,
+        "42": 0,
+        "44": 61,
+        "46": 43,
+        "48": 61
+      }
+    },
+    {
+      "number": 18,
+      "mapping": {
+        "2": 5,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 11,
+        "16": 57,
+        "18": 37,
+        "20": 29,
+        "22": 0,
+        "24": 15,
+        "26": 0,
+        "28": 5,
+        "30": 3,
+        "32": 9,
+        "34": 41,
+        "36": 15,
+        "38": 0,
+        "40": 21,
+        "42": 0,
+        "44": 59,
+        "46": 43,
+        "48": 63
+      }
+    },
+    {
+      "number": 20,
+      "mapping": {
+        "2": 5,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 21,
+        "12": 0,
+        "14": 11,
+        "16": 57,
+        "18": 37,
+        "20": 29,
+        "22": 0,
+        "24": 15,
+        "26": 0,
+        "28": 21,
+        "30": 3,
+        "32": 9,
+        "34": 25,
+        "36": 15,
+        "38": 0,
+        "40": 5,
+        "42": 0,
+        "44": 59,
+        "46": 43,
+        "48": 63
+      }
+    },
+    {
+      "number": 22,
+      "mapping": {
+        "2": 19,
+        "4": 0,
+        "6": 51,
+        "8": 23,
+        "10": 13,
+        "12": 0,
+        "14": 13,
+        "16": 13,
+        "18": 37,
+        "20": 53,
+        "22": 0,
+        "24": 15,
+        "26": 0,
+        "28": 3,
+        "30": 5,
+        "32": 31,
+        "34": 25,
+        "36": 13,
+        "38": 0,
+        "40": 49,
+        "42": 0,
+        "44": 59,
+        "46": 43,
+        "48": 63
+      }
+    },
+    {
+      "number": 24,
+      "mapping": {
+        "2": 53,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 45,
+        "12": 0,
+        "14": 11,
+        "16": 1,
+        "18": 53,
+        "20": 7,
+        "22": 0,
+        "24": 7,
+        "26": 0,
+        "28": 53,
+        "30": 3,
+        "32": 45,
+        "34": 53,
+        "36": 15,
+        "38": 0,
+        "40": 21,
+        "42": 0,
+        "44": 7,
+        "46": 41,
+        "48": 63
+      }
+    },
+    {
+      "number": 26,
+      "mapping": {
+        "2": 5,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 11,
+        "16": 57,
+        "18": 19,
+        "20": 19,
+        "22": 0,
+        "24": 15,
+        "26": 0,
+        "28": 5,
+        "30": 3,
+        "32": 9,
+        "34": 25,
+        "36": 15,
+        "38": 0,
+        "40": 5,
+        "42": 0,
+        "44": 19,
+        "46": 43,
+        "48": 63
+      }
+    },
+    {
+      "number": 28,
+      "mapping": {
+        "2": 7,
+        "4": 0,
+        "6": 51,
+        "8": 53,
+        "10": 3,
+        "12": 0,
+        "14": 11,
+        "16": 23,
+        "18": 53,
+        "20": 23,
+        "22": 0,
+        "24": 53,
+        "26": 0,
+        "28": 19,
+        "30": 31,
+        "32": 9,
+        "34": 25,
+        "36": 31,
+        "38": 0,
+        "40": 41,
+        "42": 0,
+        "44": 59,
+        "46": 29,
+        "48": 63
+      }
+    },
+    {
+      "number": 30,
+      "mapping": {
+        "2": 49,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 11,
+        "16": 57,
+        "18": 37,
+        "20": 29,
+        "22": 0,
+        "24": 15,
+        "26": 0,
+        "28": 3,
+        "30": 27,
+        "32": 27,
+        "34": 25,
+        "36": 15,
+        "38": 0,
+        "40": 5,
+        "42": 0,
+        "44": 59,
+        "46": 27,
+        "48": 63
+      }
+    },
+    {
+      "number": 32,
+      "mapping": {
+        "2": 53,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 53,
+        "16": 53,
+        "18": 13,
+        "20": 29,
+        "22": 0,
+        "24": 45,
+        "26": 0,
+        "28": 53,
+        "30": 3,
+        "32": 31,
+        "34": 25,
+        "36": 53,
+        "38": 0,
+        "40": 31,
+        "42": 0,
+        "44": 59,
+        "46": 43,
+        "48": 53
+      }
+    },
+    {
+      "number": 34,
+      "mapping": {
+        "2": 5,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 11,
+        "16": 1,
+        "18": 37,
+        "20": 29,
+        "22": 0,
+        "24": 15,
+        "26": 0,
+        "28": 17,
+        "30": 3,
+        "32": 17,
+        "34": 25,
+        "36": 41,
+        "38": 0,
+        "40": 41,
+        "42": 0,
+        "44": 59,
+        "46": 27,
+        "48": 17
+      }
+    },
+    {
+      "number": 36,
+      "mapping": {
+        "2": 5,
+        "4": 0,
+        "6": 7,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 11,
+        "16": 1,
+        "18": 7,
+        "20": 7,
+        "22": 0,
+        "24": 15,
+        "26": 0,
+        "28": 7,
+        "30": 27,
+        "32": 9,
+        "34": 7,
+        "36": 41,
+        "38": 0,
+        "40": 7,
+        "42": 0,
+        "44": 59,
+        "46": 7,
+        "48": 63
+      }
+    },
+    {
+      "number": 38,
+      "mapping": {
+        "2": 31,
+        "4": 0,
+        "6": 51,
+        "8": 53,
+        "10": 19,
+        "12": 0,
+        "14": 7,
+        "16": 57,
+        "18": 13,
+        "20": 29,
+        "22": 0,
+        "24": 19,
+        "26": 0,
+        "28": 5,
+        "30": 5,
+        "32": 45,
+        "34": 25,
+        "36": 31,
+        "38": 0,
+        "40": 5,
+        "42": 0,
+        "44": 59,
+        "46": 43,
+        "48": 63
+      }
+    },
+    {
+      "number": 40,
+      "mapping": {
+        "2": 49,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 49,
+        "16": 23,
+        "18": 23,
+        "20": 53,
+        "22": 0,
+        "24": 23,
+        "26": 0,
+        "28": 3,
+        "30": 5,
+        "32": 9,
+        "34": 25,
+        "36": 41,
+        "38": 0,
+        "40": 5,
+        "42": 0,
+        "44": 59,
+        "46": 43,
+        "48": 63
+      }
+    },
+    {
+      "number": 42,
+      "mapping": {
+        "2": 19,
+        "4": 0,
+        "6": 51,
+        "8": 13,
+        "10": 13,
+        "12": 0,
+        "14": 19,
+        "16": 57,
+        "18": 19,
+        "20": 31,
+        "22": 0,
+        "24": 13,
+        "26": 0,
+        "28": 13,
+        "30": 5,
+        "32": 9,
+        "34": 41,
+        "36": 13,
+        "38": 0,
+        "40": 49,
+        "42": 0,
+        "44": 13,
+        "46": 27,
+        "48": 63
+      }
+    },
+    {
+      "number": 44,
+      "mapping": {
+        "2": 5,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 45,
+        "12": 0,
+        "14": 31,
+        "16": 57,
+        "18": 7,
+        "20": 53,
+        "22": 0,
+        "24": 31,
+        "26": 0,
+        "28": 31,
+        "30": 31,
+        "32": 45,
+        "34": 13,
+        "36": 53,
+        "38": 0,
+        "40": 31,
+        "42": 0,
+        "44": 59,
+        "46": 27,
+        "48": 63
+      }
+    },
+    {
+      "number": 46,
+      "mapping": {
+        "2": 5,
+        "4": 0,
+        "6": 51,
+        "8": 33,
+        "10": 3,
+        "12": 0,
+        "14": 11,
+        "16": 1,
+        "18": 37,
+        "20": 29,
+        "22": 0,
+        "24": 15,
+        "26": 0,
+        "28": 3,
+        "30": 15,
+        "32": 9,
+        "34": 25,
+        "36": 15,
+        "38": 0,
+        "40": 5,
+        "42": 0,
+        "44": 59,
+        "46": 43,
+        "48": 63
+      }
+    },
+    {
+      "number": 48,
+      "mapping": {
+        "2": 5,
+        "4": 0,
+        "6": 51,
+        "8": 31,
+        "10": 45,
+        "12": 0,
+        "14": 49,
+        "16": 57,
+        "18": 31,
+        "20": 19,
+        "22": 0,
+        "24": 31,
+        "26": 0,
+        "28": 31,
+        "30": 31,
+        "32": 9,
+        "34": 25,
+        "36": 31,
+        "38": 0,
+        "40": 13,
+        "42": 0,
+        "44": 59,
+        "46": 53,
+        "48": 63
+      }
+    },
+    {
+      "number": 50,
+      "mapping": {
+        "50": 45,
+        "52": 23,
+        "54": 9,
+        "56": 53,
+        "58": 41,
+        "60": 51,
+        "62": 19,
+        "64": 19
+      }
+    },
+    {
+      "number": 52,
+      "mapping": {
+        "50": 21,
+        "52": 57,
+        "54": 9,
+        "56": 57,
+        "58": 5,
+        "60": 51,
+        "62": 57,
+        "64": 55
+      }
+    },
+    {
+      "number": 54,
+      "mapping": {
+        "50": 53,
+        "52": 33,
+        "54": 45,
+        "56": 17,
+        "58": 35,
+        "60": 51,
+        "62": 35,
+        "64": 3
+      }
+    },
+    {
+      "number": 56,
+      "mapping": {
+        "50": 39,
+        "52": 57,
+        "54": 9,
+        "56": 45,
+        "58": 55,
+        "60": 61,
+        "62": 57,
+        "64": 3
+      }
+    },
+    {
+      "number": 58,
+      "mapping": {
+        "50": 39,
+        "52": 33,
+        "54": 55,
+        "56": 47,
+        "58": 5,
+        "60": 13,
+        "62": 57,
+        "64": 55
+      }
+    },
+    {
+      "number": 60,
+      "mapping": {
+        "50": 13,
+        "52": 33,
+        "54": 13,
+        "56": 57,
+        "58": 5,
+        "60": 51,
+        "62": 57,
+        "64": 47
+      }
+    },
+    {
+      "number": 62,
+      "mapping": {
+        "50": 39,
+        "52": 57,
+        "54": 55,
+        "56": 57,
+        "58": 55,
+        "60": 61,
+        "62": 57,
+        "64": 55
+      }
+    },
+    {
+      "number": 64,
+      "mapping": {
+        "50": 7,
+        "52": 35,
+        "54": 53,
+        "56": 45,
+        "58": 55,
+        "60": 61,
+        "62": 57,
+        "64": 3
+      }
+    }
   ]
 }

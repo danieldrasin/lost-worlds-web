@@ -1,12 +1,14 @@
 /**
  * Picture Page Component
  *
- * Displays the combat result picture page with placeholder art.
- * Replace the placeholder generation with actual images when available.
+ * Displays the combat result picture page with support for B&W and color images.
+ * Includes a toggle to switch between image styles when both are available.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import type { PicturePageResult } from '../../domain/types';
+
+type ImageStyle = 'bw' | 'color';
 
 interface PicturePageProps {
   result: PicturePageResult;
@@ -83,16 +85,59 @@ function generatePlaceholderSVG(title: string, damage: number | null, isExtended
 }
 
 export const PicturePage: React.FC<PicturePageProps> = ({ result, characterName, damage }) => {
-  const imageUrl = result.imageUrl || generatePlaceholderSVG(
-    result.title,
-    result.damage,
-    result.isExtendedRange
-  );
+  // Determine if we have both image styles available
+  const hasBothStyles = !!(result.imageUrlBW && result.imageUrlColor);
+
+  // State for toggling between B&W and color
+  const [imageStyle, setImageStyle] = useState<ImageStyle>('color');
+
+  // Determine which image URL to use
+  const getImageUrl = (): string => {
+    if (hasBothStyles) {
+      return imageStyle === 'bw' ? result.imageUrlBW! : result.imageUrlColor!;
+    }
+    // Fall back to whatever is available
+    if (result.imageUrlColor) return result.imageUrlColor;
+    if (result.imageUrlBW) return result.imageUrlBW;
+    if (result.imageUrl) return result.imageUrl;
+    // No image available, use placeholder
+    return generatePlaceholderSVG(result.title, result.damage, result.isExtendedRange);
+  };
+
+  const imageUrl = getImageUrl();
 
   return (
     <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
-      <div className="p-2 bg-gray-700 text-center">
-        <span className="text-white font-bold text-sm">{characterName}</span>
+      <div className="p-2 bg-gray-700 text-center flex items-center justify-between">
+        <span className="text-white font-bold text-sm flex-1">{characterName}</span>
+
+        {/* B&W / Color Toggle - only show when both styles available */}
+        {hasBothStyles && (
+          <div className="flex gap-1 ml-2">
+            <button
+              onClick={() => setImageStyle('bw')}
+              className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                imageStyle === 'bw'
+                  ? 'bg-gray-500 text-white'
+                  : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+              }`}
+              title="Black & White"
+            >
+              B&W
+            </button>
+            <button
+              onClick={() => setImageStyle('color')}
+              className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                imageStyle === 'color'
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+              }`}
+              title="Color"
+            >
+              Color
+            </button>
+          </div>
+        )}
       </div>
       <img
         src={imageUrl}

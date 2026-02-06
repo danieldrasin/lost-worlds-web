@@ -104,6 +104,8 @@ function createBook(definition: CharacterDefinition): Book {
       restriction: pageDef.restriction,
       effects: pageDef.effects || [],
       imageUrl: pageDef.imageUrl,
+      imageUrlBW: pageDef.imageUrlBW,
+      imageUrlColor: pageDef.imageUrlColor,
     });
   }
 
