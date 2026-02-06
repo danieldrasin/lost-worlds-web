@@ -87,6 +87,7 @@ export const MenuView: React.FC = () => {
           setShowMultiplayerLobby(false);
           setInitialRoomCode(undefined); // Clear auto-join code on back
         }}
+        onCharacterChange={(charId) => setPlayer1Char(charId)} // Update selected character when guest chooses
         initialRoomCode={initialRoomCode}
       />
     );
@@ -99,7 +100,7 @@ export const MenuView: React.FC = () => {
           Lost Worlds
         </h1>
         <p className="text-center text-gray-600 mb-8">
-          Combat Book Game
+          Combat Book Game — Digital Edition
         </p>
 
         {error && (
