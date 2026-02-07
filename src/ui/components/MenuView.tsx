@@ -267,14 +267,16 @@ export const MenuView: React.FC = () => {
                 {gameMode === 'online' ? 'Find Opponent' : 'Start Battle!'}
               </button>
 
-              {/* Invite button - shown for all modes as an alternative */}
-              <button
-                onClick={() => setShowInviteView(true)}
-                className="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg
-                         font-medium hover:from-purple-700 hover:to-purple-800 transition-all shadow"
-              >
-                📧 Invite a Friend via Email
-              </button>
+              {/* Invite button - only for online mode */}
+              {gameMode === 'online' && (
+                <button
+                  onClick={() => setShowInviteView(true)}
+                  className="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg
+                           font-medium hover:from-purple-700 hover:to-purple-800 transition-all shadow"
+                >
+                  Invite a Friend
+                </button>
+              )}
             </div>
 
             {/* Character Info */}
