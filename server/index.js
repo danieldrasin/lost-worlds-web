@@ -16,9 +16,9 @@ import crypto from 'crypto';
 import {
   sendInvite,
   sendReadyNotification,
-  createTelegramLinkToken,
+  createConnectToken,
+  getConnectTokenStatus,
   handleTelegramUpdate,
-  getTelegramLinkStatus,
   registerTelegramWebhook,
 } from './services/notifications.js';
 
@@ -163,9 +163,6 @@ app.post('/api/invites/create', async (req, res) => {
   if (!hostCharacterId) {
     return res.status(400).json({ success: false, error: 'Character selection required' });
   }
-  if (!guestEmail && !guestTelegramChatId) {
-    return res.status(400).json({ success: false, error: "Opponent's email is required" });
-  }
 
   const roomCode = generateRoomCode();
   const hostToken = generateToken();
@@ -195,8 +192,11 @@ app.post('/api/invites/create', async (req, res) => {
 
   rooms.set(roomCode, room);
 
+  const FRONTEND = process.env.FRONTEND_URL || 'https://lost-worlds-web.vercel.app';
+  const joinUrl = `${FRONTEND}?room=${roomCode}&invite=true`;
+
   try {
-    // Send invite to guest
+    // Send invite to guest (email only — WhatsApp is click-to-send on client)
     const notifResults = await sendInvite(room);
     console.log(`Invite created: room=${roomCode}, notifications:`, notifResults);
 
@@ -204,6 +204,7 @@ app.post('/api/invites/create', async (req, res) => {
       success: true,
       roomCode,
       hostToken,
+      joinUrl,  // Client uses this for WhatsApp click-to-send
     });
   } catch (err) {
     console.error('Failed to send invite:', err);
@@ -367,43 +368,34 @@ app.get('/api/invites/status/:roomCode', (req, res) => {
 });
 
 // ============================================
-// HTTP Endpoints - Telegram Bot
+// HTTP Endpoints - Telegram One-Time Connect
 // ============================================
 
 /**
- * Generate a Telegram connection link
+ * Generate a one-time Telegram connect token + t.me URL.
+ * User clicks the URL, taps /start in Telegram, and their chatId
+ * is captured. Client polls /api/telegram/connect/status/:token
+ * to retrieve it, then saves it to localStorage for reuse.
  */
-app.post('/api/telegram/link', (req, res) => {
-  const { roomCode, role } = req.body;
-  const link = createTelegramLinkToken(roomCode || '', role || '');
+app.post('/api/telegram/connect', (req, res) => {
+  const link = createConnectToken();
   res.json({ success: true, ...link });
 });
 
 /**
- * Check if Telegram link has been claimed
+ * Check if a Telegram connect token has been claimed
  */
-app.get('/api/telegram/status/:token', (req, res) => {
-  const status = getTelegramLinkStatus(req.params.token);
+app.get('/api/telegram/connect/status/:token', (req, res) => {
+  const status = getConnectTokenStatus(req.params.token);
   res.json(status);
 });
 
 /**
- * Telegram webhook - receives updates when users message the bot
+ * Telegram webhook - receives /start commands from Telegram Bot API
  */
 app.post('/api/telegram/webhook', (req, res) => {
   try {
-    const result = handleTelegramUpdate(req.body);
-    if (result) {
-      // If this was a /start with a token, update the room's contact info
-      const room = rooms.get(result.roomCode?.toUpperCase());
-      if (room) {
-        if (result.role === 'host') {
-          room.hostTelegramChatId = result.chatId.toString();
-        } else if (result.role === 'guest') {
-          room.guestTelegramChatId = result.chatId.toString();
-        }
-      }
-    }
+    handleTelegramUpdate(req.body);
   } catch (err) {
     console.error('Telegram webhook error:', err);
   }

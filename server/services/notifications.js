@@ -1,9 +1,17 @@
 /**
  * Notification Service
  *
- * Sends emails via Resend and Telegram messages via Bot API.
- * Used for game invites and "your opponent is ready" notifications.
+ * Sends notifications via Email (Resend) and Telegram (Bot API).
+ * Used for:
+ *   Step 1: Sending game invites to the challenged player (email only for now)
+ *   Step 3: Notifying the challenger that their challenge was accepted (email or Telegram)
+ *
+ * Telegram requires a one-time bot connect: user clicks t.me/BotName, taps /start,
+ * and their chat_id is returned to the client via webhook. After that, their chat_id
+ * is saved in localStorage and reused for all future notifications.
  */
+
+import crypto from 'crypto';
 
 const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'https://lost-worlds-web.vercel.app';
@@ -56,7 +64,8 @@ async function sendEmail(to, subject, html) {
 // ============================================
 
 /**
- * Send a Telegram message to a chat ID
+ * Send a Telegram message to a numeric chat ID.
+ * The user must have previously /started the bot for this to work.
  */
 async function sendTelegram(chatId, text, parseMode = 'HTML') {
   const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -125,7 +134,7 @@ function inviteEmailHtml(joinUrl, roomCode) {
 </html>`;
 }
 
-function readyNotificationEmailHtml(playUrl, roomCode, opponentReady) {
+function readyNotificationEmailHtml(playUrl, roomCode) {
   return `
 <!DOCTYPE html>
 <html>
@@ -157,13 +166,13 @@ function readyNotificationEmailHtml(playUrl, roomCode, opponentReady) {
 // ============================================
 
 /**
- * Send game invite to guest (email + optional Telegram)
+ * Send game invite to the challenged player (Step 1).
+ * Currently email-only. WhatsApp uses click-to-send on the client side.
  */
 export async function sendInvite(room) {
   const joinUrl = `${FRONTEND_URL}?room=${room.id}&invite=true`;
   const results = { email: null, telegram: null };
 
-  // Email invite
   if (room.guestEmail) {
     results.email = await sendEmail(
       room.guestEmail,
@@ -172,22 +181,14 @@ export async function sendInvite(room) {
     );
   }
 
-  // Telegram invite (only if guest has connected to bot)
-  if (room.guestTelegramChatId) {
-    results.telegram = await sendTelegram(
-      room.guestTelegramChatId,
-      `<b>You've been challenged to battle!</b>\n\n` +
-      `Room: <code>${room.id}</code>\n\n` +
-      `<a href="${joinUrl}">Join the Battle</a>`
-    );
-  }
-
   return results;
 }
 
 /**
- * Notify a player that their opponent is ready
- * @param {object} contactInfo - { email, telegramChatId }
+ * Notify a player that their opponent is ready (Step 3).
+ * Supports email and Telegram (if they've connected to the bot).
+ *
+ * @param {object} contactInfo - { email?, telegramChatId? }
  * @param {string} playUrl - URL for the player to return to the game
  * @param {string} roomCode - The room code
  */
@@ -215,24 +216,23 @@ export async function sendReadyNotification(contactInfo, playUrl, roomCode) {
 }
 
 // ============================================
-// Telegram Bot Setup
+// Telegram One-Time Bot Connect
 // ============================================
 
-/** @type {Map<string, {resolve: Function, roomCode: string, role: string}>} */
-const telegramLinkTokens = new Map();
+// Map of connect tokens -> { chatId, createdAt }
+// Used for the one-time "Connect Telegram" flow.
+// Client generates a token, user clicks t.me/BotName?start=TOKEN,
+// bot receives /start TOKEN via webhook, stores chatId here,
+// client polls to retrieve it.
+const connectTokens = new Map();
 
 /**
- * Generate a Telegram link token and return the t.me URL
- * The client polls /api/telegram/status/:token to check if connected
+ * Generate a one-time connect token for Telegram bot linking.
+ * Returns the token and the t.me URL for the user to click.
  */
-export function createTelegramLinkToken(roomCode, role) {
-  const token = Math.random().toString(36).substring(2, 15);
-  telegramLinkTokens.set(token, {
-    roomCode,
-    role,
-    chatId: null,
-    createdAt: Date.now(),
-  });
+export function createConnectToken() {
+  const token = crypto.randomBytes(16).toString('hex');
+  connectTokens.set(token, { chatId: null, createdAt: Date.now() });
 
   const botUsername = process.env.TELEGRAM_BOT_USERNAME || 'LostWorldsCombatBot';
   return {
@@ -242,49 +242,10 @@ export function createTelegramLinkToken(roomCode, role) {
 }
 
 /**
- * Handle incoming Telegram webhook update (when user /starts the bot)
+ * Check if a connect token has been claimed (user tapped /start in Telegram)
  */
-export function handleTelegramUpdate(update) {
-  if (!update.message || !update.message.text) return null;
-
-  const text = update.message.text;
-  const chatId = update.message.chat.id;
-  const firstName = update.message.from?.first_name || 'Player';
-
-  // Handle /start TOKEN
-  if (text.startsWith('/start ')) {
-    const token = text.split(' ')[1];
-    const linkData = telegramLinkTokens.get(token);
-
-    if (linkData) {
-      linkData.chatId = chatId;
-      console.log(`Telegram connected: token=${token}, chatId=${chatId}, name=${firstName}`);
-
-      // Send confirmation
-      sendTelegram(chatId,
-        `Connected! You'll receive notifications for Lost Worlds battles here.\n\n` +
-        `You can close this chat and return to the game.`
-      );
-
-      return { token, chatId, roomCode: linkData.roomCode, role: linkData.role };
-    } else {
-      // Generic /start (no token) - bot intro
-      sendTelegram(chatId,
-        `<b>Lost Worlds Combat Bot</b>\n\n` +
-        `I'll send you notifications when your opponent is ready to battle!\n\n` +
-        `To connect, use the "Connect Telegram" button in the game.`
-      );
-    }
-  }
-
-  return null;
-}
-
-/**
- * Check if a Telegram link token has been claimed (user clicked /start)
- */
-export function getTelegramLinkStatus(token) {
-  const data = telegramLinkTokens.get(token);
+export function getConnectTokenStatus(token) {
+  const data = connectTokens.get(token);
   if (!data) return { found: false };
   return {
     found: true,
@@ -294,7 +255,48 @@ export function getTelegramLinkStatus(token) {
 }
 
 /**
- * Register the Telegram webhook URL with Telegram's API
+ * Handle incoming Telegram webhook update.
+ * Processes /start TOKEN commands for one-time bot connect.
+ */
+export function handleTelegramUpdate(update) {
+  if (!update.message || !update.message.text) return null;
+
+  const text = update.message.text;
+  const chatId = update.message.chat.id;
+  const firstName = update.message.from?.first_name || 'Player';
+
+  if (text.startsWith('/start ')) {
+    const token = text.split(' ')[1];
+    const tokenData = connectTokens.get(token);
+
+    if (tokenData) {
+      tokenData.chatId = chatId;
+      console.log(`Telegram connected: token=${token}, chatId=${chatId}, name=${firstName}`);
+
+      sendTelegram(chatId,
+        `Connected! You'll receive Lost Worlds battle notifications here.\n\n` +
+        `You can close this chat and return to the game.`
+      );
+
+      return { token, chatId };
+    }
+  }
+
+  // Generic /start (no token or invalid token) — bot intro
+  if (text === '/start') {
+    sendTelegram(chatId,
+      `<b>Lost Worlds Combat Bot</b>\n\n` +
+      `I'll send you notifications when your opponent is ready to battle!\n\n` +
+      `To connect, use the "Telegram" option in the game's invite screen.`
+    );
+  }
+
+  return null;
+}
+
+/**
+ * Register the Telegram webhook URL with Telegram's API.
+ * Called once at server startup.
  */
 export async function registerTelegramWebhook(webhookUrl) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -312,7 +314,7 @@ export async function registerTelegramWebhook(webhookUrl) {
     const data = await response.json();
     console.log('Telegram webhook registration:', data);
 
-    // Also get bot info to confirm username
+    // Get bot info to confirm username
     const meResponse = await fetch(`${TELEGRAM_API}/getMe`);
     const meData = await meResponse.json();
     if (meData.ok) {
@@ -324,12 +326,12 @@ export async function registerTelegramWebhook(webhookUrl) {
   }
 }
 
-// Clean up expired link tokens periodically
+// Clean up expired connect tokens periodically (1 hour TTL)
 setInterval(() => {
   const now = Date.now();
-  for (const [token, data] of telegramLinkTokens) {
-    if (now - data.createdAt > 30 * 60 * 1000) { // 30 min
-      telegramLinkTokens.delete(token);
+  for (const [token, data] of connectTokens) {
+    if (now - data.createdAt > 60 * 60 * 1000) {
+      connectTokens.delete(token);
     }
   }
-}, 5 * 60 * 1000);
+}, 10 * 60 * 1000);

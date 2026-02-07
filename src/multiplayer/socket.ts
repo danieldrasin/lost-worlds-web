@@ -189,11 +189,11 @@ export async function createInvite(params: {
   hostEmail?: string;
   hostTelegramChatId?: string;
   guestEmail?: string;
-  guestTelegramChatId?: string;
 }): Promise<{
   success: boolean;
   roomCode?: string;
   hostToken?: string;
+  joinUrl?: string;
   error?: string;
 }> {
   try {
@@ -264,18 +264,18 @@ export async function reclaimRoom(params: {
 }
 
 /**
- * Get a Telegram connection link
+ * Generate a one-time Telegram connect token.
+ * Returns a t.me URL for the user to click.
  */
-export async function getTelegramLink(roomCode: string, role: string): Promise<{
+export async function telegramConnect(): Promise<{
   success: boolean;
   token?: string;
   url?: string;
 }> {
   try {
-    const response = await fetch(`${SERVER_URL}/api/telegram/link`, {
+    const response = await fetch(`${SERVER_URL}/api/telegram/connect`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ roomCode, role }),
     });
     return await response.json();
   } catch (err) {
@@ -284,19 +284,30 @@ export async function getTelegramLink(roomCode: string, role: string): Promise<{
 }
 
 /**
- * Check Telegram link status (has user connected?)
+ * Check if Telegram connect token has been claimed (user tapped /start)
  */
-export async function checkTelegramLink(token: string): Promise<{
+export async function checkTelegramConnect(token: string): Promise<{
   found: boolean;
   connected?: boolean;
   chatId?: string;
 }> {
   try {
-    const response = await fetch(`${SERVER_URL}/api/telegram/status/${token}`);
+    const response = await fetch(`${SERVER_URL}/api/telegram/connect/status/${token}`);
     return await response.json();
   } catch (err) {
     return { found: false };
   }
+}
+
+/**
+ * Build a WhatsApp click-to-send URL.
+ * The challenger clicks this to send the invite message via WhatsApp.
+ */
+export function buildWhatsAppUrl(phoneNumber: string, joinUrl: string): string {
+  const message = `You've been challenged to a Lost Worlds battle! Click here to join: ${joinUrl}`;
+  // Strip non-digits from phone number for wa.me link
+  const cleanNumber = phoneNumber.replace(/\D/g, '');
+  return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
 }
 
 /**
@@ -327,7 +338,6 @@ const PREFS_KEY = 'lostworlds_notification_prefs';
 export interface NotificationPrefs {
   email?: string;
   telegramChatId?: string;
-  preferredMethod?: 'email' | 'telegram' | 'both';
 }
 
 export function loadNotificationPrefs(): NotificationPrefs {
