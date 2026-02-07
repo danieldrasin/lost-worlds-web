@@ -337,6 +337,24 @@ export function joinRoomWithToken(roomCode: string, characterId: string, token: 
   });
 }
 
+/**
+ * Rejoin a room after socket reconnection.
+ * The server associates the new socket.id with the room using the token.
+ */
+export function rejoinRoom(roomCode: string, token: string): Promise<{
+  success: boolean;
+  role?: string;
+  error?: string;
+}> {
+  const sock = getSocket();
+  if (!sock) {
+    return Promise.resolve({ success: false, error: 'Not connected' });
+  }
+  return new Promise((resolve) => {
+    sock.emit('rejoin-room', { roomCode, token }, resolve);
+  });
+}
+
 // ============================================
 // Notification Preferences (localStorage)
 // ============================================

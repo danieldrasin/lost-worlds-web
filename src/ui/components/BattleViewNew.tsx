@@ -33,24 +33,36 @@ export const BattleViewNew: React.FC = () => {
     applyMultiplayerExchange,
     resetGame,
     mode,
+    multiplayerRoomCode,
+    multiplayerToken,
+    error: storeError,
   } = useGameStore();
 
   const [mobileTab, setMobileTab] = useState<MobileTab>('view');
   const [isConnected, setIsConnected] = useState(true);
 
-  // Track socket connection status for multiplayer
+  // Track socket connection status + auto-rejoin on reconnect
   useEffect(() => {
     if (!isMultiplayer) return;
 
     const sock = socket.getSocket();
     if (sock) {
-      // Set initial state
       setIsConnected(sock.connected);
 
-      // Listen for connection changes
-      const handleConnect = () => {
+      const handleConnect = async () => {
         console.log('Socket reconnected');
         setIsConnected(true);
+
+        // Auto-rejoin room if we have credentials
+        if (multiplayerRoomCode && multiplayerToken) {
+          console.log('Auto-rejoining room after reconnect:', multiplayerRoomCode);
+          const result = await socket.rejoinRoom(multiplayerRoomCode, multiplayerToken);
+          if (result.success) {
+            console.log('Rejoined room successfully as', result.role);
+          } else {
+            console.error('Failed to rejoin room:', result.error);
+          }
+        }
       };
       const handleDisconnect = () => {
         console.log('Socket disconnected');
@@ -65,29 +77,35 @@ export const BattleViewNew: React.FC = () => {
         sock.off('disconnect', handleDisconnect);
       };
     }
-  }, [isMultiplayer]);
+  }, [isMultiplayer, multiplayerRoomCode, multiplayerToken]);
 
   // Set up multiplayer event listeners
   useEffect(() => {
     if (!isMultiplayer) return;
 
+    const sock = socket.getSocket();
+    if (!sock) return;
+
     // Opponent has submitted their move (but we don't see it yet)
-    socket.onOpponentReady(() => {
+    const handleOpponentReady = () => {
       console.log('Opponent is ready!');
       setOpponentReady(true);
-    });
+    };
 
     // Both moves revealed - resolve the exchange
-    socket.onMovesRevealed(({ hostMove, guestMove }) => {
+    const handleMovesRevealed = ({ hostMove, guestMove }: { hostMove: any; guestMove: any }) => {
       console.log('Moves revealed:', { hostMove, guestMove });
-      // I'm player1 in my view, so my move depends on whether I'm host
       const myMove = isHost ? hostMove : guestMove;
       const oppMove = isHost ? guestMove : hostMove;
       applyMultiplayerExchange(myMove, oppMove);
-    });
+    };
+
+    sock.on('opponent-ready', handleOpponentReady);
+    sock.on('moves-revealed', handleMovesRevealed);
 
     return () => {
-      // Clean up listeners when component unmounts or multiplayer changes
+      sock.off('opponent-ready', handleOpponentReady);
+      sock.off('moves-revealed', handleMovesRevealed);
     };
   }, [isMultiplayer, isHost, setOpponentReady, applyMultiplayerExchange]);
 
@@ -171,6 +189,23 @@ export const BattleViewNew: React.FC = () => {
           winner={battle.winner === 'player1' ? myCharacter.name : opponent.name}
           onPlayAgain={resetGame}
         />
+      )}
+
+      {/* Exchange error display */}
+      {storeError && (
+        <div className="mx-4 mt-2 px-4 py-2 bg-red-900/80 border border-red-600 text-red-200 rounded-lg text-sm text-center">
+          {storeError}
+        </div>
+      )}
+
+      {/* Debug info (multiplayer only - tiny bar at top) */}
+      {isMultiplayer && (
+        <div className="mx-4 mt-1 px-3 py-1 bg-gray-900/80 rounded text-[10px] text-gray-500 flex justify-between">
+          <span>Room: {multiplayerRoomCode || '?'} | Role: {isHost ? 'host' : 'guest'} | Round: {battle.round}</span>
+          <span className={isConnected ? 'text-green-500' : 'text-red-500'}>
+            {isConnected ? 'connected' : 'disconnected'}
+          </span>
+        </div>
       )}
 
       {/* Desktop Layout (lg and up) */}

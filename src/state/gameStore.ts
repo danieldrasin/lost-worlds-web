@@ -23,6 +23,8 @@ interface GameState {
   isHost: boolean;
   opponentReady: boolean;
   waitingForOpponent: boolean;
+  multiplayerRoomCode: string | null;
+  multiplayerToken: string | null;
 
   // Selection state
   player1Selection: Maneuver | null;
@@ -35,7 +37,7 @@ interface GameState {
   // Actions
   initialize: () => Promise<void>;
   startBattle: (player1Id: string, player2Id: string, vsAI: boolean) => Promise<void>;
-  startMultiplayerBattle: (myCharId: string, oppCharId: string, isHost: boolean) => Promise<void>;
+  startMultiplayerBattle: (myCharId: string, oppCharId: string, isHost: boolean, roomCode?: string, token?: string) => Promise<void>;
   selectManeuver: (player: 'player1' | 'player2', maneuver: Maneuver) => void;
   executeExchange: () => void;
   setWaitingForOpponent: (waiting: boolean) => void;
@@ -57,6 +59,8 @@ export const useGameStore = create<GameState>((set, get) => ({
   isHost: false,
   opponentReady: false,
   waitingForOpponent: false,
+  multiplayerRoomCode: null,
+  multiplayerToken: null,
   player1Selection: null,
   player2Selection: null,
   isLoading: false,
@@ -111,7 +115,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
 
   // Start a multiplayer battle
-  startMultiplayerBattle: async (myCharId: string, oppCharId: string, isHost: boolean) => {
+  startMultiplayerBattle: async (myCharId: string, oppCharId: string, isHost: boolean, roomCode?: string, token?: string) => {
     set({ isLoading: true, error: null });
     try {
       const [myChar, oppChar] = await Promise.all([
@@ -136,6 +140,8 @@ export const useGameStore = create<GameState>((set, get) => ({
         isVsAI: false,
         isMultiplayer: true,
         isHost,
+        multiplayerRoomCode: roomCode || null,
+        multiplayerToken: token || null,
         opponentReady: false,
         waitingForOpponent: false,
         mode: 'battle',
@@ -222,7 +228,12 @@ export const useGameStore = create<GameState>((set, get) => ({
         mode: newBattle.status === 'GAME_OVER' ? 'gameover' : 'battle',
       });
     } catch (err) {
-      set({ error: `Failed to resolve exchange: ${err}` });
+      console.error('Exchange resolution failed:', err, { myMove, oppMove });
+      set({
+        error: `Exchange error: ${err}`,
+        waitingForOpponent: false,
+        opponentReady: false,
+      });
     }
   },
 
@@ -235,6 +246,8 @@ export const useGameStore = create<GameState>((set, get) => ({
       isHost: false,
       opponentReady: false,
       waitingForOpponent: false,
+      multiplayerRoomCode: null,
+      multiplayerToken: null,
       player1Selection: null,
       player2Selection: null,
       error: null,

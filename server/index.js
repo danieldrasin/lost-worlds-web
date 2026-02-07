@@ -84,6 +84,19 @@ const rooms = new Map();
 const playerRooms = new Map();
 
 /**
+ * Structured logging for debugging multiplayer issues.
+ * Each log entry has a timestamp, event, and contextual data.
+ */
+function gameLog(event, data = {}) {
+  const entry = {
+    t: new Date().toISOString(),
+    event,
+    ...data,
+  };
+  console.log(`[GAME] ${JSON.stringify(entry)}`);
+}
+
+/**
  * Generate a short, readable room code
  */
 function generateRoomCode() {
@@ -408,7 +421,41 @@ app.post('/api/telegram/webhook', (req, res) => {
 // ============================================
 
 io.on('connection', (socket) => {
-  console.log(`Player connected: ${socket.id}`);
+  gameLog('connect', { socketId: socket.id });
+
+  /**
+   * Rejoin a room after reconnection (client sends this when it detects reconnect)
+   */
+  socket.on('rejoin-room', ({ roomCode, token }, callback) => {
+    const room = rooms.get(roomCode?.toUpperCase());
+    if (!room) {
+      gameLog('rejoin-fail', { socketId: socket.id, room: roomCode, reason: 'room-not-found' });
+      callback({ success: false, error: 'Room not found' });
+      return;
+    }
+
+    // Identify by token
+    let role = null;
+    if (room.hostToken && token === room.hostToken) {
+      role = 'host';
+      room.host = socket.id;
+    } else if (room.guestToken && token === room.guestToken) {
+      role = 'guest';
+      room.guest = socket.id;
+    }
+
+    if (!role) {
+      gameLog('rejoin-fail', { socketId: socket.id, room: roomCode, reason: 'invalid-token' });
+      callback({ success: false, error: 'Invalid token' });
+      return;
+    }
+
+    playerRooms.set(socket.id, roomCode.toUpperCase());
+    socket.join(roomCode.toUpperCase());
+
+    gameLog('rejoin-success', { socketId: socket.id, room: roomCode, role });
+    callback({ success: true, role });
+  });
 
   /**
    * Create a new room (regular, non-invite)
@@ -468,6 +515,7 @@ io.on('connection', (socket) => {
         room.host = socket.id;
         playerRooms.set(socket.id, roomCode.toUpperCase());
         socket.join(roomCode.toUpperCase());
+        gameLog('invite-host-join', { socketId: socket.id, room: room.id, guestConnected: !!room.guest });
 
         callback({
           success: true,
@@ -495,6 +543,7 @@ io.on('connection', (socket) => {
         if (characterId) room.guestCharacter = characterId;
         playerRooms.set(socket.id, roomCode.toUpperCase());
         socket.join(roomCode.toUpperCase());
+        gameLog('invite-guest-join', { socketId: socket.id, room: room.id, hostConnected: !!room.host });
 
         callback({
           success: true,
@@ -565,23 +614,37 @@ io.on('connection', (socket) => {
   socket.on('submit-move', ({ maneuver }, callback) => {
     const roomCode = playerRooms.get(socket.id);
     if (!roomCode) {
+      gameLog('submit-move-fail', { socketId: socket.id, reason: 'not-in-room' });
       callback({ success: false, error: 'Not in a room' });
       return;
     }
 
     const room = rooms.get(roomCode);
     if (!room) {
+      gameLog('submit-move-fail', { socketId: socket.id, room: roomCode, reason: 'room-not-found' });
       callback({ success: false, error: 'Room not found' });
       return;
     }
 
     const isHost = room.host === socket.id;
+    const role = isHost ? 'host' : 'guest';
 
     if (isHost) {
       room.hostMove = maneuver;
     } else {
       room.guestMove = maneuver;
     }
+
+    gameLog('submit-move', {
+      socketId: socket.id,
+      room: roomCode,
+      role,
+      move: maneuver?.name || maneuver?.id || 'unknown',
+      hostMove: !!room.hostMove,
+      guestMove: !!room.guestMove,
+      hostSocket: room.host,
+      guestSocket: room.guest,
+    });
 
     const opponentId = isHost ? room.guest : room.host;
     if (opponentId) {
@@ -591,6 +654,12 @@ io.on('connection', (socket) => {
     callback({ success: true });
 
     if (room.hostMove && room.guestMove) {
+      gameLog('moves-revealed', {
+        room: roomCode,
+        hostMove: room.hostMove?.name || 'unknown',
+        guestMove: room.guestMove?.name || 'unknown',
+      });
+
       io.to(room.id).emit('moves-revealed', {
         hostMove: room.hostMove,
         guestMove: room.guestMove
@@ -677,15 +746,25 @@ io.on('connection', (socket) => {
 
   function handleDisconnect(socket) {
     const roomCode = playerRooms.get(socket.id);
-    if (!roomCode) return;
+    if (!roomCode) {
+      gameLog('disconnect-no-room', { socketId: socket.id });
+      return;
+    }
 
     const room = rooms.get(roomCode);
     if (!room) return;
 
-    console.log(`Player ${socket.id} disconnected from room ${roomCode}`);
-
     const isHost = room.host === socket.id;
     const opponentId = isHost ? room.guest : room.host;
+
+    gameLog('disconnect', {
+      socketId: socket.id,
+      room: roomCode,
+      role: isHost ? 'host' : 'guest',
+      isInvite: room.isInviteRoom,
+      hostMove: !!room.hostMove,
+      guestMove: !!room.guestMove,
+    });
 
     // For invite rooms, don't delete the room when host/guest disconnects
     // They can reclaim it later with their token

@@ -90,9 +90,9 @@ export const MenuView: React.FC = () => {
     }
   };
 
-  const handleMultiplayerBattleStart = (isHost: boolean, opponentCharacter: string) => {
+  const handleMultiplayerBattleStart = (isHost: boolean, opponentCharacter: string, roomCode?: string, token?: string) => {
     const { startMultiplayerBattle } = useGameStore.getState();
-    startMultiplayerBattle(player1Char, opponentCharacter, isHost);
+    startMultiplayerBattle(player1Char, opponentCharacter, isHost, roomCode, token);
     setShowMultiplayerLobby(false);
     setShowInviteView(false);
   };

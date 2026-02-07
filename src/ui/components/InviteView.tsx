@@ -19,7 +19,7 @@ interface InviteViewProps {
   availableCharacters: { id: string; name: string }[];
   selectedCharacter: string;
   onCharacterChange: (charId: string) => void;
-  onBattleStart: (isHost: boolean, opponentCharacter: string) => void;
+  onBattleStart: (isHost: boolean, opponentCharacter: string, roomCode?: string, token?: string) => void;
   onBack: () => void;
   inviteRoomCode?: string;
   reclaimToken?: string;
@@ -223,7 +223,7 @@ export const InviteView: React.FC<InviteViewProps> = ({
       socket.onBattleStart(({ hostCharacter, guestCharacter }) => {
         const isHost = result.role === 'host';
         const opponentChar = isHost ? guestCharacter : hostCharacter;
-        onBattleStart(isHost, opponentChar);
+        onBattleStart(isHost, opponentChar, inviteRoomCode, reclaimToken);
       });
 
       if (!result.opponentConnected) {
@@ -231,7 +231,7 @@ export const InviteView: React.FC<InviteViewProps> = ({
       }
 
       socket.onGuestJoined(({ guestCharacter }) => {
-        onBattleStart(true, guestCharacter);
+        onBattleStart(true, guestCharacter, inviteRoomCode, reclaimToken);
       });
     };
 
@@ -343,8 +343,9 @@ export const InviteView: React.FC<InviteViewProps> = ({
       return;
     }
 
+    const guestToken = result.guestToken!;
     socket.onBattleStart(({ hostCharacter }) => {
-      onBattleStart(false, hostCharacter);
+      onBattleStart(false, hostCharacter, roomCode, guestToken);
     });
 
     setStep('waiting');
