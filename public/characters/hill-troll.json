@@ -267,8 +267,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/swinging_high_bw.webp",
+      "imageUrlColor": "/images/hill-troll/swinging_high_color.webp"
     },
     {
       "number": 5,
@@ -294,8 +294,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/swinging_low_bw.webp",
+      "imageUrlColor": "/images/hill-troll/swinging_low_color.webp"
     },
     {
       "number": 7,
@@ -309,8 +309,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/dazed_bw.webp",
+      "imageUrlColor": "/images/hill-troll/dazed_color.webp"
     },
     {
       "number": 9,
@@ -325,8 +325,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/thrusting_high_bw.webp",
+      "imageUrlColor": "/images/hill-troll/thrusting_high_color.webp"
     },
     {
       "number": 11,
@@ -352,8 +352,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/thrusting_low_bw.webp",
+      "imageUrlColor": "/images/hill-troll/thrusting_low_color.webp"
     },
     {
       "number": 13,
@@ -368,8 +368,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/leg_wound_bw.webp",
+      "imageUrlColor": "/images/hill-troll/leg_wound_color.webp"
     },
     {
       "number": 15,
@@ -411,8 +411,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/kicked_off_balance_bw.webp",
+      "imageUrlColor": "/images/hill-troll/kicked_off_balance_color.webp"
     },
     {
       "number": 19,
@@ -427,8 +427,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/struck_off_balance_bw.webp",
+      "imageUrlColor": "/images/hill-troll/struck_off_balance_color.webp"
     },
     {
       "number": 21,
@@ -442,8 +442,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/turned_around_bw.webp",
+      "imageUrlColor": "/images/hill-troll/turned_around_color.webp"
     },
     {
       "number": 23,
@@ -457,8 +457,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/behind_you_bw.webp",
+      "imageUrlColor": "/images/hill-troll/behind_you_color.webp"
     },
     {
       "number": 25,
@@ -484,8 +484,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/kicking_bw.webp",
+      "imageUrlColor": "/images/hill-troll/kicking_color.webp"
     },
     {
       "number": 27,
@@ -531,8 +531,8 @@
           "type": "NO_EXTENDED_RANGE"
         }
       ],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/weapon_dislodged_bw.webp",
+      "imageUrlColor": "/images/hill-troll/weapon_dislodged_color.webp"
     },
     {
       "number": 29,
@@ -558,8 +558,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/ducking_bw.webp",
+      "imageUrlColor": "/images/hill-troll/ducking_color.webp"
     },
     {
       "number": 31,
@@ -574,8 +574,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/arm_wound_bw.webp",
+      "imageUrlColor": "/images/hill-troll/arm_wound_color.webp"
     },
     {
       "number": 33,
@@ -595,8 +595,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/dodging_bw.webp",
+      "imageUrlColor": "/images/hill-troll/dodging_color.webp"
     },
     {
       "number": 35,
@@ -621,8 +621,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/extended_range_body_wound_bw.webp",
+      "imageUrlColor": "/images/hill-troll/extended_range_body_wound_color.webp"
     },
     {
       "number": 37,
@@ -647,8 +647,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/jumping_up_bw.webp",
+      "imageUrlColor": "/images/hill-troll/jumping_up_color.webp"
     },
     {
       "number": 39,
@@ -674,8 +674,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/charging_bw.webp",
+      "imageUrlColor": "/images/hill-troll/charging_color.webp"
     },
     {
       "number": 41,
@@ -720,8 +720,8 @@
           "type": "RETRIEVE_WEAPON"
         }
       ],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/retrieving_weapon_bw.webp",
+      "imageUrlColor": "/images/hill-troll/retrieving_weapon_color.webp"
     },
     {
       "number": 45,
@@ -735,8 +735,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/parrying_high_bw.webp",
+      "imageUrlColor": "/images/hill-troll/parrying_high_color.webp"
     },
     {
       "number": 47,
@@ -750,8 +750,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/extended_range_leg_wound_bw.webp",
+      "imageUrlColor": "/images/hill-troll/extended_range_leg_wound_color.webp"
     },
     {
       "number": 49,
@@ -765,8 +765,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/parrying_low_bw.webp",
+      "imageUrlColor": "/images/hill-troll/parrying_low_color.webp"
     },
     {
       "number": 51,
@@ -817,8 +817,8 @@
           "pageNumber": 41
         }
       ],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/enraged_throw_bw.webp",
+      "imageUrlColor": "/images/hill-troll/enraged_throw_color.webp"
     },
     {
       "number": 53,
@@ -844,8 +844,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/body_wound_bw.webp",
+      "imageUrlColor": "/images/hill-troll/body_wound_color.webp"
     },
     {
       "number": 55,
@@ -859,8 +859,8 @@
         ]
       },
       "effects": [],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/extended_range_attacking_bw.webp",
+      "imageUrlColor": "/images/hill-troll/extended_range_attacking_color.webp"
     },
     {
       "number": 57,
@@ -880,8 +880,8 @@
           "condition": "IF_NO_DAMAGE_TAKEN"
         }
       ],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/extended_range_blocking_regenerating_bw.webp",
+      "imageUrlColor": "/images/hill-troll/extended_range_blocking_regenerating_color.webp"
     },
     {
       "number": 59,
@@ -932,8 +932,8 @@
           "pageNumber": 31
         }
       ],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/enraged_bite_bw.webp",
+      "imageUrlColor": "/images/hill-troll/enraged_bite_color.webp"
     },
     {
       "number": 61,
@@ -984,8 +984,8 @@
           "pageNumber": 41
         }
       ],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/extended_range_enraged_bw.webp",
+      "imageUrlColor": "/images/hill-troll/extended_range_enraged_color.webp"
     },
     {
       "number": 63,
@@ -1036,8 +1036,8 @@
           "pageNumber": 41
         }
       ],
-      "imageUrlBW": "/images/hill-troll/jumping_away_bw.webp",
-      "imageUrlColor": "/images/hill-troll/jumping_away_color.webp"
+      "imageUrlBW": "/images/hill-troll/enraged_grab_bw.webp",
+      "imageUrlColor": "/images/hill-troll/enraged_grab_color.webp"
     }
   ],
   "lookupPages": [

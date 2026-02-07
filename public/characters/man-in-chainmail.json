@@ -7,146 +7,1749 @@
     {
       "category": "DOWN_SWING",
       "moves": [
-        { "name": "Smash", "color": "orange", "normalPage": 24, "extendedPage": 50, "modifier": 3 }
+        {
+          "name": "Smash",
+          "color": "orange",
+          "normalPage": 24,
+          "extendedPage": 50,
+          "modifier": 3
+        }
       ]
     },
     {
       "category": "SIDE_SWING",
       "moves": [
-        { "name": "Strong", "color": "orange", "normalPage": 28, "extendedPage": 64, "modifier": 2 },
-        { "name": "High", "color": "red", "normalPage": 10, "extendedPage": 64, "modifier": 1 },
-        { "name": "Low", "color": "blue", "normalPage": 2, "extendedPage": 58, "modifier": 1 }
+        {
+          "name": "Strong",
+          "color": "orange",
+          "normalPage": 28,
+          "extendedPage": 64,
+          "modifier": 2
+        },
+        {
+          "name": "High",
+          "color": "red",
+          "normalPage": 10,
+          "extendedPage": 64,
+          "modifier": 1
+        },
+        {
+          "name": "Low",
+          "color": "blue",
+          "normalPage": 2,
+          "extendedPage": 58,
+          "modifier": 1
+        }
       ]
     },
     {
       "category": "THRUST",
       "moves": [
-        { "name": "High", "color": "red", "normalPage": 32, "extendedPage": 54, "modifier": 0 },
-        { "name": "Low", "color": "blue", "normalPage": 14, "extendedPage": 60, "modifier": 0 }
+        {
+          "name": "High",
+          "color": "red",
+          "normalPage": 32,
+          "extendedPage": 54,
+          "modifier": 0
+        },
+        {
+          "name": "Low",
+          "color": "blue",
+          "normalPage": 14,
+          "extendedPage": 60,
+          "modifier": 0
+        }
       ]
     },
     {
       "category": "FAKE",
       "moves": [
-        { "name": "High", "color": "red", "normalPage": 42, "extendedPage": 58, "modifier": 0 },
-        { "name": "Low", "color": "blue", "normalPage": 12, "extendedPage": 64, "modifier": 0 },
-        { "name": "Side Swing", "color": "blue", "normalPage": 22, "extendedPage": 54, "modifier": -1 },
-        { "name": "Thrust", "color": "red", "normalPage": 38, "extendedPage": 58, "modifier": 0 }
+        {
+          "name": "High",
+          "color": "red",
+          "normalPage": 42,
+          "extendedPage": 58,
+          "modifier": 0
+        },
+        {
+          "name": "Low",
+          "color": "blue",
+          "normalPage": 12,
+          "extendedPage": 64,
+          "modifier": 0
+        },
+        {
+          "name": "Side Swing",
+          "color": "blue",
+          "normalPage": 22,
+          "extendedPage": 54,
+          "modifier": -1
+        },
+        {
+          "name": "Thrust",
+          "color": "red",
+          "normalPage": 38,
+          "extendedPage": 58,
+          "modifier": 0
+        }
       ]
     },
     {
       "category": "PROTECTED_ATTACK",
       "moves": [
-        { "name": "Down Swing", "color": "orange", "normalPage": 44, "extendedPage": 56, "modifier": 2 },
-        { "name": "Side Swing", "color": "blue", "normalPage": 48, "extendedPage": 56, "modifier": 0 },
-        { "name": "Thrust", "color": "red", "normalPage": 6, "extendedPage": 56, "modifier": -1 }
+        {
+          "name": "Down Swing",
+          "color": "orange",
+          "normalPage": 44,
+          "extendedPage": 56,
+          "modifier": 2
+        },
+        {
+          "name": "Side Swing",
+          "color": "blue",
+          "normalPage": 48,
+          "extendedPage": 56,
+          "modifier": 0
+        },
+        {
+          "name": "Thrust",
+          "color": "red",
+          "normalPage": 6,
+          "extendedPage": 56,
+          "modifier": -1
+        }
       ]
     },
     {
       "category": "SPECIAL",
       "moves": [
-        { "name": "Kick", "color": "blue", "normalPage": 34, "extendedPage": 56, "modifier": 0 },
-        { "name": "Wild Swing", "color": "yellow", "normalPage": 40, "extendedPage": 58, "modifier": 2 },
-        { "name": "Dislodge Weapon", "color": "blue", "normalPage": 30, "extendedPage": 58, "modifier": -4 },
-        { "name": "Retrieve Weapon", "color": "green", "normalPage": 46, "extendedPage": 52, "modifier": -6 }
+        {
+          "name": "Kick",
+          "color": "blue",
+          "normalPage": 34,
+          "extendedPage": 56,
+          "modifier": 0
+        },
+        {
+          "name": "Wild Swing",
+          "color": "yellow",
+          "normalPage": 40,
+          "extendedPage": 58,
+          "modifier": 2
+        },
+        {
+          "name": "Dislodge Weapon",
+          "color": "blue",
+          "normalPage": 30,
+          "extendedPage": 58,
+          "modifier": -4
+        },
+        {
+          "name": "Retrieve Weapon",
+          "color": "green",
+          "normalPage": 46,
+          "extendedPage": 52,
+          "modifier": -6
+        }
       ]
     },
     {
       "category": "SHIELD_BLOCK",
       "moves": [
-        { "name": "High", "color": "green", "normalPage": 26, "extendedPage": 56, "modifier": 1 },
-        { "name": "Low", "color": "green", "normalPage": 4, "extendedPage": 56, "modifier": 1 }
+        {
+          "name": "High",
+          "color": "green",
+          "normalPage": 26,
+          "extendedPage": 56,
+          "modifier": 1
+        },
+        {
+          "name": "Low",
+          "color": "green",
+          "normalPage": 4,
+          "extendedPage": 56,
+          "modifier": 1
+        }
       ]
     },
     {
       "category": "JUMP",
       "moves": [
-        { "name": "Up", "color": "green", "normalPage": 18, "extendedPage": 52, "modifier": 0 },
-        { "name": "Dodge", "color": "yellow", "normalPage": 8, "extendedPage": 52, "modifier": 0 },
-        { "name": "Duck", "color": "green", "normalPage": 20, "extendedPage": 52, "modifier": 0 },
-        { "name": "Away", "color": "yellow", "normalPage": 16, "extendedPage": 62, "modifier": 0 }
+        {
+          "name": "Up",
+          "color": "green",
+          "normalPage": 18,
+          "extendedPage": 52,
+          "modifier": 0
+        },
+        {
+          "name": "Dodge",
+          "color": "yellow",
+          "normalPage": 8,
+          "extendedPage": 52,
+          "modifier": 0
+        },
+        {
+          "name": "Duck",
+          "color": "green",
+          "normalPage": 20,
+          "extendedPage": 52,
+          "modifier": 0
+        },
+        {
+          "name": "Away",
+          "color": "yellow",
+          "normalPage": 16,
+          "extendedPage": 62,
+          "modifier": 0
+        }
       ]
     },
     {
       "category": "EXTENDED_RANGE",
       "moves": [
-        { "name": "Charge", "color": "white", "normalPage": 50, "extendedPage": 50, "modifier": 3 },
-        { "name": "Swing High", "color": "black", "normalPage": 64, "extendedPage": 64, "modifier": -6 },
-        { "name": "Swing Low", "color": "black", "normalPage": 58, "extendedPage": 58, "modifier": -6 },
-        { "name": "Thrust High", "color": "white", "normalPage": 54, "extendedPage": 54, "modifier": -5 },
-        { "name": "Thrust Low", "color": "white", "normalPage": 60, "extendedPage": 60, "modifier": -5 },
-        { "name": "Block & Close", "color": "brown", "normalPage": 56, "extendedPage": 56, "modifier": 0 },
-        { "name": "Dodge", "color": "brown", "normalPage": 52, "extendedPage": 52, "modifier": -6 },
-        { "name": "Jump Back", "color": "brown", "normalPage": 62, "extendedPage": 62, "modifier": -6 }
+        {
+          "name": "Charge",
+          "color": "white",
+          "normalPage": 50,
+          "extendedPage": 50,
+          "modifier": 3
+        },
+        {
+          "name": "Swing High",
+          "color": "black",
+          "normalPage": 64,
+          "extendedPage": 64,
+          "modifier": -6
+        },
+        {
+          "name": "Swing Low",
+          "color": "black",
+          "normalPage": 58,
+          "extendedPage": 58,
+          "modifier": -6
+        },
+        {
+          "name": "Thrust High",
+          "color": "white",
+          "normalPage": 54,
+          "extendedPage": 54,
+          "modifier": -5
+        },
+        {
+          "name": "Thrust Low",
+          "color": "white",
+          "normalPage": 60,
+          "extendedPage": 60,
+          "modifier": -5
+        },
+        {
+          "name": "Block & Close",
+          "color": "brown",
+          "normalPage": 56,
+          "extendedPage": 56,
+          "modifier": 0
+        },
+        {
+          "name": "Dodge",
+          "color": "brown",
+          "normalPage": 52,
+          "extendedPage": 52,
+          "modifier": -6
+        },
+        {
+          "name": "Jump Back",
+          "color": "brown",
+          "normalPage": 62,
+          "extendedPage": 62,
+          "modifier": -6
+        }
       ]
     }
   ],
   "picturePages": [
-    { "number": 1, "title": "Jumping Away", "isExtendedRange": false, "damage": null, "restriction": { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [{ "type": "NEXT_TURN_DAMAGE_MODIFIER", "amount": 2 }] },
-    { "number": 3, "title": "Swinging High", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["red"] }, { "type": "NO_CATEGORY", "categories": ["THRUST", "EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 5, "title": "Swinging Low", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_CATEGORY", "categories": ["THRUST", "EXTENDED_RANGE"] }, { "type": "NO_COLOR", "colors": ["blue"] }] }, "effects": [] },
-    { "number": 7, "title": "Dazed", "isExtendedRange": false, "damage": 6, "restriction": { "type": "ONLY_COLOR", "colors": ["green"] }, "effects": [] },
-    { "number": 9, "title": "Thrusting High", "isExtendedRange": false, "damage": null, "restriction": { "type": "NO_CATEGORY", "categories": ["SIDE_SWING", "EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 11, "title": "Thrusting Low", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["red"] }, { "type": "NO_CATEGORY", "categories": ["SIDE_SWING", "EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 13, "title": "Leg Wound", "isExtendedRange": false, "damage": 3, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["red", "orange"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 15, "title": "Swinging Down", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["blue"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 17, "title": "Blocking High", "isExtendedRange": false, "damage": -4, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["blue"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 19, "title": "Struck Off Balance", "isExtendedRange": false, "damage": 0, "restriction": { "type": "ONLY_COLOR", "colors": ["green", "yellow"] }, "effects": [] },
-    { "number": 21, "title": "Turned Around", "isExtendedRange": false, "damage": 0, "restriction": { "type": "ONLY_COLOR", "colors": ["yellow"] }, "effects": [] },
-    { "number": 23, "title": "Behind You", "isExtendedRange": false, "damage": null, "restriction": { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 25, "title": "Kicking", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["blue", "yellow"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 27, "title": "Weapon Dislodged", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "ONLY_COLOR", "colors": ["yellow", "green", "brown"] }, { "type": "NO_NAME", "names": ["WILD SWING"] }] }, "effects": [{ "type": "LOSE_WEAPON" }, { "type": "NO_EXTENDED_RANGE" }] },
-    { "number": 29, "title": "Ducking", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["orange"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [{ "type": "NEXT_TURN_DAMAGE_MODIFIER", "amount": 2, "forColor": "blue" }] },
-    { "number": 31, "title": "Arm Wound", "isExtendedRange": false, "damage": 2, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["red", "orange"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 33, "title": "Dodging", "isExtendedRange": false, "damage": null, "restriction": { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [{ "type": "NEXT_TURN_DAMAGE_MODIFIER", "amount": 2, "forCategory": "DOWN_SWING" }, { "type": "NEXT_TURN_DAMAGE_MODIFIER", "amount": 2, "forCategory": "SIDE_SWING" }] },
-    { "number": 35, "title": "Extended Range Body Wound", "isExtendedRange": true, "damage": 4, "restriction": { "type": "ONLY_COLOR", "colors": ["brown"] }, "effects": [] },
-    { "number": 37, "title": "Jumping up", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["blue"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [{ "type": "NEXT_TURN_DAMAGE_MODIFIER", "amount": 2, "forColor": "orange" }] },
-    { "number": 39, "title": "Charging", "isExtendedRange": false, "damage": null, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["green", "yellow"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] },
-    { "number": 41, "title": "Knocked Down", "isExtendedRange": false, "damage": 0, "restriction": { "type": "ONLY_CATEGORY", "categories": ["JUMP"] }, "effects": [] },
-    { "number": 43, "title": "Retrieving Weapon", "isExtendedRange": false, "damage": null, "restriction": { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [{ "type": "RETRIEVE_WEAPON" }] },
-    { "number": 45, "title": "Parrying High", "isExtendedRange": false, "damage": -4, "restriction": { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 47, "title": "Extended Range Leg Wound", "isExtendedRange": true, "damage": 3, "restriction": { "type": "ONLY_COLOR", "colors": ["brown"] }, "effects": [] },
-    { "number": 49, "title": "Parrying Low", "isExtendedRange": false, "damage": -4, "restriction": { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 51, "title": "Kicked Off Balance", "isExtendedRange": false, "damage": 0, "restriction": { "type": "ONLY_COLOR", "colors": ["green", "yellow"] }, "effects": [] },
-    { "number": 53, "title": "Body Wound", "isExtendedRange": false, "damage": 4, "restriction": { "type": "ONLY_COLOR", "colors": ["green", "yellow"] }, "effects": [] },
-    { "number": 55, "title": "Shield Smashed", "isExtendedRange": false, "damage": 0, "restriction": { "type": "NO_CATEGORY", "categories": ["SHIELD_BLOCK", "PROTECTED_ATTACK"] }, "effects": [{ "type": "NO_EXTENDED_RANGE" }] },
-    { "number": 57, "title": "Extended Range Blocking", "isExtendedRange": true, "damage": null, "restriction": { "type": "ONLY_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 59, "title": "Pushed Off Balance", "isExtendedRange": false, "damage": 0, "restriction": { "type": "ONLY_COLOR", "colors": ["green", "yellow"] }, "effects": [] },
-    { "number": 61, "title": "Extended Range Dodging", "isExtendedRange": true, "damage": null, "restriction": { "type": "ONLY_CATEGORY", "categories": ["EXTENDED_RANGE"] }, "effects": [] },
-    { "number": 63, "title": "Blocking Low", "isExtendedRange": false, "damage": -4, "restriction": { "type": "AND", "children": [{ "type": "NO_COLOR", "colors": ["orange"] }, { "type": "NO_CATEGORY", "categories": ["EXTENDED_RANGE"] }] }, "effects": [] }
+    {
+      "number": 1,
+      "title": "Jumping Away",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [
+        {
+          "type": "NEXT_TURN_DAMAGE_MODIFIER",
+          "amount": 2
+        }
+      ],
+      "imageUrlBW": "/images/man-in-chainmail/jumping_away_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/jumping_away_color.webp"
+    },
+    {
+      "number": 3,
+      "title": "Swinging High",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "red"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "THRUST",
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/swinging_high_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/swinging_high_color.webp"
+    },
+    {
+      "number": 5,
+      "title": "Swinging Low",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "THRUST",
+              "EXTENDED_RANGE"
+            ]
+          },
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "blue"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/swinging_low_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/swinging_low_color.webp"
+    },
+    {
+      "number": 7,
+      "title": "Dazed",
+      "isExtendedRange": false,
+      "damage": 6,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "green"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/dazed_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/dazed_color.webp"
+    },
+    {
+      "number": 9,
+      "title": "Thrusting High",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "SIDE_SWING",
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/thrusting_high_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/thrusting_high_color.webp"
+    },
+    {
+      "number": 11,
+      "title": "Thrusting Low",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "red"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "SIDE_SWING",
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/thrusting_low_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/thrusting_low_color.webp"
+    },
+    {
+      "number": 13,
+      "title": "Leg Wound",
+      "isExtendedRange": false,
+      "damage": 3,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "red",
+              "orange"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/leg_wound_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/leg_wound_color.webp"
+    },
+    {
+      "number": 15,
+      "title": "Swinging Down",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "blue"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/swinging_down_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/swinging_down_color.webp"
+    },
+    {
+      "number": 17,
+      "title": "Blocking High",
+      "isExtendedRange": false,
+      "damage": -4,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "blue"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/blocking_high_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/blocking_high_color.webp"
+    },
+    {
+      "number": 19,
+      "title": "Struck Off Balance",
+      "isExtendedRange": false,
+      "damage": 0,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "green",
+          "yellow"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/struck_off_balance_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/struck_off_balance_color.webp"
+    },
+    {
+      "number": 21,
+      "title": "Turned Around",
+      "isExtendedRange": false,
+      "damage": 0,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "yellow"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/turned_around_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/turned_around_color.webp"
+    },
+    {
+      "number": 23,
+      "title": "Behind You",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/behind_you_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/behind_you_color.webp"
+    },
+    {
+      "number": 25,
+      "title": "Kicking",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "blue",
+              "yellow"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/kicking_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/kicking_color.webp"
+    },
+    {
+      "number": 27,
+      "title": "Weapon Dislodged",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "ONLY_COLOR",
+            "colors": [
+              "yellow",
+              "green",
+              "brown"
+            ]
+          },
+          {
+            "type": "NO_NAME",
+            "names": [
+              "WILD SWING"
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "LOSE_WEAPON"
+        },
+        {
+          "type": "NO_EXTENDED_RANGE"
+        }
+      ],
+      "imageUrlBW": "/images/man-in-chainmail/weapon_dislodged_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/weapon_dislodged_color.webp"
+    },
+    {
+      "number": 29,
+      "title": "Ducking",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "orange"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "NEXT_TURN_DAMAGE_MODIFIER",
+          "amount": 2,
+          "forColor": "blue"
+        }
+      ],
+      "imageUrlBW": "/images/man-in-chainmail/ducking_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/ducking_color.webp"
+    },
+    {
+      "number": 31,
+      "title": "Arm Wound",
+      "isExtendedRange": false,
+      "damage": 2,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "red",
+              "orange"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/arm_wound_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/arm_wound_color.webp"
+    },
+    {
+      "number": 33,
+      "title": "Dodging",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [
+        {
+          "type": "NEXT_TURN_DAMAGE_MODIFIER",
+          "amount": 2,
+          "forCategory": "DOWN_SWING"
+        },
+        {
+          "type": "NEXT_TURN_DAMAGE_MODIFIER",
+          "amount": 2,
+          "forCategory": "SIDE_SWING"
+        }
+      ],
+      "imageUrlBW": "/images/man-in-chainmail/dodging_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/dodging_color.webp"
+    },
+    {
+      "number": 35,
+      "title": "Extended Range Body Wound",
+      "isExtendedRange": true,
+      "damage": 4,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "brown"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/extended_range_body_wound_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/extended_range_body_wound_color.webp"
+    },
+    {
+      "number": 37,
+      "title": "Jumping up",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "blue"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "NEXT_TURN_DAMAGE_MODIFIER",
+          "amount": 2,
+          "forColor": "orange"
+        }
+      ],
+      "imageUrlBW": "/images/man-in-chainmail/jumping_up_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/jumping_up_color.webp"
+    },
+    {
+      "number": 39,
+      "title": "Charging",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "green",
+              "yellow"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/charging_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/charging_color.webp"
+    },
+    {
+      "number": 41,
+      "title": "Knocked Down",
+      "isExtendedRange": false,
+      "damage": 0,
+      "restriction": {
+        "type": "ONLY_CATEGORY",
+        "categories": [
+          "JUMP"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/knocked_down_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/knocked_down_color.webp"
+    },
+    {
+      "number": 43,
+      "title": "Retrieving Weapon",
+      "isExtendedRange": false,
+      "damage": null,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [
+        {
+          "type": "RETRIEVE_WEAPON"
+        }
+      ],
+      "imageUrlBW": "/images/man-in-chainmail/retrieving_weapon_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/retrieving_weapon_color.webp"
+    },
+    {
+      "number": 45,
+      "title": "Parrying High",
+      "isExtendedRange": false,
+      "damage": -4,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/parrying_high_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/parrying_high_color.webp"
+    },
+    {
+      "number": 47,
+      "title": "Extended Range Leg Wound",
+      "isExtendedRange": true,
+      "damage": 3,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "brown"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/extended_range_leg_wound_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/extended_range_leg_wound_color.webp"
+    },
+    {
+      "number": 49,
+      "title": "Parrying Low",
+      "isExtendedRange": false,
+      "damage": -4,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/parrying_low_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/parrying_low_color.webp"
+    },
+    {
+      "number": 51,
+      "title": "Kicked Off Balance",
+      "isExtendedRange": false,
+      "damage": 0,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "green",
+          "yellow"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/kicked_off_balance_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/kicked_off_balance_color.webp"
+    },
+    {
+      "number": 53,
+      "title": "Body Wound",
+      "isExtendedRange": false,
+      "damage": 4,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "green",
+          "yellow"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/body_wound_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/body_wound_color.webp"
+    },
+    {
+      "number": 55,
+      "title": "Shield Smashed",
+      "isExtendedRange": false,
+      "damage": 0,
+      "restriction": {
+        "type": "NO_CATEGORY",
+        "categories": [
+          "SHIELD_BLOCK",
+          "PROTECTED_ATTACK"
+        ]
+      },
+      "effects": [
+        {
+          "type": "NO_EXTENDED_RANGE"
+        }
+      ],
+      "imageUrlBW": "/images/man-in-chainmail/shield_smashed_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/shield_smashed_color.webp"
+    },
+    {
+      "number": 57,
+      "title": "Extended Range Blocking",
+      "isExtendedRange": true,
+      "damage": null,
+      "restriction": {
+        "type": "ONLY_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/extended_range_blocking_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/extended_range_blocking_color.webp"
+    },
+    {
+      "number": 59,
+      "title": "Pushed Off Balance",
+      "isExtendedRange": false,
+      "damage": 0,
+      "restriction": {
+        "type": "ONLY_COLOR",
+        "colors": [
+          "green",
+          "yellow"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/pushed_off_balance_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/pushed_off_balance_color.webp"
+    },
+    {
+      "number": 61,
+      "title": "Extended Range Dodging",
+      "isExtendedRange": true,
+      "damage": null,
+      "restriction": {
+        "type": "ONLY_CATEGORY",
+        "categories": [
+          "EXTENDED_RANGE"
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/extended_range_dodging_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/extended_range_dodging_color.webp"
+    },
+    {
+      "number": 63,
+      "title": "Blocking Low",
+      "isExtendedRange": false,
+      "damage": -4,
+      "restriction": {
+        "type": "AND",
+        "children": [
+          {
+            "type": "NO_COLOR",
+            "colors": [
+              "orange"
+            ]
+          },
+          {
+            "type": "NO_CATEGORY",
+            "categories": [
+              "EXTENDED_RANGE"
+            ]
+          }
+        ]
+      },
+      "effects": [],
+      "imageUrlBW": "/images/man-in-chainmail/blocking_low_bw.webp",
+      "imageUrlColor": "/images/man-in-chainmail/blocking_low_color.webp"
+    }
   ],
   "lookupPages": [
-    { "number": 2, "mapping": { "2": 49, "4": 63, "6": 13, "8": 19, "10": 13, "12": 13, "14": 49, "16": 57, "18": 37, "20": 19, "22": 49, "24": 13, "26": 13, "28": 13, "30": 49, "32": 13, "34": 41, "36": 13, "38": 13, "40": 49, "42": 49, "44": 15, "46": 27, "48": 13 } },
-    { "number": 4, "mapping": { "2": 5, "4": 59, "6": 59, "8": 33, "10": 3, "12": 59, "14": 11, "16": 57, "18": 37, "20": 59, "22": 11, "24": 15, "26": 17, "28": 3, "30": 15, "32": 9, "34": 59, "36": 15, "38": 3, "40": 5, "42": 59, "44": 15, "46": 43, "48": 59 } },
-    { "number": 6, "mapping": { "2": 19, "4": 63, "6": 17, "8": 33, "10": 3, "12": 3, "14": 49, "16": 19, "18": 19, "20": 29, "22": 11, "24": 15, "26": 17, "28": 45, "30": 5, "32": 45, "34": 19, "36": 19, "38": 19, "40": 19, "42": 19, "44": 45, "46": 19, "48": 45 } },
-    { "number": 8, "mapping": { "2": 5, "4": 63, "6": 9, "8": 33, "10": 3, "12": 3, "14": 21, "16": 57, "18": 37, "20": 29, "22": 21, "24": 15, "26": 17, "28": 3, "30": 3, "32": 9, "34": 19, "36": 15, "38": 3, "40": 5, "42": 5, "44": 15, "46": 43, "48": 3 } },
-    { "number": 10, "mapping": { "2": 31, "4": 53, "6": 9, "8": 19, "10": 45, "12": 3, "14": 7, "16": 57, "18": 13, "20": 23, "22": 7, "24": 45, "26": 17, "28": 31, "30": 3, "32": 53, "34": 25, "36": 31, "38": 45, "40": 53, "42": 31, "44": 45, "46": 43, "48": 45 } },
-    { "number": 12, "mapping": { "2": 31, "4": 63, "6": 9, "8": 19, "10": 53, "12": 45, "14": 11, "16": 57, "18": 13, "20": 29, "22": 11, "24": 45, "26": 17, "28": 31, "30": 3, "32": 45, "34": 25, "36": 31, "38": 45, "40": 53, "42": 49, "44": 15, "46": 29, "48": 45 } },
-    { "number": 14, "mapping": { "2": 49, "4": 63, "6": 49, "8": 23, "10": 13, "12": 3, "14": 13, "16": 19, "18": 37, "20": 53, "22": 11, "24": 13, "26": 13, "28": 13, "30": 5, "32": 13, "34": 13, "36": 13, "38": 13, "40": 49, "42": 49, "44": 13, "46": 53, "48": 49 } },
-    { "number": 16, "mapping": { "2": 57, "4": 57, "6": 9, "8": 61, "10": 57, "12": 57, "14": 11, "16": 57, "18": 61, "20": 61, "22": 11, "24": 19, "26": 57, "28": 21, "30": 57, "32": 9, "34": 41, "36": 41, "38": 57, "40": 21, "42": 57, "44": 57, "46": 43, "48": 57 } },
-    { "number": 18, "mapping": { "2": 5, "4": 63, "6": 17, "8": 33, "10": 3, "12": 3, "14": 11, "16": 57, "18": 37, "20": 29, "22": 11, "24": 15, "26": 17, "28": 3, "30": 3, "32": 9, "34": 41, "36": 15, "38": 3, "40": 21, "42": 5, "44": 15, "46": 43, "48": 3 } },
-    { "number": 20, "mapping": { "2": 5, "4": 63, "6": 9, "8": 33, "10": 21, "12": 3, "14": 11, "16": 57, "18": 37, "20": 29, "22": 11, "24": 15, "26": 17, "28": 21, "30": 3, "32": 9, "34": 25, "36": 15, "38": 3, "40": 5, "42": 5, "44": 15, "46": 43, "48": 3 } },
-    { "number": 22, "mapping": { "2": 49, "4": 63, "6": 9, "8": 23, "10": 1, "12": 13, "14": 13, "16": 19, "18": 37, "20": 53, "22": 19, "24": 15, "26": 17, "28": 3, "30": 5, "32": 31, "34": 25, "36": 13, "38": 3, "40": 49, "42": 49, "44": 13, "46": 43, "48": 49 } },
-    { "number": 24, "mapping": { "2": 53, "4": 41, "6": 17, "8": 33, "10": 45, "12": 45, "14": 11, "16": 1, "18": 53, "20": 7, "22": 11, "24": 7, "26": 17, "28": 3, "30": 3, "32": 45, "34": 53, "36": 15, "38": 45, "40": 21, "42": 5, "44": 15, "46": 41, "48": 17 } },
-    { "number": 26, "mapping": { "2": 5, "4": 63, "6": 59, "8": 33, "10": 3, "12": 59, "14": 11, "16": 57, "18": 59, "20": 29, "22": 11, "24": 15, "26": 59, "28": 3, "30": 3, "32": 9, "34": 25, "36": 59, "38": 3, "40": 5, "42": 59, "44": 59, "46": 43, "48": 59 } },
-    { "number": 28, "mapping": { "2": 7, "4": 31, "6": 45, "8": 19, "10": 3, "12": 53, "14": 11, "16": 23, "18": 37, "20": 23, "22": 11, "24": 53, "26": 53, "28": 19, "30": 31, "32": 9, "34": 25, "36": 31, "38": 27, "40": 41, "42": 5, "44": 15, "46": 29, "48": 3 } },
-    { "number": 30, "mapping": { "2": 49, "4": 63, "6": 9, "8": 33, "10": 3, "12": 3, "14": 11, "16": 57, "18": 37, "20": 29, "22": 27, "24": 15, "26": 17, "28": 3, "30": 27, "32": 27, "34": 25, "36": 15, "38": 27, "40": 5, "42": 27, "44": 15, "46": 27, "48": 3 } },
-    { "number": 32, "mapping": { "2": 53, "4": 53, "6": 45, "8": 33, "10": 3, "12": 45, "14": 53, "16": 19, "18": 13, "20": 29, "22": 53, "24": 45, "26": 17, "28": 53, "30": 3, "32": 31, "34": 25, "36": 53, "38": 45, "40": 31, "42": 53, "44": 45, "46": 43, "48": 17 } },
-    { "number": 34, "mapping": { "2": 5, "4": 63, "6": 11, "8": 33, "10": 51, "12": 3, "14": 11, "16": 1, "18": 37, "20": 29, "22": 51, "24": 15, "26": 17, "28": 3, "30": 3, "32": 45, "34": 53, "36": 15, "38": 45, "40": 21, "42": 5, "44": 15, "46": 41, "48": 17 } },
-    { "number": 36, "mapping": { "2": 5, "4": 7, "6": 55, "8": 33, "10": 3, "12": 3, "14": 11, "16": 1, "18": 7, "20": 7, "22": 11, "24": 15, "26": 55, "28": 7, "30": 11, "32": 9, "34": 7, "36": 15, "38": 3, "40": 7, "42": 5, "44": 55, "46": 7, "48": 55 } },
-    { "number": 38, "mapping": { "2": 31, "4": 53, "6": 9, "8": 19, "10": 45, "12": 45, "14": 7, "16": 57, "18": 13, "20": 29, "22": 9, "24": 45, "26": 17, "28": 3, "30": 5, "32": 45, "34": 25, "36": 31, "38": 45, "40": 5, "42": 31, "44": 45, "46": 43, "48": 45 } },
-    { "number": 40, "mapping": { "2": 49, "4": 63, "6": 31, "8": 33, "10": 3, "12": 41, "14": 49, "16": 23, "18": 23, "20": 53, "22": 13, "24": 23, "26": 13, "28": 3, "30": 5, "32": 9, "34": 25, "36": 41, "38": 3, "40": 5, "42": 49, "44": 15, "46": 43, "48": 5 } },
-    { "number": 42, "mapping": { "2": 49, "4": 63, "6": 9, "8": 19, "10": 13, "12": 49, "14": 49, "16": 57, "18": 37, "20": 31, "22": 49, "24": 57, "26": 17, "28": 13, "30": 5, "32": 9, "34": 41, "36": 13, "38": 13, "40": 49, "42": 49, "44": 15, "46": 27, "48": 49 } },
-    { "number": 44, "mapping": { "2": 5, "4": 19, "6": 45, "8": 33, "10": 45, "12": 3, "14": 19, "16": 57, "18": 7, "20": 19, "22": 19, "24": 15, "26": 17, "28": 19, "30": 19, "32": 45, "34": 19, "36": 19, "38": 45, "40": 19, "42": 5, "44": 45, "46": 27, "48": 45 } },
-    { "number": 46, "mapping": { "2": 5, "4": 63, "6": 9, "8": 33, "10": 3, "12": 3, "14": 11, "16": 1, "18": 37, "20": 29, "22": 11, "24": 15, "26": 17, "28": 3, "30": 15, "32": 9, "34": 25, "36": 15, "38": 3, "40": 5, "42": 5, "44": 15, "46": 43, "48": 3 } },
-    { "number": 48, "mapping": { "2": 5, "4": 19, "6": 45, "8": 19, "10": 45, "12": 45, "14": 49, "16": 57, "18": 19, "20": 29, "22": 49, "24": 19, "26": 17, "28": 19, "30": 19, "32": 9, "34": 25, "36": 19, "38": 45, "40": 19, "42": 49, "44": 45, "46": 19, "48": 49 } },
-    { "number": 50, "mapping": { "50": 45, "52": 23, "54": 9, "56": 17, "58": 41, "60": 11, "62": 19, "64": 19 } },
-    { "number": 52, "mapping": { "50": 21, "52": 61, "54": 9, "56": 57, "58": 5, "60": 11, "62": 57, "64": 57 } },
-    { "number": 54, "mapping": { "50": 53, "52": 33, "54": 45, "56": 17, "58": 35, "60": 11, "62": 35, "64": 3 } },
-    { "number": 56, "mapping": { "50": 39, "52": 61, "54": 9, "56": 17, "58": 57, "60": 57, "62": 57, "64": 3 } },
-    { "number": 58, "mapping": { "50": 39, "52": 33, "54": 47, "56": 47, "58": 5, "60": 11, "62": 57, "64": 57 } },
-    { "number": 60, "mapping": { "50": 13, "52": 33, "54": 13, "56": 57, "58": 5, "60": 11, "62": 57, "64": 47 } },
-    { "number": 62, "mapping": { "50": 39, "52": 61, "54": 57, "56": 57, "58": 57, "60": 57, "62": 57, "64": 57 } },
-    { "number": 64, "mapping": { "50": 7, "52": 35, "54": 9, "56": 17, "58": 57, "60": 35, "62": 57, "64": 3 } }
+    {
+      "number": 2,
+      "mapping": {
+        "2": 49,
+        "4": 63,
+        "6": 13,
+        "8": 19,
+        "10": 13,
+        "12": 13,
+        "14": 49,
+        "16": 57,
+        "18": 37,
+        "20": 19,
+        "22": 49,
+        "24": 13,
+        "26": 13,
+        "28": 13,
+        "30": 49,
+        "32": 13,
+        "34": 41,
+        "36": 13,
+        "38": 13,
+        "40": 49,
+        "42": 49,
+        "44": 15,
+        "46": 27,
+        "48": 13
+      }
+    },
+    {
+      "number": 4,
+      "mapping": {
+        "2": 5,
+        "4": 59,
+        "6": 59,
+        "8": 33,
+        "10": 3,
+        "12": 59,
+        "14": 11,
+        "16": 57,
+        "18": 37,
+        "20": 59,
+        "22": 11,
+        "24": 15,
+        "26": 17,
+        "28": 3,
+        "30": 15,
+        "32": 9,
+        "34": 59,
+        "36": 15,
+        "38": 3,
+        "40": 5,
+        "42": 59,
+        "44": 15,
+        "46": 43,
+        "48": 59
+      }
+    },
+    {
+      "number": 6,
+      "mapping": {
+        "2": 19,
+        "4": 63,
+        "6": 17,
+        "8": 33,
+        "10": 3,
+        "12": 3,
+        "14": 49,
+        "16": 19,
+        "18": 19,
+        "20": 29,
+        "22": 11,
+        "24": 15,
+        "26": 17,
+        "28": 45,
+        "30": 5,
+        "32": 45,
+        "34": 19,
+        "36": 19,
+        "38": 19,
+        "40": 19,
+        "42": 19,
+        "44": 45,
+        "46": 19,
+        "48": 45
+      }
+    },
+    {
+      "number": 8,
+      "mapping": {
+        "2": 5,
+        "4": 63,
+        "6": 9,
+        "8": 33,
+        "10": 3,
+        "12": 3,
+        "14": 21,
+        "16": 57,
+        "18": 37,
+        "20": 29,
+        "22": 21,
+        "24": 15,
+        "26": 17,
+        "28": 3,
+        "30": 3,
+        "32": 9,
+        "34": 19,
+        "36": 15,
+        "38": 3,
+        "40": 5,
+        "42": 5,
+        "44": 15,
+        "46": 43,
+        "48": 3
+      }
+    },
+    {
+      "number": 10,
+      "mapping": {
+        "2": 31,
+        "4": 53,
+        "6": 9,
+        "8": 19,
+        "10": 45,
+        "12": 3,
+        "14": 7,
+        "16": 57,
+        "18": 13,
+        "20": 23,
+        "22": 7,
+        "24": 45,
+        "26": 17,
+        "28": 31,
+        "30": 3,
+        "32": 53,
+        "34": 25,
+        "36": 31,
+        "38": 45,
+        "40": 53,
+        "42": 31,
+        "44": 45,
+        "46": 43,
+        "48": 45
+      }
+    },
+    {
+      "number": 12,
+      "mapping": {
+        "2": 31,
+        "4": 63,
+        "6": 9,
+        "8": 19,
+        "10": 53,
+        "12": 45,
+        "14": 11,
+        "16": 57,
+        "18": 13,
+        "20": 29,
+        "22": 11,
+        "24": 45,
+        "26": 17,
+        "28": 31,
+        "30": 3,
+        "32": 45,
+        "34": 25,
+        "36": 31,
+        "38": 45,
+        "40": 53,
+        "42": 49,
+        "44": 15,
+        "46": 29,
+        "48": 45
+      }
+    },
+    {
+      "number": 14,
+      "mapping": {
+        "2": 49,
+        "4": 63,
+        "6": 49,
+        "8": 23,
+        "10": 13,
+        "12": 3,
+        "14": 13,
+        "16": 19,
+        "18": 37,
+        "20": 53,
+        "22": 11,
+        "24": 13,
+        "26": 13,
+        "28": 13,
+        "30": 5,
+        "32": 13,
+        "34": 13,
+        "36": 13,
+        "38": 13,
+        "40": 49,
+        "42": 49,
+        "44": 13,
+        "46": 53,
+        "48": 49
+      }
+    },
+    {
+      "number": 16,
+      "mapping": {
+        "2": 57,
+        "4": 57,
+        "6": 9,
+        "8": 61,
+        "10": 57,
+        "12": 57,
+        "14": 11,
+        "16": 57,
+        "18": 61,
+        "20": 61,
+        "22": 11,
+        "24": 19,
+        "26": 57,
+        "28": 21,
+        "30": 57,
+        "32": 9,
+        "34": 41,
+        "36": 41,
+        "38": 57,
+        "40": 21,
+        "42": 57,
+        "44": 57,
+        "46": 43,
+        "48": 57
+      }
+    },
+    {
+      "number": 18,
+      "mapping": {
+        "2": 5,
+        "4": 63,
+        "6": 17,
+        "8": 33,
+        "10": 3,
+        "12": 3,
+        "14": 11,
+        "16": 57,
+        "18": 37,
+        "20": 29,
+        "22": 11,
+        "24": 15,
+        "26": 17,
+        "28": 3,
+        "30": 3,
+        "32": 9,
+        "34": 41,
+        "36": 15,
+        "38": 3,
+        "40": 21,
+        "42": 5,
+        "44": 15,
+        "46": 43,
+        "48": 3
+      }
+    },
+    {
+      "number": 20,
+      "mapping": {
+        "2": 5,
+        "4": 63,
+        "6": 9,
+        "8": 33,
+        "10": 21,
+        "12": 3,
+        "14": 11,
+        "16": 57,
+        "18": 37,
+        "20": 29,
+        "22": 11,
+        "24": 15,
+        "26": 17,
+        "28": 21,
+        "30": 3,
+        "32": 9,
+        "34": 25,
+        "36": 15,
+        "38": 3,
+        "40": 5,
+        "42": 5,
+        "44": 15,
+        "46": 43,
+        "48": 3
+      }
+    },
+    {
+      "number": 22,
+      "mapping": {
+        "2": 49,
+        "4": 63,
+        "6": 9,
+        "8": 23,
+        "10": 1,
+        "12": 13,
+        "14": 13,
+        "16": 19,
+        "18": 37,
+        "20": 53,
+        "22": 19,
+        "24": 15,
+        "26": 17,
+        "28": 3,
+        "30": 5,
+        "32": 31,
+        "34": 25,
+        "36": 13,
+        "38": 3,
+        "40": 49,
+        "42": 49,
+        "44": 13,
+        "46": 43,
+        "48": 49
+      }
+    },
+    {
+      "number": 24,
+      "mapping": {
+        "2": 53,
+        "4": 41,
+        "6": 17,
+        "8": 33,
+        "10": 45,
+        "12": 45,
+        "14": 11,
+        "16": 1,
+        "18": 53,
+        "20": 7,
+        "22": 11,
+        "24": 7,
+        "26": 17,
+        "28": 3,
+        "30": 3,
+        "32": 45,
+        "34": 53,
+        "36": 15,
+        "38": 45,
+        "40": 21,
+        "42": 5,
+        "44": 15,
+        "46": 41,
+        "48": 17
+      }
+    },
+    {
+      "number": 26,
+      "mapping": {
+        "2": 5,
+        "4": 63,
+        "6": 59,
+        "8": 33,
+        "10": 3,
+        "12": 59,
+        "14": 11,
+        "16": 57,
+        "18": 59,
+        "20": 29,
+        "22": 11,
+        "24": 15,
+        "26": 59,
+        "28": 3,
+        "30": 3,
+        "32": 9,
+        "34": 25,
+        "36": 59,
+        "38": 3,
+        "40": 5,
+        "42": 59,
+        "44": 59,
+        "46": 43,
+        "48": 59
+      }
+    },
+    {
+      "number": 28,
+      "mapping": {
+        "2": 7,
+        "4": 31,
+        "6": 45,
+        "8": 19,
+        "10": 3,
+        "12": 53,
+        "14": 11,
+        "16": 23,
+        "18": 37,
+        "20": 23,
+        "22": 11,
+        "24": 53,
+        "26": 53,
+        "28": 19,
+        "30": 31,
+        "32": 9,
+        "34": 25,
+        "36": 31,
+        "38": 27,
+        "40": 41,
+        "42": 5,
+        "44": 15,
+        "46": 29,
+        "48": 3
+      }
+    },
+    {
+      "number": 30,
+      "mapping": {
+        "2": 49,
+        "4": 63,
+        "6": 9,
+        "8": 33,
+        "10": 3,
+        "12": 3,
+        "14": 11,
+        "16": 57,
+        "18": 37,
+        "20": 29,
+        "22": 27,
+        "24": 15,
+        "26": 17,
+        "28": 3,
+        "30": 27,
+        "32": 27,
+        "34": 25,
+        "36": 15,
+        "38": 27,
+        "40": 5,
+        "42": 27,
+        "44": 15,
+        "46": 27,
+        "48": 3
+      }
+    },
+    {
+      "number": 32,
+      "mapping": {
+        "2": 53,
+        "4": 53,
+        "6": 45,
+        "8": 33,
+        "10": 3,
+        "12": 45,
+        "14": 53,
+        "16": 19,
+        "18": 13,
+        "20": 29,
+        "22": 53,
+        "24": 45,
+        "26": 17,
+        "28": 53,
+        "30": 3,
+        "32": 31,
+        "34": 25,
+        "36": 53,
+        "38": 45,
+        "40": 31,
+        "42": 53,
+        "44": 45,
+        "46": 43,
+        "48": 17
+      }
+    },
+    {
+      "number": 34,
+      "mapping": {
+        "2": 5,
+        "4": 63,
+        "6": 11,
+        "8": 33,
+        "10": 51,
+        "12": 3,
+        "14": 11,
+        "16": 1,
+        "18": 37,
+        "20": 29,
+        "22": 51,
+        "24": 15,
+        "26": 17,
+        "28": 3,
+        "30": 3,
+        "32": 45,
+        "34": 53,
+        "36": 15,
+        "38": 45,
+        "40": 21,
+        "42": 5,
+        "44": 15,
+        "46": 41,
+        "48": 17
+      }
+    },
+    {
+      "number": 36,
+      "mapping": {
+        "2": 5,
+        "4": 7,
+        "6": 55,
+        "8": 33,
+        "10": 3,
+        "12": 3,
+        "14": 11,
+        "16": 1,
+        "18": 7,
+        "20": 7,
+        "22": 11,
+        "24": 15,
+        "26": 55,
+        "28": 7,
+        "30": 11,
+        "32": 9,
+        "34": 7,
+        "36": 15,
+        "38": 3,
+        "40": 7,
+        "42": 5,
+        "44": 55,
+        "46": 7,
+        "48": 55
+      }
+    },
+    {
+      "number": 38,
+      "mapping": {
+        "2": 31,
+        "4": 53,
+        "6": 9,
+        "8": 19,
+        "10": 45,
+        "12": 45,
+        "14": 7,
+        "16": 57,
+        "18": 13,
+        "20": 29,
+        "22": 9,
+        "24": 45,
+        "26": 17,
+        "28": 3,
+        "30": 5,
+        "32": 45,
+        "34": 25,
+        "36": 31,
+        "38": 45,
+        "40": 5,
+        "42": 31,
+        "44": 45,
+        "46": 43,
+        "48": 45
+      }
+    },
+    {
+      "number": 40,
+      "mapping": {
+        "2": 49,
+        "4": 63,
+        "6": 31,
+        "8": 33,
+        "10": 3,
+        "12": 41,
+        "14": 49,
+        "16": 23,
+        "18": 23,
+        "20": 53,
+        "22": 13,
+        "24": 23,
+        "26": 13,
+        "28": 3,
+        "30": 5,
+        "32": 9,
+        "34": 25,
+        "36": 41,
+        "38": 3,
+        "40": 5,
+        "42": 49,
+        "44": 15,
+        "46": 43,
+        "48": 5
+      }
+    },
+    {
+      "number": 42,
+      "mapping": {
+        "2": 49,
+        "4": 63,
+        "6": 9,
+        "8": 19,
+        "10": 13,
+        "12": 49,
+        "14": 49,
+        "16": 57,
+        "18": 37,
+        "20": 31,
+        "22": 49,
+        "24": 57,
+        "26": 17,
+        "28": 13,
+        "30": 5,
+        "32": 9,
+        "34": 41,
+        "36": 13,
+        "38": 13,
+        "40": 49,
+        "42": 49,
+        "44": 15,
+        "46": 27,
+        "48": 49
+      }
+    },
+    {
+      "number": 44,
+      "mapping": {
+        "2": 5,
+        "4": 19,
+        "6": 45,
+        "8": 33,
+        "10": 45,
+        "12": 3,
+        "14": 19,
+        "16": 57,
+        "18": 7,
+        "20": 19,
+        "22": 19,
+        "24": 15,
+        "26": 17,
+        "28": 19,
+        "30": 19,
+        "32": 45,
+        "34": 19,
+        "36": 19,
+        "38": 45,
+        "40": 19,
+        "42": 5,
+        "44": 45,
+        "46": 27,
+        "48": 45
+      }
+    },
+    {
+      "number": 46,
+      "mapping": {
+        "2": 5,
+        "4": 63,
+        "6": 9,
+        "8": 33,
+        "10": 3,
+        "12": 3,
+        "14": 11,
+        "16": 1,
+        "18": 37,
+        "20": 29,
+        "22": 11,
+        "24": 15,
+        "26": 17,
+        "28": 3,
+        "30": 15,
+        "32": 9,
+        "34": 25,
+        "36": 15,
+        "38": 3,
+        "40": 5,
+        "42": 5,
+        "44": 15,
+        "46": 43,
+        "48": 3
+      }
+    },
+    {
+      "number": 48,
+      "mapping": {
+        "2": 5,
+        "4": 19,
+        "6": 45,
+        "8": 19,
+        "10": 45,
+        "12": 45,
+        "14": 49,
+        "16": 57,
+        "18": 19,
+        "20": 29,
+        "22": 49,
+        "24": 19,
+        "26": 17,
+        "28": 19,
+        "30": 19,
+        "32": 9,
+        "34": 25,
+        "36": 19,
+        "38": 45,
+        "40": 19,
+        "42": 49,
+        "44": 45,
+        "46": 19,
+        "48": 49
+      }
+    },
+    {
+      "number": 50,
+      "mapping": {
+        "50": 45,
+        "52": 23,
+        "54": 9,
+        "56": 17,
+        "58": 41,
+        "60": 11,
+        "62": 19,
+        "64": 19
+      }
+    },
+    {
+      "number": 52,
+      "mapping": {
+        "50": 21,
+        "52": 61,
+        "54": 9,
+        "56": 57,
+        "58": 5,
+        "60": 11,
+        "62": 57,
+        "64": 57
+      }
+    },
+    {
+      "number": 54,
+      "mapping": {
+        "50": 53,
+        "52": 33,
+        "54": 45,
+        "56": 17,
+        "58": 35,
+        "60": 11,
+        "62": 35,
+        "64": 3
+      }
+    },
+    {
+      "number": 56,
+      "mapping": {
+        "50": 39,
+        "52": 61,
+        "54": 9,
+        "56": 17,
+        "58": 57,
+        "60": 57,
+        "62": 57,
+        "64": 3
+      }
+    },
+    {
+      "number": 58,
+      "mapping": {
+        "50": 39,
+        "52": 33,
+        "54": 47,
+        "56": 47,
+        "58": 5,
+        "60": 11,
+        "62": 57,
+        "64": 57
+      }
+    },
+    {
+      "number": 60,
+      "mapping": {
+        "50": 13,
+        "52": 33,
+        "54": 13,
+        "56": 57,
+        "58": 5,
+        "60": 11,
+        "62": 57,
+        "64": 47
+      }
+    },
+    {
+      "number": 62,
+      "mapping": {
+        "50": 39,
+        "52": 61,
+        "54": 57,
+        "56": 57,
+        "58": 57,
+        "60": 57,
+        "62": 57,
+        "64": 57
+      }
+    },
+    {
+      "number": 64,
+      "mapping": {
+        "50": 7,
+        "52": 35,
+        "54": 9,
+        "56": 17,
+        "58": 57,
+        "60": 35,
+        "62": 57,
+        "64": 3
+      }
+    }
   ]
 }
