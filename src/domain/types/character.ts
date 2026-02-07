@@ -19,6 +19,7 @@ export interface CharacterDefinition {
   name: string;
   height: number;
   bodyPoints: number;
+  startingPicturePage?: number;  // The picture page shown at start of combat (e.g., 57)
   maneuvers: ManeuverDefinition[];
   picturePages: PicturePageDefinition[];
   lookupPages: LookupPageDefinition[];
@@ -81,6 +82,7 @@ export interface Character {
   id: string;
   name: string;
   height: number;
+  startingPicturePage?: number;  // The picture page shown at start of combat
   sheet: Sheet;
   book: Book;
   state: CharacterState;

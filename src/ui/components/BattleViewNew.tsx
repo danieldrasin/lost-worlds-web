@@ -101,28 +101,26 @@ export const BattleViewNew: React.FC = () => {
   const opponent = battle.player2;
 
   // What I see: The result from OPPONENT's book showing THEM
-  // This is the picture page that results from the lookup
+  // After first exchange, show the combat result; before that, show starting picture
   const opponentPicture = lastExchange?.player2Result.picturePage;
 
+  // Starting picture: shown before the first exchange (the opponent's book opened to starting page)
+  const startingPicture = opponent.startingPicturePage
+    ? opponent.book.picturePages.get(opponent.startingPicturePage)
+    : null;
+
+  // The picture to display: combat result if we have one, otherwise starting picture
+  const displayPicture = opponentPicture || startingPicture || null;
+
   const validMoves = getValidMovesForCharacter(myCharacter);
-  // In multiplayer, also require connection to fight
-  const canFight = player1Selection !== null && !waitingForOpponent && (!isMultiplayer || isConnected);
 
-  const handleSelectMove = (maneuver: Maneuver) => {
+  const handleSelectMove = async (maneuver: Maneuver) => {
     selectManeuver('player1', maneuver);
-    // On mobile, switch to view tab after selecting
-    if (window.innerWidth < 1024) {
-      setMobileTab('view');
-    }
-  };
 
-  const handleFight = async () => {
     if (isMultiplayer) {
       // In multiplayer, send move to server and wait
-      if (!player1Selection) return;
-
       setWaitingForOpponent(true);
-      const result = await socket.submitMove(player1Selection);
+      const result = await socket.submitMove(maneuver);
 
       if (!result.success) {
         console.error('Failed to submit move:', result.error);
@@ -130,8 +128,15 @@ export const BattleViewNew: React.FC = () => {
       }
       // The exchange will be resolved when we receive 'moves-revealed' event
     } else {
-      // Local game - execute immediately
-      executeExchange();
+      // Local/AI game - execute immediately after a brief visual pause
+      setTimeout(() => {
+        executeExchange();
+      }, 150);
+    }
+
+    // On mobile, switch to view tab
+    if (window.innerWidth < 1024) {
+      setMobileTab('view');
     }
   };
 
@@ -179,40 +184,25 @@ export const BattleViewNew: React.FC = () => {
               validMoves={validMoves}
               selectedMove={player1Selection}
               onSelect={handleSelectMove}
-              disabled={isGameOver}
+              disabled={isGameOver || waitingForOpponent}
             />
           </div>
-          {player1Selection && (
-            <div className="mt-4 text-center">
-              <div className="text-green-400 mb-2">
-                Selected: <span className="font-bold">{player1Selection.name}</span>
+          {/* Multiplayer waiting banner */}
+          {waitingForOpponent && (
+            <div className="mt-4 px-8 py-3 bg-yellow-600 text-white font-bold text-xl rounded-lg text-center">
+              <div className="flex items-center justify-center gap-2">
+                <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+                Waiting for opponent...
+                {opponentReady && <span className="text-green-300">✓ Ready!</span>}
               </div>
-              {waitingForOpponent ? (
-                <div className="px-8 py-3 bg-yellow-600 text-white font-bold text-xl rounded-lg">
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
-                    Waiting for opponent...
-                    {opponentReady && <span className="text-green-300">✓ Ready!</span>}
-                  </div>
-                </div>
-              ) : isMultiplayer && !isConnected ? (
-                <div className="px-8 py-3 bg-red-800 text-white font-bold text-xl rounded-lg">
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="animate-pulse w-3 h-3 bg-red-400 rounded-full" />
-                    Reconnecting...
-                  </div>
-                </div>
-              ) : (
-                <button
-                  onClick={handleFight}
-                  disabled={!canFight || isGameOver}
-                  className="px-8 py-3 bg-red-600 text-white font-bold text-xl rounded-lg
-                           hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed
-                           transition-colors shadow-lg"
-                >
-                  ⚔️ FIGHT!
-                </button>
-              )}
+            </div>
+          )}
+          {isMultiplayer && !isConnected && !waitingForOpponent && (
+            <div className="mt-4 px-8 py-3 bg-red-800 text-white font-bold text-xl rounded-lg text-center">
+              <div className="flex items-center justify-center gap-2">
+                <div className="animate-pulse w-3 h-3 bg-red-400 rounded-full" />
+                Reconnecting...
+              </div>
             </div>
           )}
         </div>
@@ -224,25 +214,30 @@ export const BattleViewNew: React.FC = () => {
               What You See <span className="text-gray-400 text-sm">(Opponent's Book)</span>
             </h2>
             <div className="flex-1 flex items-center justify-center">
-              {opponentPicture ? (
+              {displayPicture ? (
                 <div className="max-w-md w-full">
                   <PicturePage
-                    result={opponentPicture}
+                    result={displayPicture}
                     characterName={opponent.name}
                     damage={lastExchange?.player1Result.damageTaken}
                   />
-                  <div className="mt-4 text-center text-gray-400 text-sm">
-                    {opponent.name} used <span className="text-white font-bold">{lastExchange?.player2Maneuver.name}</span>
-                    {lastExchange?.player1Result.damageTaken > 0 && (
-                      <span className="text-red-400"> — You took {lastExchange.player1Result.damageTaken} damage!</span>
-                    )}
-                  </div>
+                  {lastExchange ? (
+                    <div className="mt-4 text-center text-gray-400 text-sm">
+                      {opponent.name} used <span className="text-white font-bold">{lastExchange.player2Maneuver.name}</span>
+                      {lastExchange.player1Result.damageTaken > 0 && (
+                        <span className="text-red-400"> — You took {lastExchange.player1Result.damageTaken} damage!</span>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="mt-4 text-center text-gray-400 text-sm">
+                      Select your opening move
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="text-gray-500 text-center">
                   <div className="text-6xl mb-4">📖</div>
-                  <div>Select your move and fight!</div>
-                  <div className="text-sm mt-2">The opponent's result will appear here</div>
+                  <div>Select your move to begin!</div>
                 </div>
               )}
             </div>
@@ -264,13 +259,9 @@ export const BattleViewNew: React.FC = () => {
         <div className="flex-1 overflow-auto p-4">
           {mobileTab === 'view' && (
             <MobileViewTab
-              opponentPicture={opponentPicture}
+              displayPicture={displayPicture}
               opponent={opponent}
               lastExchange={lastExchange}
-              selectedMove={player1Selection}
-              canFight={canFight}
-              isGameOver={isGameOver}
-              onFight={handleFight}
               waitingForOpponent={waitingForOpponent}
               opponentReady={opponentReady}
               isMultiplayer={isMultiplayer}
@@ -283,7 +274,7 @@ export const BattleViewNew: React.FC = () => {
               validMoves={validMoves}
               selectedMove={player1Selection}
               onSelect={handleSelectMove}
-              disabled={isGameOver}
+              disabled={isGameOver || waitingForOpponent}
             />
           )}
           {mobileTab === 'history' && (
@@ -488,13 +479,9 @@ const HistoryList: React.FC<HistoryListProps> = ({ history, myName, oppName }) =
 // Mobile-specific components
 
 interface MobileViewTabProps {
-  opponentPicture: any;
+  displayPicture: any;
   opponent: any;
   lastExchange: BattleExchange | undefined;
-  selectedMove: Maneuver | null;
-  canFight: boolean;
-  isGameOver: boolean;
-  onFight: () => void;
   waitingForOpponent?: boolean;
   opponentReady?: boolean;
   isMultiplayer?: boolean;
@@ -502,69 +489,56 @@ interface MobileViewTabProps {
 }
 
 const MobileViewTab: React.FC<MobileViewTabProps> = ({
-  opponentPicture, opponent, lastExchange, selectedMove, canFight, isGameOver, onFight,
+  displayPicture, opponent, lastExchange,
   waitingForOpponent = false, opponentReady = false, isMultiplayer = false, isConnected = true
 }) => (
   <div className="flex flex-col h-full">
     <div className="flex-1 flex flex-col items-center justify-center">
-      {opponentPicture ? (
+      {displayPicture ? (
         <>
           <div className="w-full max-w-sm">
             <PicturePage
-              result={opponentPicture}
+              result={displayPicture}
               characterName={opponent.name}
               damage={lastExchange?.player1Result.damageTaken}
             />
           </div>
-          <div className="mt-3 text-center text-gray-400 text-sm">
-            {opponent.name} used <span className="text-white font-bold">{lastExchange?.player2Maneuver.name}</span>
-          </div>
+          {lastExchange ? (
+            <div className="mt-3 text-center text-gray-400 text-sm">
+              {opponent.name} used <span className="text-white font-bold">{lastExchange.player2Maneuver.name}</span>
+            </div>
+          ) : (
+            <div className="mt-3 text-center text-gray-400 text-sm">
+              Tap "Move" to select your opening move
+            </div>
+          )}
         </>
       ) : (
         <div className="text-gray-500 text-center">
           <div className="text-6xl mb-4">📖</div>
-          <div>Swipe to "Move" tab to select your attack</div>
+          <div>Tap "Move" to select your attack</div>
         </div>
       )}
     </div>
 
-    {/* Fight button area */}
-    <div className="mt-4 text-center">
-      {selectedMove && (
-        <div className="text-green-400 mb-2 text-sm">
-          Your move: <span className="font-bold">{selectedMove.name}</span>
+    {/* Multiplayer waiting banner */}
+    {waitingForOpponent && (
+      <div className="mt-4 w-full max-w-xs py-4 mx-auto bg-yellow-600 text-white font-bold text-xl rounded-lg text-center">
+        <div className="flex items-center justify-center gap-2">
+          <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+          Waiting for opponent...
+          {opponentReady && <span className="text-green-300">✓</span>}
         </div>
-      )}
-      {waitingForOpponent ? (
-        <div className="w-full max-w-xs py-4 mx-auto bg-yellow-600 text-white font-bold text-xl rounded-lg">
-          <div className="flex items-center justify-center gap-2">
-            <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
-            Waiting...
-            {opponentReady && <span className="text-green-300">✓</span>}
-          </div>
+      </div>
+    )}
+    {isMultiplayer && !isConnected && !waitingForOpponent && (
+      <div className="mt-4 w-full max-w-xs py-4 mx-auto bg-red-800 text-white font-bold text-xl rounded-lg text-center">
+        <div className="flex items-center justify-center gap-2">
+          <div className="animate-pulse w-3 h-3 bg-red-400 rounded-full" />
+          Reconnecting...
         </div>
-      ) : isMultiplayer && !isConnected ? (
-        <div className="w-full max-w-xs py-4 mx-auto bg-red-800 text-white font-bold text-xl rounded-lg">
-          <div className="flex items-center justify-center gap-2">
-            <div className="animate-pulse w-3 h-3 bg-red-400 rounded-full" />
-            Reconnecting...
-          </div>
-        </div>
-      ) : (
-        <button
-          onClick={onFight}
-          disabled={!canFight || isGameOver}
-          className={`
-            w-full max-w-xs py-4 font-bold text-xl rounded-lg transition-colors shadow-lg
-            ${canFight && !isGameOver
-              ? 'bg-red-600 text-white hover:bg-red-700'
-              : 'bg-gray-700 text-gray-400 cursor-not-allowed'}
-          `}
-        >
-          ⚔️ FIGHT!
-        </button>
-      )}
-    </div>
+      </div>
+    )}
   </div>
 );
 

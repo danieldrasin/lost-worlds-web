@@ -55,6 +55,7 @@ export function createCharacterFromDefinition(definition: CharacterDefinition): 
     id: definition.id,
     name: definition.name,
     height: definition.height,
+    startingPicturePage: definition.startingPicturePage,
     sheet,
     book,
     state,
