@@ -27,7 +27,7 @@ interface InviteViewProps {
 }
 
 type InviteStep = 'form' | 'sending' | 'sent' | 'guest-join' | 'guest-joining' | 'waiting' | 'error';
-type ChallengeChannel = 'email' | 'whatsapp';
+type ChallengeChannel = 'email' | 'whatsapp' | 'copy';
 type NotifyChannel = 'email' | 'telegram';
 
 // ============================================
@@ -191,6 +191,9 @@ export const InviteView: React.FC<InviteViewProps> = ({
 
   // WhatsApp link (generated after room creation)
   const [whatsAppUrl, setWhatsAppUrl] = useState<string | null>(null);
+  // Copyable invite text (for 'copy' channel)
+  const [inviteText, setInviteText] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   // Reclaim flow
   useEffect(() => {
@@ -254,6 +257,7 @@ export const InviteView: React.FC<InviteViewProps> = ({
       setError("Enter your opponent's phone number");
       return;
     }
+    // 'copy' channel needs no recipient validation
 
     // Validate notification channel
     if (notifyChannel === 'email' && !challengerEmail.trim()) {
@@ -289,9 +293,14 @@ export const InviteView: React.FC<InviteViewProps> = ({
 
     setRoomCode(result.roomCode!);
 
-    // If WhatsApp, build the click-to-send URL
-    if (challengeChannel === 'whatsapp' && result.joinUrl) {
-      setWhatsAppUrl(socket.buildWhatsAppUrl(challengedPhone, result.joinUrl));
+    // Build channel-specific share content
+    if (result.joinUrl) {
+      if (challengeChannel === 'whatsapp') {
+        setWhatsAppUrl(socket.buildWhatsAppUrl(challengedPhone, result.joinUrl));
+      }
+      if (challengeChannel === 'copy') {
+        setInviteText(socket.buildInviteText(result.joinUrl));
+      }
     }
 
     setStep('sent');
@@ -400,6 +409,7 @@ export const InviteView: React.FC<InviteViewProps> = ({
                 options={[
                   { value: 'email', label: 'Email' },
                   { value: 'whatsapp', label: 'WhatsApp' },
+                  { value: 'copy', label: 'Copy Link' },
                 ]}
                 value={challengeChannel}
                 onChange={setChallengeChannel}
@@ -428,6 +438,11 @@ export const InviteView: React.FC<InviteViewProps> = ({
                     Include country code. We'll open WhatsApp with the invite message for you to send.
                   </p>
                 </>
+              )}
+              {challengeChannel === 'copy' && (
+                <p className="text-gray-500 text-xs mt-1">
+                  We'll give you a message with a link to paste into any app — SMS, Slack, Discord, etc.
+                </p>
               )}
             </div>
 
@@ -485,7 +500,7 @@ export const InviteView: React.FC<InviteViewProps> = ({
                        hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed
                        transition-colors mb-4"
             >
-              {challengeChannel === 'whatsapp' ? 'Create Invite' : 'Send Invite'}
+              {challengeChannel === 'email' ? 'Send Invite' : 'Create Invite'}
             </button>
 
             <button onClick={onBack}
@@ -508,7 +523,7 @@ export const InviteView: React.FC<InviteViewProps> = ({
           <div className="text-center">
             <div className="text-5xl mb-4">&#9989;</div>
             <h2 className="text-2xl font-bold text-white mb-2">
-              {challengeChannel === 'whatsapp' ? 'Invite Created!' : 'Invite Sent!'}
+              {challengeChannel === 'email' ? 'Invite Sent!' : 'Invite Created!'}
             </h2>
 
             {challengeChannel === 'email' && (
@@ -531,6 +546,32 @@ export const InviteView: React.FC<InviteViewProps> = ({
                 >
                   Open WhatsApp &amp; Send
                 </a>
+              </div>
+            )}
+
+            {challengeChannel === 'copy' && inviteText && (
+              <div className="mb-6">
+                <p className="text-gray-400 mb-3">
+                  Copy this message and send it to your opponent:
+                </p>
+                <div className="bg-gray-900 rounded-lg p-4 text-left mb-3">
+                  <p className="text-white text-sm whitespace-pre-wrap break-all font-mono">{inviteText}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(inviteText);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  className={`px-6 py-3 rounded-lg font-bold transition-colors ${
+                    copied
+                      ? 'bg-green-600 text-white'
+                      : 'bg-blue-500 text-white hover:bg-blue-600'
+                  }`}
+                >
+                  {copied ? 'Copied!' : 'Copy to Clipboard'}
+                </button>
               </div>
             )}
 

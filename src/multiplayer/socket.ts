@@ -300,11 +300,19 @@ export async function checkTelegramConnect(token: string): Promise<{
 }
 
 /**
+ * Build the invite message text for any channel.
+ * The URL is placed on its own line so messenger clients auto-link it.
+ */
+export function buildInviteText(joinUrl: string): string {
+  return `You've been challenged to a Lost Worlds battle!\n\n${joinUrl}`;
+}
+
+/**
  * Build a WhatsApp click-to-send URL.
  * The challenger clicks this to send the invite message via WhatsApp.
  */
 export function buildWhatsAppUrl(phoneNumber: string, joinUrl: string): string {
-  const message = `You've been challenged to a Lost Worlds battle! Click here to join: ${joinUrl}`;
+  const message = buildInviteText(joinUrl);
   // Strip non-digits from phone number for wa.me link
   const cleanNumber = phoneNumber.replace(/\D/g, '');
   return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
