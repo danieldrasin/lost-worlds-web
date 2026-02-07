@@ -2,15 +2,17 @@
  * Menu View Component
  *
  * Character selection and game mode selection.
+ * Handles URL parameters for invite system.
  */
 
 import React, { useState, useEffect } from 'react';
 import { useGameStore } from '../../state/gameStore';
 import { MultiplayerLobby } from './MultiplayerLobby';
+import { InviteView } from './InviteView';
 
 type GameMode = 'ai' | 'local' | 'online';
 
-// Character name helper - defined at module level to avoid hoisting issues
+// Character name helper
 const characterDisplayName = (id: string): string => {
   const names: Record<string, string> = {
     'man-in-chainmail': 'Man in Chainmail',
@@ -28,20 +30,42 @@ export const MenuView: React.FC = () => {
   const [showMultiplayerLobby, setShowMultiplayerLobby] = useState(false);
   const [initialRoomCode, setInitialRoomCode] = useState<string | undefined>(undefined);
 
+  // Invite system state
+  const [showInviteView, setShowInviteView] = useState(false);
+  const [inviteRoomCode, setInviteRoomCode] = useState<string | undefined>(undefined);
+  const [reclaimToken, setReclaimToken] = useState<string | undefined>(undefined);
+  const [reclaimRole, setReclaimRole] = useState<'host' | 'guest' | undefined>(undefined);
+
   useEffect(() => {
     initialize();
   }, [initialize]);
 
-  // Check for room code in URL parameters
+  // Check for URL parameters (room code, invite, reclaim token)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const roomCode = urlParams.get('room');
+    const token = urlParams.get('token');
+    const role = urlParams.get('role');
+    const isInvite = urlParams.get('invite') === 'true';
+
+    // Clean the URL
     if (roomCode) {
-      // Clean the URL without reloading the page
       const cleanUrl = window.location.pathname;
       window.history.replaceState({}, document.title, cleanUrl);
+    }
 
-      // Set up for auto-join
+    if (roomCode && token) {
+      // Returning via notification link (host or guest reclaiming)
+      setInviteRoomCode(roomCode.toUpperCase());
+      setReclaimToken(token);
+      setReclaimRole((role as 'host' | 'guest') || 'host');
+      setShowInviteView(true);
+    } else if (roomCode && isInvite) {
+      // Guest joining via invite email link
+      setInviteRoomCode(roomCode.toUpperCase());
+      setShowInviteView(true);
+    } else if (roomCode) {
+      // Regular room join (QR code / share link)
       setInitialRoomCode(roomCode.toUpperCase());
       setGameMode('online');
       setShowMultiplayerLobby(true);
@@ -67,13 +91,37 @@ export const MenuView: React.FC = () => {
   };
 
   const handleMultiplayerBattleStart = (isHost: boolean, opponentCharacter: string) => {
-    // For multiplayer, use the multiplayer-specific start function
     const { startMultiplayerBattle } = useGameStore.getState();
     startMultiplayerBattle(player1Char, opponentCharacter, isHost);
     setShowMultiplayerLobby(false);
+    setShowInviteView(false);
   };
 
-  // Show multiplayer lobby if in online mode
+  // Show invite view (creating invite, joining invite, or reclaiming)
+  if (showInviteView) {
+    return (
+      <InviteView
+        availableCharacters={availableCharacters.map(id => ({
+          id,
+          name: characterDisplayName(id),
+        }))}
+        selectedCharacter={player1Char}
+        onCharacterChange={(charId) => setPlayer1Char(charId)}
+        onBattleStart={handleMultiplayerBattleStart}
+        onBack={() => {
+          setShowInviteView(false);
+          setInviteRoomCode(undefined);
+          setReclaimToken(undefined);
+          setReclaimRole(undefined);
+        }}
+        inviteRoomCode={inviteRoomCode}
+        reclaimToken={reclaimToken}
+        reclaimRole={reclaimRole}
+      />
+    );
+  }
+
+  // Show multiplayer lobby (regular QR/code flow)
   if (showMultiplayerLobby) {
     return (
       <MultiplayerLobby
@@ -85,9 +133,9 @@ export const MenuView: React.FC = () => {
         onBattleStart={handleMultiplayerBattleStart}
         onBack={() => {
           setShowMultiplayerLobby(false);
-          setInitialRoomCode(undefined); // Clear auto-join code on back
+          setInitialRoomCode(undefined);
         }}
-        onCharacterChange={(charId) => setPlayer1Char(charId)} // Update selected character when guest chooses
+        onCharacterChange={(charId) => setPlayer1Char(charId)}
         initialRoomCode={initialRoomCode}
       />
     );
@@ -204,18 +252,30 @@ export const MenuView: React.FC = () => {
               </div>
             )}
 
-            {/* Start Button */}
-            <button
-              onClick={handleStartGame}
-              disabled={!player1Char || (gameMode !== 'online' && !player2Char)}
-              className={`w-full py-4 text-white text-xl font-bold rounded-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                gameMode === 'online'
-                  ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800'
-                  : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
-              }`}
-            >
-              {gameMode === 'online' ? 'Find Opponent' : 'Start Battle!'}
-            </button>
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              {/* Main button */}
+              <button
+                onClick={handleStartGame}
+                disabled={!player1Char || (gameMode !== 'online' && !player2Char)}
+                className={`w-full py-4 text-white text-xl font-bold rounded-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
+                  gameMode === 'online'
+                    ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800'
+                    : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
+                }`}
+              >
+                {gameMode === 'online' ? 'Find Opponent' : 'Start Battle!'}
+              </button>
+
+              {/* Invite button - shown for all modes as an alternative */}
+              <button
+                onClick={() => setShowInviteView(true)}
+                className="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg
+                         font-medium hover:from-purple-700 hover:to-purple-800 transition-all shadow"
+              >
+                📧 Invite a Friend via Email
+              </button>
+            </div>
 
             {/* Character Info */}
             <div className={`mt-6 grid gap-4 text-sm ${gameMode === 'online' ? 'grid-cols-1' : 'grid-cols-2'}`}>

@@ -177,6 +177,177 @@ export function onOpponentDisconnected(callback: () => void): void {
   getSocket()?.on('opponent-disconnected', callback);
 }
 
+// ============================================
+// Invite System (REST-based, not WebSocket)
+// ============================================
+
+/**
+ * Create an invite room and send notification to guest
+ */
+export async function createInvite(params: {
+  hostCharacterId: string;
+  hostEmail?: string;
+  hostTelegramChatId?: string;
+  guestEmail?: string;
+  guestTelegramChatId?: string;
+}): Promise<{
+  success: boolean;
+  roomCode?: string;
+  hostToken?: string;
+  error?: string;
+}> {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/invites/create`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    return { success: false, error: 'Failed to connect to server' };
+  }
+}
+
+/**
+ * Join an invite room as guest
+ */
+export async function joinInvite(params: {
+  roomCode: string;
+  characterId: string;
+  guestEmail?: string;
+  guestTelegramChatId?: string;
+}): Promise<{
+  success: boolean;
+  roomCode?: string;
+  guestToken?: string;
+  hostCharacter?: string;
+  error?: string;
+}> {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/invites/join`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    return { success: false, error: 'Failed to connect to server' };
+  }
+}
+
+/**
+ * Reclaim a room using a token (host or guest returning via notification link)
+ */
+export async function reclaimRoom(params: {
+  roomCode: string;
+  token: string;
+}): Promise<{
+  success: boolean;
+  role?: string;
+  roomCode?: string;
+  hostCharacter?: string;
+  guestCharacter?: string;
+  opponentConnected?: boolean;
+  inviteStatus?: string;
+  error?: string;
+}> {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/invites/reclaim`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    return { success: false, error: 'Failed to connect to server' };
+  }
+}
+
+/**
+ * Get a Telegram connection link
+ */
+export async function getTelegramLink(roomCode: string, role: string): Promise<{
+  success: boolean;
+  token?: string;
+  url?: string;
+}> {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/telegram/link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ roomCode, role }),
+    });
+    return await response.json();
+  } catch (err) {
+    return { success: false };
+  }
+}
+
+/**
+ * Check Telegram link status (has user connected?)
+ */
+export async function checkTelegramLink(token: string): Promise<{
+  found: boolean;
+  connected?: boolean;
+  chatId?: string;
+}> {
+  try {
+    const response = await fetch(`${SERVER_URL}/api/telegram/status/${token}`);
+    return await response.json();
+  } catch (err) {
+    return { found: false };
+  }
+}
+
+/**
+ * Join a room via socket with a token (for invite room reclaim after REST reclaim)
+ */
+export function joinRoomWithToken(roomCode: string, characterId: string, token: string): Promise<{
+  success: boolean;
+  roomCode?: string;
+  isHost?: boolean;
+  hostCharacter?: string;
+  guestCharacter?: string;
+  guestJoined?: boolean;
+  hostJoined?: boolean;
+  error?: string;
+}> {
+  const sock = connect();
+  return new Promise((resolve) => {
+    sock.emit('join-room', { roomCode, characterId, token }, resolve);
+  });
+}
+
+// ============================================
+// Notification Preferences (localStorage)
+// ============================================
+
+const PREFS_KEY = 'lostworlds_notification_prefs';
+
+export interface NotificationPrefs {
+  email?: string;
+  telegramChatId?: string;
+  preferredMethod?: 'email' | 'telegram' | 'both';
+}
+
+export function loadNotificationPrefs(): NotificationPrefs {
+  try {
+    const stored = localStorage.getItem(PREFS_KEY);
+    return stored ? JSON.parse(stored) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveNotificationPrefs(prefs: NotificationPrefs): void {
+  try {
+    const existing = loadNotificationPrefs();
+    localStorage.setItem(PREFS_KEY, JSON.stringify({ ...existing, ...prefs }));
+  } catch {
+    // localStorage not available
+  }
+}
+
 // Remove listeners
 export function removeAllListeners(): void {
   const sock = getSocket();
