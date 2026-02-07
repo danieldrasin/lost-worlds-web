@@ -247,7 +247,13 @@ export const useGameStore = create<GameState>((set, get) => ({
     if (!battle) return null;
 
     const validMoves = getValidMovesForCharacter(battle.player2);
-    if (validMoves.length === 0) return null;
+    if (validMoves.length === 0) {
+      // Fallback: if no valid moves (restriction edge case), pick any move
+      console.warn('AI has no valid moves - falling back to first available maneuver');
+      const allMoves = battle.player2.sheet.maneuvers;
+      if (allMoves.length === 0) return null;
+      return allMoves[0];
+    }
 
     // Simple AI: random valid move
     const randomIndex = Math.floor(Math.random() * validMoves.length);

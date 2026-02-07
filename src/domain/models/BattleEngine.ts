@@ -100,15 +100,19 @@ export function resolveExchange(
 }
 
 /**
- * Get the page number for a maneuver based on range state
+ * Get the page number for a maneuver based on range state.
+ * Uses extendedPage when at extended range, normalPage otherwise.
  */
-function getManeuverPage(maneuver: Maneuver, _isExtendedRange: boolean): number {
-  // For now, we use normalPage. Extended pages were for multi-character combat.
+function getManeuverPage(maneuver: Maneuver, isExtendedRange: boolean): number {
+  if (isExtendedRange && maneuver.extendedPage) {
+    return maneuver.extendedPage;
+  }
   return maneuver.normalPage;
 }
 
 /**
- * Look up the result page when I use myPage against opponent's opponentPage
+ * Look up the result page when I use myPage against opponent's opponentPage.
+ * Falls back to a default page (page 1) if mapping is missing, to prevent crashes.
  */
 function lookupResult(
   character: Character,
@@ -117,21 +121,38 @@ function lookupResult(
 ): PicturePageResult {
   const lookupPage = character.book.lookupPages.get(myPage);
   if (!lookupPage) {
-    throw new Error(`Lookup page ${myPage} not found for ${character.name}`);
+    console.error(`Lookup page ${myPage} not found for ${character.name}, falling back to first page`);
+    return getFirstPicturePage(character);
   }
 
   const resultPageNumber = lookupPage.mapping[opponentPage];
   if (resultPageNumber === undefined || resultPageNumber === 0) {
-    // 0 means no result (shouldn't happen in valid gameplay)
-    throw new Error(`No mapping for opponent page ${opponentPage} on lookup page ${myPage}`);
+    console.error(`No mapping for opponent page ${opponentPage} on lookup page ${myPage} for ${character.name}, falling back to first page`);
+    return getFirstPicturePage(character);
   }
 
   const picturePage = character.book.picturePages.get(resultPageNumber);
   if (!picturePage) {
-    throw new Error(`Picture page ${resultPageNumber} not found for ${character.name}`);
+    console.error(`Picture page ${resultPageNumber} not found for ${character.name}, falling back to first page`);
+    return getFirstPicturePage(character);
   }
 
   return picturePage;
+}
+
+/**
+ * Get the first picture page as a safe fallback (page 1: "Jumping Away")
+ */
+function getFirstPicturePage(character: Character): PicturePageResult {
+  const firstPage = character.book.picturePages.get(1);
+  if (firstPage) return firstPage;
+
+  // Absolute last resort: find any picture page
+  const anyPage = character.book.picturePages.values().next().value;
+  if (anyPage) return anyPage;
+
+  // Should never reach here, but TypeScript needs it
+  throw new Error(`No picture pages at all for ${character.name}`);
 }
 
 /**
@@ -340,18 +361,33 @@ function extractRestrictions(result: PicturePageResult): ActiveRestriction[] {
 }
 
 /**
- * Apply an exchange to the battle, updating both characters
+ * Apply an exchange to the battle, updating both characters.
+ *
+ * IMPORTANT: Range is a SHARED state in Lost Worlds — both combatants are always
+ * at the same range (extended or normal). After computing each character's new state
+ * from their picture page result, we synchronize isExtendedRange so they agree.
+ * If the two results disagree (data inconsistency), we favor extended range as
+ * the safer fallback (it's the "reset" position).
  */
 export function applyExchange(battle: Battle, exchange: BattleExchange): Battle {
+  const p1State = exchange.player1Result.stateAfter;
+  const p2State = exchange.player2Result.stateAfter;
+
+  // Synchronize range: in Lost Worlds, range is shared between combatants.
+  // Both picture page results should agree, but if they don't, favor extended range.
+  const sharedRange = p1State.isExtendedRange || p2State.isExtendedRange;
+  p1State.isExtendedRange = sharedRange;
+  p2State.isExtendedRange = sharedRange;
+
   return {
     ...battle,
     player1: {
       ...battle.player1,
-      state: exchange.player1Result.stateAfter,
+      state: p1State,
     },
     player2: {
       ...battle.player2,
-      state: exchange.player2Result.stateAfter,
+      state: p2State,
     },
     round: exchange.roundNumber,
     history: [...battle.history, exchange],
