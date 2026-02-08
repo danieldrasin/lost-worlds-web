@@ -16,7 +16,7 @@ const BuildInfo: React.FC = () => {
   const d = new Date(buildTime);
   const label = d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
   return (
-    <div className="fixed bottom-1 right-2 text-gray-600 text-xs opacity-50 pointer-events-none select-none z-50">
+    <div className="fixed bottom-14 lg:bottom-1 right-2 text-gray-500 text-[10px] pointer-events-none select-none z-50">
       build {label}
     </div>
   );

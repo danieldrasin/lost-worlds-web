@@ -90,6 +90,23 @@ button, .clickable {
   animation: pulse-damage 0.3s ease-in-out;
 }
 
+/* Force scrollbar visibility on WebKit/Safari (macOS hides them by default) */
+.overflow-auto::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 8px;
+  height: 8px;
+}
+.overflow-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+}
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.overflow-auto::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 /* Responsive font sizes */
 @media (max-width: 640px) {
   html {
