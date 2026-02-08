@@ -23,6 +23,18 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      name: 'desktop-safari',
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'iphone-14',
+      use: { ...devices['iPhone 14'] },
+    },
+    {
+      name: 'ipad',
+      use: { ...devices['iPad (gen 7)'] },
+    },
   ],
 
   // Only run local dev server if not testing against live URL

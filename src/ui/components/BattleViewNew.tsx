@@ -222,10 +222,10 @@ export const BattleViewNew: React.FC = () => {
       )}
 
       {/* Desktop Layout (lg and up) */}
-      <div className="hidden lg:flex flex-1 p-4 gap-4">
+      <div className="hidden lg:flex flex-1 p-4 gap-4 min-h-0">
         {/* Left: My Move Selection */}
-        <div className="w-1/3 flex flex-col">
-          <div className="bg-gray-800 rounded-lg p-4 flex-1 overflow-auto">
+        <div className="w-1/3 flex flex-col min-h-0">
+          <div className="bg-gray-800 rounded-lg p-4 flex-1 min-h-0 overflow-auto">
             <h2 className="text-white font-bold mb-3 text-center">Your Moves</h2>
             <MoveSelector
               character={myCharacter}
@@ -256,8 +256,8 @@ export const BattleViewNew: React.FC = () => {
         </div>
 
         {/* Right: Picture View */}
-        <div className="w-2/3 flex flex-col">
-          <div className="bg-gray-800 rounded-lg p-4 flex-1 flex flex-col overflow-auto">
+        <div className="w-2/3 flex flex-col min-h-0">
+          <div className="bg-gray-800 rounded-lg p-4 flex-1 flex flex-col min-h-0 overflow-auto">
             <div className="flex items-center justify-between mb-3">
               <POVToggle active={showTheirView} onToggle={() => setShowTheirView(v => !v)} />
               <h2 className="text-white font-bold text-center flex-1">
@@ -268,7 +268,7 @@ export const BattleViewNew: React.FC = () => {
               </h2>
               <div className="w-8" /> {/* spacer to center title */}
             </div>
-            <div className="flex-1 flex items-center justify-center">
+            <div className="flex items-center justify-center">
               {displayPicture ? (
                 <div className="max-w-md w-full">
                   <PicturePage
@@ -553,8 +553,8 @@ const MobileViewTab: React.FC<MobileViewTabProps> = ({
   waitingForOpponent = false, opponentReady = false, isMultiplayer = false, isConnected = true,
   showTheirView, onTogglePOV,
 }) => (
-  <div className="flex flex-col h-full">
-    <div className="flex-1 flex flex-col items-center justify-start overflow-auto">
+  <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full">
       {displayPicture ? (
         <>
           <div className="w-full max-w-sm relative">
