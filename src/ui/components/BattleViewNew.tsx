@@ -162,7 +162,7 @@ export const BattleViewNew: React.FC = () => {
   const shouldHighlightMove = !isGameOver && !waitingForOpponent;
 
   return (
-    <div className="bg-gray-900 flex flex-col" style={{ minHeight: '100dvh' }}>
+    <div className="bg-gray-900 flex flex-col viewport-fixed">
       {/* Status Bar - Always visible */}
       <StatusBar
         myName={myCharacter.name}
@@ -292,9 +292,9 @@ export const BattleViewNew: React.FC = () => {
       </div>
 
       {/* Mobile Layout (below lg) */}
-      <div className="lg:hidden flex-1 flex flex-col">
-        {/* Content Area */}
-        <div className="flex-1 overflow-auto p-4">
+      <div className="lg:hidden flex-1 flex flex-col min-h-0">
+        {/* Content Area — min-h-0 lets flex item shrink below content size */}
+        <div className="flex-1 overflow-auto p-4 min-h-0">
           {mobileTab === 'view' && (
             <MobileViewTab
               displayPicture={displayPicture}

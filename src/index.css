@@ -40,16 +40,16 @@ button, .clickable {
 }
 
 .safe-area-bottom {
-  /* env() handles the home indicator (~34px on Face ID iPhones).
-     The extra 60px accounts for Safari's sliding bottom toolbar
-     which overlaps content but isn't reported by safe-area-inset. */
-  padding-bottom: calc(env(safe-area-inset-bottom) + 60px);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Use dynamic viewport height on mobile to account for iOS Safari toolbar */
-.h-dvh {
-  height: 100dvh;
-  height: 100vh; /* fallback */
+/* Fixed viewport container — forces flex children to fit within
+   the visible area. On iOS Safari, dvh accounts for the toolbar.
+   Content scrolling is handled by overflow-auto on inner panels. */
+.viewport-fixed {
+  height: 100vh;  /* fallback for older browsers */
+  height: 100dvh; /* dynamic viewport height — excludes Safari toolbar */
+  overflow: hidden;
 }
 
 /* Move tab highlight animation */
