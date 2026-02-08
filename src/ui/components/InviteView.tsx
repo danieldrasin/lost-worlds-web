@@ -19,7 +19,7 @@ interface InviteViewProps {
   availableCharacters: { id: string; name: string }[];
   selectedCharacter: string;
   onCharacterChange: (charId: string) => void;
-  onBattleStart: (isHost: boolean, opponentCharacter: string, roomCode?: string, token?: string) => void;
+  onBattleStart: (isHost: boolean, opponentCharacter: string, roomCode?: string, token?: string, myCharacter?: string) => void;
   onBack: () => void;
   inviteRoomCode?: string;
   reclaimToken?: string;
@@ -192,6 +192,8 @@ export const InviteView: React.FC<InviteViewProps> = ({
   useEffect(() => {
     if (!reclaimToken || !inviteRoomCode) return;
 
+    let battleStarted = false; // Prevent double-firing from both events
+
     const doReclaim = async () => {
       const result = await socket.reclaimRoom({
         roomCode: inviteRoomCode,
@@ -204,8 +206,9 @@ export const InviteView: React.FC<InviteViewProps> = ({
         return;
       }
 
-      const charId = result.role === 'host' ? result.hostCharacter! : result.guestCharacter!;
-      const joinResult = await socket.joinRoomWithToken(inviteRoomCode, charId, reclaimToken);
+      // Use the server-side character data (not MenuView state which may have reset)
+      const myCharId = result.role === 'host' ? result.hostCharacter! : result.guestCharacter!;
+      const joinResult = await socket.joinRoomWithToken(inviteRoomCode, myCharId, reclaimToken);
 
       if (!joinResult.success) {
         setError(joinResult.error || 'Failed to connect to room');
@@ -213,10 +216,16 @@ export const InviteView: React.FC<InviteViewProps> = ({
         return;
       }
 
+      // Update parent's character selection to match server-side data
+      onCharacterChange(myCharId);
+
       socket.onBattleStart(({ hostCharacter, guestCharacter }) => {
+        if (battleStarted) return;
         const isHost = result.role === 'host';
         const opponentChar = isHost ? guestCharacter : hostCharacter;
-        onBattleStart(isHost, opponentChar, inviteRoomCode, reclaimToken);
+        if (!opponentChar) return; // Skip if opponent character not yet known
+        battleStarted = true;
+        onBattleStart(isHost, opponentChar, inviteRoomCode, reclaimToken, myCharId);
       });
 
       if (!result.opponentConnected) {
@@ -224,7 +233,10 @@ export const InviteView: React.FC<InviteViewProps> = ({
       }
 
       socket.onGuestJoined(({ guestCharacter }) => {
-        onBattleStart(true, guestCharacter, inviteRoomCode, reclaimToken);
+        if (battleStarted) return;
+        if (!guestCharacter) return; // Skip if character ID is empty
+        battleStarted = true;
+        onBattleStart(true, guestCharacter, inviteRoomCode, reclaimToken, myCharId);
       });
     };
 
@@ -237,7 +249,7 @@ export const InviteView: React.FC<InviteViewProps> = ({
         sock.off('guest-joined');
       }
     };
-  }, [reclaimToken, inviteRoomCode, onBattleStart]);
+  }, [reclaimToken, inviteRoomCode, onBattleStart, onCharacterChange]);
 
   // Send invite (Step 1)
   const handleSendInvite = async () => {

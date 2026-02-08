@@ -257,7 +257,7 @@ export const BattleViewNew: React.FC = () => {
 
         {/* Right: Picture View */}
         <div className="w-2/3 flex flex-col">
-          <div className="bg-gray-800 rounded-lg p-4 flex-1 flex flex-col">
+          <div className="bg-gray-800 rounded-lg p-4 flex-1 flex flex-col overflow-auto">
             <div className="flex items-center justify-between mb-3">
               <POVToggle active={showTheirView} onToggle={() => setShowTheirView(v => !v)} />
               <h2 className="text-white font-bold text-center flex-1">
@@ -554,7 +554,7 @@ const MobileViewTab: React.FC<MobileViewTabProps> = ({
   showTheirView, onTogglePOV,
 }) => (
   <div className="flex flex-col h-full">
-    <div className="flex-1 flex flex-col items-center justify-center">
+    <div className="flex-1 flex flex-col items-center justify-start overflow-auto">
       {displayPicture ? (
         <>
           <div className="w-full max-w-sm relative">
