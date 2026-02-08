@@ -361,6 +361,34 @@ function extractRestrictions(result: PicturePageResult): ActiveRestriction[] {
 }
 
 /**
+ * When range is synchronized to extended, ensure the player's restrictions
+ * include ONLY_CATEGORY: EXTENDED_RANGE. This handles the case where one
+ * player's picture page result says normal range but the shared range is
+ * extended — without this, they'd see normal-range moves that don't have
+ * valid extended-range lookup mappings.
+ *
+ * In the original Smalltalk code, this was handled by LWResultEffectAdjustIsExtendedRange
+ * which adjusted a player's range to match their opponent's, combined with
+ * conditional restrictions (addOnlyExtendedRangeThisTurnBasedOnOpponent).
+ */
+function ensureExtendedRangeRestriction(state: CharacterState): void {
+  const hasExtendedRestriction = state.activeRestrictions.some(
+    ar => ar.restriction.type === 'ONLY_CATEGORY' &&
+          ar.restriction.categories.includes('EXTENDED_RANGE')
+  );
+
+  if (!hasExtendedRestriction) {
+    // Replace all restrictions with ONLY_CATEGORY: EXTENDED_RANGE
+    // since at extended range, only extended range moves are valid
+    state.activeRestrictions = [{
+      restriction: { type: 'ONLY_CATEGORY', categories: ['EXTENDED_RANGE'] },
+      duration: 1,
+      source: 'Synchronized to extended range',
+    }];
+  }
+}
+
+/**
  * Apply an exchange to the battle, updating both characters.
  *
  * IMPORTANT: Range is a SHARED state in Lost Worlds — both combatants are always
@@ -375,7 +403,19 @@ export function applyExchange(battle: Battle, exchange: BattleExchange): Battle 
 
   // Synchronize range: in Lost Worlds, range is shared between combatants.
   // Both picture page results should agree, but if they don't, favor extended range.
+  // This matches the original Smalltalk behavior where range is a shared state.
   const sharedRange = p1State.isExtendedRange || p2State.isExtendedRange;
+
+  // When range is synchronized to extended, ensure both players have the
+  // ONLY_CATEGORY: EXTENDED_RANGE restriction so they only see extended moves.
+  // Without this, a player whose result said "normal range" would keep their
+  // normal-range restrictions while being forced to extended range, causing
+  // lookup table mismatches (normal pages don't have extended-range mappings).
+  if (sharedRange) {
+    ensureExtendedRangeRestriction(p1State);
+    ensureExtendedRangeRestriction(p2State);
+  }
+
   p1State.isExtendedRange = sharedRange;
   p2State.isExtendedRange = sharedRange;
 

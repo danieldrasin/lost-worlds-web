@@ -496,29 +496,29 @@
         "type": "AND",
         "children": [
           {
-            "type": "ONLY_CATEGORY",
-            "categories": [
-              "JUMP",
-              "RAGE"
-            ]
-          },
-          {
-            "type": "ONLY_COLOR",
-            "colors": [
-              "brown"
-            ]
-          },
-          {
-            "type": "ONLY_NAME",
-            "names": [
-              "KICK",
-              "RETRIEVE"
+            "type": "OR",
+            "children": [
+              {
+                "type": "ONLY_CATEGORY",
+                "categories": [
+                  "JUMP",
+                  "RAGE"
+                ]
+              },
+              {
+                "type": "ONLY_COLOR",
+                "colors": [
+                  "brown"
+                ]
+              }
             ]
           },
           {
             "type": "NO_NAME",
             "names": [
-              "THROW"
+              "THROW",
+              "KICK",
+              "RETRIEVE"
             ]
           }
         ]
@@ -604,7 +604,7 @@
       "isExtendedRange": true,
       "damage": 5,
       "restriction": {
-        "type": "AND",
+        "type": "OR",
         "children": [
           {
             "type": "ONLY_COLOR",
@@ -777,23 +777,28 @@
         "type": "AND",
         "children": [
           {
-            "type": "ONLY_CATEGORY",
-            "categories": [
-              "JUMP",
-              "RAGE"
-            ]
-          },
-          {
-            "type": "ONLY_COLOR",
-            "colors": [
-              "brown"
-            ]
-          },
-          {
-            "type": "ONLY_NAME",
-            "names": [
-              "KICK",
-              "RETRIEVE"
+            "type": "OR",
+            "children": [
+              {
+                "type": "ONLY_CATEGORY",
+                "categories": [
+                  "JUMP",
+                  "RAGE"
+                ]
+              },
+              {
+                "type": "ONLY_COLOR",
+                "colors": [
+                  "brown"
+                ]
+              },
+              {
+                "type": "ONLY_NAME",
+                "names": [
+                  "KICK",
+                  "RETRIEVE"
+                ]
+              }
             ]
           },
           {
@@ -892,23 +897,28 @@
         "type": "AND",
         "children": [
           {
-            "type": "ONLY_CATEGORY",
-            "categories": [
-              "JUMP",
-              "RAGE"
-            ]
-          },
-          {
-            "type": "ONLY_COLOR",
-            "colors": [
-              "brown"
-            ]
-          },
-          {
-            "type": "ONLY_NAME",
-            "names": [
-              "KICK",
-              "RETRIEVE"
+            "type": "OR",
+            "children": [
+              {
+                "type": "ONLY_CATEGORY",
+                "categories": [
+                  "JUMP",
+                  "RAGE"
+                ]
+              },
+              {
+                "type": "ONLY_COLOR",
+                "colors": [
+                  "brown"
+                ]
+              },
+              {
+                "type": "ONLY_NAME",
+                "names": [
+                  "KICK",
+                  "RETRIEVE"
+                ]
+              }
             ]
           },
           {
@@ -944,23 +954,28 @@
         "type": "AND",
         "children": [
           {
-            "type": "ONLY_CATEGORY",
-            "categories": [
-              "JUMP",
-              "RAGE"
-            ]
-          },
-          {
-            "type": "ONLY_COLOR",
-            "colors": [
-              "brown"
-            ]
-          },
-          {
-            "type": "ONLY_NAME",
-            "names": [
-              "KICK",
-              "RETRIEVE"
+            "type": "OR",
+            "children": [
+              {
+                "type": "ONLY_CATEGORY",
+                "categories": [
+                  "JUMP",
+                  "RAGE"
+                ]
+              },
+              {
+                "type": "ONLY_COLOR",
+                "colors": [
+                  "brown"
+                ]
+              },
+              {
+                "type": "ONLY_NAME",
+                "names": [
+                  "KICK",
+                  "RETRIEVE"
+                ]
+              }
             ]
           },
           {
@@ -996,23 +1011,28 @@
         "type": "AND",
         "children": [
           {
-            "type": "ONLY_CATEGORY",
-            "categories": [
-              "JUMP",
-              "RAGE"
-            ]
-          },
-          {
-            "type": "ONLY_COLOR",
-            "colors": [
-              "brown"
-            ]
-          },
-          {
-            "type": "ONLY_NAME",
-            "names": [
-              "KICK",
-              "RETRIEVE"
+            "type": "OR",
+            "children": [
+              {
+                "type": "ONLY_CATEGORY",
+                "categories": [
+                  "JUMP",
+                  "RAGE"
+                ]
+              },
+              {
+                "type": "ONLY_COLOR",
+                "colors": [
+                  "brown"
+                ]
+              },
+              {
+                "type": "ONLY_NAME",
+                "names": [
+                  "KICK",
+                  "RETRIEVE"
+                ]
+              }
             ]
           },
           {

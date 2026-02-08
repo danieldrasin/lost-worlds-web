@@ -179,6 +179,48 @@ function validateAllExchanges(char1, char2) {
     `Checked ${combosChecked} move combinations. Range disagreements: ${rangeDisagreements}`);
 }
 
+/** Get effective restriction from a picture page, handling weapon-conditional restrictions.
+ *  In the original Smalltalk, certain restrictions (from pages like "Weapon Dislodged")
+ *  were wrapped in conditional logic that only applied when the weapon was lost.
+ *  The JSON data has these restrictions baked in without the conditional wrapper,
+ *  so we detect weapon-loss pages by checking for LOSE_WEAPON effects. */
+function getEffectiveRestriction(pp, hasWeapon) {
+  if (!pp.restriction || pp.restriction.type === 'NONE') return null;
+
+  // If this page has a LOSE_WEAPON effect and the character has their weapon,
+  // the restriction is conditional and shouldn't apply yet
+  const hasLoseWeaponEffect = (pp.effects || []).some(e => e.type === 'LOSE_WEAPON');
+  if (hasLoseWeaponEffect && hasWeapon) {
+    return null;
+  }
+
+  return pp.restriction;
+}
+
+/** Apply a restriction filter to a list of moves */
+function applyRestriction(moves, restriction) {
+  if (!restriction || restriction.type === 'NONE') return moves;
+  switch (restriction.type) {
+    case 'ONLY_CATEGORY':
+      return moves.filter(m => restriction.categories.includes(m.category));
+    case 'NO_CATEGORY':
+      return moves.filter(m => !restriction.categories.includes(m.category));
+    case 'ONLY_COLOR':
+      return moves.filter(m => restriction.colors.includes(m.color));
+    case 'NO_COLOR':
+      return moves.filter(m => !restriction.colors.includes(m.color));
+    case 'AND':
+      return restriction.children.reduce((ms, child) => applyRestriction(ms, child), moves);
+    case 'OR':
+      // OR means ANY child restriction allows the move
+      return moves.filter(m =>
+        restriction.children.some(child => applyRestriction([m], child).length > 0)
+      );
+    default:
+      return moves;
+  }
+}
+
 /** Test 4: Simulate full battles */
 function simulateBattles(char1, char2, numBattles) {
   const picturePages1 = new Map(char1.picturePages.map(p => [p.number, p]));
@@ -208,33 +250,28 @@ function simulateBattles(char1, char2, numBattles) {
     let round = 0;
     let restrictions1 = null;
     let restrictions2 = null;
+    let hasWeapon1 = true;
+    let hasWeapon2 = true;
 
     while (hp1 > 0 && hp2 > 0 && round < 100) {
       round++;
       totalRounds++;
 
-      // Get valid moves based on range and restrictions
+      // Get valid moves: at extended range, only EXTENDED_RANGE category moves;
+      // at normal range, everything EXCEPT EXTENDED_RANGE category moves
       let moves1 = isExtendedRange
-        ? char1.maneuvers.filter(m => m.extendedPage)
-        : char1.maneuvers;
+        ? char1.maneuvers.filter(m => m.category === 'EXTENDED_RANGE')
+        : char1.maneuvers.filter(m => m.category !== 'EXTENDED_RANGE');
       let moves2 = isExtendedRange
-        ? char2.maneuvers.filter(m => m.extendedPage)
-        : char2.maneuvers;
+        ? char2.maneuvers.filter(m => m.category === 'EXTENDED_RANGE')
+        : char2.maneuvers.filter(m => m.category !== 'EXTENDED_RANGE');
 
-      // Apply restrictions
+      // Apply additional restrictions from picture page results
       if (restrictions1) {
-        if (restrictions1.type === 'ONLY_CATEGORY') {
-          moves1 = moves1.filter(m => restrictions1.categories.includes(m.category));
-        } else if (restrictions1.type === 'NO_CATEGORY') {
-          moves1 = moves1.filter(m => !restrictions1.categories.includes(m.category));
-        }
+        moves1 = applyRestriction(moves1, restrictions1);
       }
       if (restrictions2) {
-        if (restrictions2.type === 'ONLY_CATEGORY') {
-          moves2 = moves2.filter(m => restrictions2.categories.includes(m.category));
-        } else if (restrictions2.type === 'NO_CATEGORY') {
-          moves2 = moves2.filter(m => !restrictions2.categories.includes(m.category));
-        }
+        moves2 = applyRestriction(moves2, restrictions2);
       }
 
       if (moves1.length === 0 || moves2.length === 0) {
@@ -273,10 +310,30 @@ function simulateBattles(char1, char2, numBattles) {
       hp1 -= dmg1;
       hp2 -= dmg2;
 
-      // Update range and restrictions
+      // Process weapon effects
+      for (const eff of pp1.effects || []) {
+        if (eff.type === 'LOSE_WEAPON') hasWeapon1 = false;
+        if (eff.type === 'RETRIEVE_WEAPON') hasWeapon1 = true;
+      }
+      for (const eff of pp2.effects || []) {
+        if (eff.type === 'LOSE_WEAPON') hasWeapon2 = false;
+        if (eff.type === 'RETRIEVE_WEAPON') hasWeapon2 = true;
+      }
+
+      // Update range (shared state: OR-logic, matching engine behavior)
       isExtendedRange = pp1.isExtendedRange || pp2.isExtendedRange;
-      restrictions1 = (pp1.restriction && pp1.restriction.type !== 'NONE') ? pp1.restriction : null;
-      restrictions2 = (pp2.restriction && pp2.restriction.type !== 'NONE') ? pp2.restriction : null;
+
+      // When range is forced to extended by OR-sync, restrictions are overridden
+      // to ONLY_CATEGORY: EXTENDED_RANGE (matching engine's ensureExtendedRangeRestriction)
+      if (isExtendedRange) {
+        restrictions1 = null; // Extended range filtering is handled by the range-based move filter above
+        restrictions2 = null;
+      } else {
+        // Get restriction from picture page, but skip weapon-conditional restrictions
+        // when the character still has their weapon (matching Smalltalk conditional logic)
+        restrictions1 = getEffectiveRestriction(pp1, hasWeapon1);
+        restrictions2 = getEffectiveRestriction(pp2, hasWeapon2);
+      }
     }
 
     if (hp1 <= 0 && hp2 <= 0) draws++;

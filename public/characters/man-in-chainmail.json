@@ -561,11 +561,22 @@
         "type": "AND",
         "children": [
           {
-            "type": "ONLY_COLOR",
-            "colors": [
-              "yellow",
-              "green",
-              "brown"
+            "type": "OR",
+            "children": [
+              {
+                "type": "ONLY_COLOR",
+                "colors": [
+                  "yellow",
+                  "green",
+                  "brown"
+                ]
+              },
+              {
+                "type": "ONLY_NAME",
+                "names": [
+                  "KICK"
+                ]
+              }
             ]
           },
           {
