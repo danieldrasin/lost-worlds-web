@@ -40,7 +40,10 @@ button, .clickable {
 }
 
 .safe-area-bottom {
-  padding-bottom: calc(env(safe-area-inset-bottom) + 8px);
+  /* env() handles the home indicator (~34px on Face ID iPhones).
+     The extra 60px accounts for Safari's sliding bottom toolbar
+     which overlaps content but isn't reported by safe-area-inset. */
+  padding-bottom: calc(env(safe-area-inset-bottom) + 60px);
 }
 
 /* Use dynamic viewport height on mobile to account for iOS Safari toolbar */
