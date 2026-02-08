@@ -40,6 +40,7 @@ export const BattleViewNew: React.FC = () => {
 
   const [mobileTab, setMobileTab] = useState<MobileTab>('view');
   const [isConnected, setIsConnected] = useState(true);
+  const [showTheirView, setShowTheirView] = useState(false);
 
   // Track socket connection status + auto-rejoin on reconnect
   useEffect(() => {
@@ -122,13 +123,22 @@ export const BattleViewNew: React.FC = () => {
   // After first exchange, show the combat result; before that, show starting picture
   const opponentPicture = lastExchange?.player2Result.picturePage;
 
-  // Starting picture: shown before the first exchange (the opponent's book opened to starting page)
+  // What they see: The result from MY book showing ME (reverse perspective)
+  const myPicture = lastExchange?.player1Result.picturePage;
+
+  // Starting pictures: shown before the first exchange
   const startingPicture = opponent.startingPicturePage
     ? opponent.book.picturePages.get(opponent.startingPicturePage)
     : null;
+  const myStartingPicture = myCharacter.startingPicturePage
+    ? myCharacter.book.picturePages.get(myCharacter.startingPicturePage)
+    : null;
 
-  // The picture to display: combat result if we have one, otherwise starting picture
-  const displayPicture = opponentPicture || startingPicture || null;
+  // The picture to display depends on perspective toggle
+  const displayPicture = showTheirView
+    ? (myPicture || myStartingPicture || null)
+    : (opponentPicture || startingPicture || null);
+  const displayCharName = showTheirView ? myCharacter.name : opponent.name;
 
   const validMoves = getValidMovesForCharacter(myCharacter);
 
@@ -245,28 +255,31 @@ export const BattleViewNew: React.FC = () => {
           )}
         </div>
 
-        {/* Right: Opponent's Picture (What I See) */}
+        {/* Right: Picture View */}
         <div className="w-2/3 flex flex-col">
           <div className="bg-gray-800 rounded-lg p-4 flex-1 flex flex-col">
-            <h2 className="text-white font-bold mb-3 text-center">
-              What You See <span className="text-gray-400 text-sm">(Opponent's Book)</span>
-            </h2>
+            <div className="flex items-center justify-between mb-3">
+              <POVToggle active={showTheirView} onToggle={() => setShowTheirView(v => !v)} />
+              <h2 className="text-white font-bold text-center flex-1">
+                {showTheirView ? 'What They See' : 'What You See'}
+                <span className="text-gray-400 text-sm ml-2">
+                  ({showTheirView ? "Your Book" : "Opponent's Book"})
+                </span>
+              </h2>
+              <div className="w-8" /> {/* spacer to center title */}
+            </div>
             <div className="flex-1 flex items-center justify-center">
               {displayPicture ? (
                 <div className="max-w-md w-full">
                   <PicturePage
                     result={displayPicture}
-                    characterName={opponent.name}
-                    damage={lastExchange?.player1Result.damageTaken}
+                    characterName={displayCharName}
+                    damage={showTheirView ? lastExchange?.player2Result.damageTaken : lastExchange?.player1Result.damageTaken}
                   />
-                  {lastExchange ? (
-                    <div className="mt-4 text-center text-gray-400 text-sm">
-                      {opponent.name} used <span className="text-white font-bold">{lastExchange.player2Maneuver.name}</span>
-                      {lastExchange.player1Result.damageTaken > 0 && (
-                        <span className="text-red-400"> — You took {lastExchange.player1Result.damageTaken} damage!</span>
-                      )}
-                    </div>
-                  ) : (
+                  {lastExchange && (
+                    <ExchangeSummary lastExchange={lastExchange} myName={myCharacter.name} oppName={opponent.name} />
+                  )}
+                  {!lastExchange && (
                     <div className="mt-4 text-center text-gray-400 text-sm">
                       Select your opening move
                     </div>
@@ -298,12 +311,16 @@ export const BattleViewNew: React.FC = () => {
           {mobileTab === 'view' && (
             <MobileViewTab
               displayPicture={displayPicture}
-              opponent={opponent}
+              displayCharName={displayCharName}
+              myName={myCharacter.name}
+              oppName={opponent.name}
               lastExchange={lastExchange}
               waitingForOpponent={waitingForOpponent}
               opponentReady={opponentReady}
               isMultiplayer={isMultiplayer}
               isConnected={isConnected}
+              showTheirView={showTheirView}
+              onTogglePOV={() => setShowTheirView(v => !v)}
             />
           )}
           {mobileTab === 'move' && (
@@ -519,33 +536,39 @@ const HistoryList: React.FC<HistoryListProps> = ({ history, myName, oppName }) =
 
 interface MobileViewTabProps {
   displayPicture: any;
-  opponent: any;
+  displayCharName: string;
+  myName: string;
+  oppName: string;
   lastExchange: BattleExchange | undefined;
   waitingForOpponent?: boolean;
   opponentReady?: boolean;
   isMultiplayer?: boolean;
   isConnected?: boolean;
+  showTheirView: boolean;
+  onTogglePOV: () => void;
 }
 
 const MobileViewTab: React.FC<MobileViewTabProps> = ({
-  displayPicture, opponent, lastExchange,
-  waitingForOpponent = false, opponentReady = false, isMultiplayer = false, isConnected = true
+  displayPicture, displayCharName, myName, oppName, lastExchange,
+  waitingForOpponent = false, opponentReady = false, isMultiplayer = false, isConnected = true,
+  showTheirView, onTogglePOV,
 }) => (
   <div className="flex flex-col h-full">
     <div className="flex-1 flex flex-col items-center justify-center">
       {displayPicture ? (
         <>
-          <div className="w-full max-w-sm">
+          <div className="w-full max-w-sm relative">
+            <div className="absolute top-2 left-2 z-10">
+              <POVToggle active={showTheirView} onToggle={onTogglePOV} />
+            </div>
             <PicturePage
               result={displayPicture}
-              characterName={opponent.name}
-              damage={lastExchange?.player1Result.damageTaken}
+              characterName={displayCharName}
+              damage={showTheirView ? lastExchange?.player2Result.damageTaken : lastExchange?.player1Result.damageTaken}
             />
           </div>
           {lastExchange ? (
-            <div className="mt-3 text-center text-gray-400 text-sm">
-              {opponent.name} used <span className="text-white font-bold">{lastExchange.player2Maneuver.name}</span>
-            </div>
+            <ExchangeSummary lastExchange={lastExchange} myName={myName} oppName={oppName} />
           ) : (
             <div className="mt-3 text-center text-gray-400 text-sm">
               Tap "Move" to select your opening move
@@ -626,6 +649,60 @@ const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick, bad
     )}
   </button>
 );
+
+/** POV toggle button — swap between "what you see" and "what they see" */
+const POVToggle: React.FC<{ active: boolean; onToggle: () => void }> = ({ active, onToggle }) => (
+  <button
+    onClick={onToggle}
+    className={`
+      w-8 h-8 rounded-full flex items-center justify-center transition-all
+      ${active
+        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
+        : 'bg-gray-700/80 text-gray-300 hover:bg-gray-600'}
+    `}
+    title={active ? 'Showing their view — tap to switch back' : 'See what your opponent sees'}
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7 16V4m0 0L3 8m4-4l4 4" />
+      <path d="M17 8v12m0 0l4-4m-4 4l-4-4" />
+    </svg>
+  </button>
+);
+
+/** Exchange result summary — shows damage to both players */
+const ExchangeSummary: React.FC<{
+  lastExchange: BattleExchange;
+  myName: string;
+  oppName: string;
+}> = ({ lastExchange, myName, oppName }) => {
+  const myDmg = lastExchange.player1Result.damageTaken;
+  const oppDmg = lastExchange.player2Result.damageTaken;
+
+  return (
+    <div className="mt-3 text-center text-sm space-y-1">
+      <div className="text-gray-400">
+        <span className="text-blue-400">{myName}</span>{' '}
+        <span className="text-white font-bold">{lastExchange.player1Maneuver.name}</span>
+        {' vs '}
+        <span className="text-red-400">{oppName}</span>{' '}
+        <span className="text-white font-bold">{lastExchange.player2Maneuver.name}</span>
+      </div>
+      <div className="flex justify-center gap-4">
+        {myDmg > 0 ? (
+          <span className="text-red-400">You took {myDmg} damage</span>
+        ) : (
+          <span className="text-green-400">You took no damage</span>
+        )}
+        <span className="text-gray-600">|</span>
+        {oppDmg > 0 ? (
+          <span className="text-green-400">They took {oppDmg} damage</span>
+        ) : (
+          <span className="text-gray-400">They took no damage</span>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const GameOverOverlay: React.FC<{ winner: string; onPlayAgain: () => void }> = ({ winner, onPlayAgain }) => (
   <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
