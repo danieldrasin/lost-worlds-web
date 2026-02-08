@@ -143,6 +143,7 @@ export const PicturePage: React.FC<PicturePageProps> = ({ result, characterName,
         src={imageUrl}
         alt={result.title}
         className="w-full h-auto"
+        style={{ clipPath: 'inset(0 0 20px 0)', marginBottom: '-20px' }}
       />
       <div className="p-3 text-center">
         <h3 className="text-white font-bold">{result.title}</h3>
