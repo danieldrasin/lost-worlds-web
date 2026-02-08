@@ -13,7 +13,7 @@ const App: React.FC = () => {
   const { mode } = useGameStore();
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="bg-gray-900" style={{ minHeight: '100dvh' }}>
       {mode === 'menu' && <MenuView />}
       {(mode === 'battle' || mode === 'gameover') && <BattleViewNew />}
     </div>

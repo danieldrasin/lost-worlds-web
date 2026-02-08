@@ -110,7 +110,7 @@ export const BattleViewNew: React.FC = () => {
   }, [isMultiplayer, isHost, setOpponentReady, applyMultiplayerExchange]);
 
   if (!battle) {
-    return <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">No battle in progress</div>;
+    return <div className="bg-gray-900 flex items-center justify-center text-white" style={{ minHeight: '100dvh' }}>No battle in progress</div>;
   }
 
   const lastExchange = battle.history[battle.history.length - 1];
@@ -158,8 +158,11 @@ export const BattleViewNew: React.FC = () => {
     }
   };
 
+  // Should the Move tab be highlighted? Yes when it's the player's turn to pick a move.
+  const shouldHighlightMove = !isGameOver && !waitingForOpponent;
+
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col">
+    <div className="bg-gray-900 flex flex-col" style={{ minHeight: '100dvh' }}>
       {/* Status Bar - Always visible */}
       <StatusBar
         myName={myCharacter.name}
@@ -337,6 +340,7 @@ export const BattleViewNew: React.FC = () => {
               active={mobileTab === 'move'}
               onClick={() => setMobileTab('move')}
               badge={player1Selection ? '✓' : undefined}
+              highlight={shouldHighlightMove && mobileTab !== 'move'}
             />
             <TabButton
               icon="📜"
@@ -601,18 +605,20 @@ interface TabButtonProps {
   active: boolean;
   onClick: () => void;
   badge?: string;
+  highlight?: boolean;
 }
 
-const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick, badge }) => (
+const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick, badge, highlight }) => (
   <button
     onClick={onClick}
     className={`
       flex-1 py-3 flex flex-col items-center justify-center relative
       ${active ? 'text-white bg-gray-700' : 'text-gray-400'}
+      ${highlight ? 'tab-highlight text-yellow-400' : ''}
     `}
   >
     <span className="text-xl">{icon}</span>
-    <span className="text-xs mt-1">{label}</span>
+    <span className={`text-xs mt-1 ${highlight ? 'font-bold' : ''}`}>{label}</span>
     {badge && (
       <span className="absolute top-1 right-1/4 bg-green-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
         {badge}
