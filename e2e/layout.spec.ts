@@ -19,8 +19,8 @@ async function startLocalBattle(page: Page) {
   await page.click('text=vs AI');
   // Start battle with default characters
   await page.click('text=Start Battle!');
-  // Wait for the battle view to load (status bar with HP should appear)
-  await page.waitForSelector('text=HP', { timeout: 10000 });
+  // Wait for the battle view to load — look for "Your Moves" header or mobile tab buttons
+  await page.waitForSelector('text=/Your Moves|Select your opening/', { timeout: 10000 });
 }
 
 /**
