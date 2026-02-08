@@ -156,6 +156,33 @@ app.get('/rooms', (req, res) => {
   res.json(waitingRooms);
 });
 
+app.get('/debug/rooms', (req, res) => {
+  const allRooms = [];
+  for (const [id, room] of rooms) {
+    allRooms.push({
+      id,
+      status: room.status,
+      isInvite: room.isInviteRoom,
+      inviteStatus: room.inviteStatus,
+      host: room.host,
+      guest: room.guest,
+      hostChar: room.hostCharacter,
+      guestChar: room.guestCharacter,
+      hostMove: room.hostMove ? (room.hostMove.name || 'set') : null,
+      guestMove: room.guestMove ? (room.guestMove.name || 'set') : null,
+      hostInSocketRoom: room.host ? io.sockets.sockets.get(room.host)?.rooms?.has(id) : false,
+      guestInSocketRoom: room.guest ? io.sockets.sockets.get(room.guest)?.rooms?.has(id) : false,
+      age: Math.round((Date.now() - room.createdAt) / 1000) + 's',
+    });
+  }
+  const playerList = [];
+  for (const [socketId, roomCode] of playerRooms) {
+    const alive = io.sockets.sockets.has(socketId);
+    playerList.push({ socketId, roomCode, alive });
+  }
+  res.json({ rooms: allRooms, players: playerList, connectedSockets: io.sockets.sockets.size });
+});
+
 // ============================================
 // HTTP Endpoints - Invite System
 // ============================================
@@ -453,8 +480,22 @@ io.on('connection', (socket) => {
     playerRooms.set(socket.id, roomCode.toUpperCase());
     socket.join(roomCode.toUpperCase());
 
-    gameLog('rejoin-success', { socketId: socket.id, room: roomCode, role });
+    gameLog('rejoin-success', {
+      socketId: socket.id, room: roomCode, role,
+      hostConnected: !!room.host, guestConnected: !!room.guest,
+    });
+
     callback({ success: true, role });
+
+    // If both players are now connected after rejoin, (re-)emit battle-start
+    if (room.host && room.guest) {
+      room.status = 'battle';
+      io.to(roomCode.toUpperCase()).emit('battle-start', {
+        hostCharacter: room.hostCharacter,
+        guestCharacter: room.guestCharacter,
+      });
+      gameLog('battle-start-after-rejoin', { room: roomCode });
+    }
   });
 
   /**
@@ -807,6 +848,22 @@ io.on('connection', (socket) => {
     }
   }
 });
+
+// ============================================
+// Periodic Cleanup: stale playerRooms entries
+// ============================================
+setInterval(() => {
+  let cleaned = 0;
+  for (const [socketId, roomCode] of playerRooms) {
+    if (!io.sockets.sockets.has(socketId)) {
+      playerRooms.delete(socketId);
+      cleaned++;
+    }
+  }
+  if (cleaned > 0) {
+    console.log(`Cleaned ${cleaned} stale playerRooms entries`);
+  }
+}, 30 * 1000); // every 30 seconds
 
 // ============================================
 // Start Server

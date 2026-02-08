@@ -216,6 +216,9 @@ export const InviteView: React.FC<InviteViewProps> = ({
         return;
       }
 
+      // Track room for auto-rejoin on socket reconnection
+      socket.setCurrentRoom(inviteRoomCode, reclaimToken);
+
       // Update parent's character selection to match server-side data
       onCharacterChange(myCharId);
 
@@ -341,6 +344,9 @@ export const InviteView: React.FC<InviteViewProps> = ({
     }
 
     const guestToken = result.guestToken!;
+    // Track room for auto-rejoin on socket reconnection
+    socket.setCurrentRoom(roomCode, guestToken);
+
     socket.onBattleStart(({ hostCharacter }) => {
       onBattleStart(false, hostCharacter, roomCode, guestToken);
     });

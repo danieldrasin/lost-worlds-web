@@ -9,6 +9,24 @@ const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001';
 
 let socket: Socket | null = null;
 
+// Track the current room/token for auto-rejoin on reconnection
+let currentRoom: { roomCode: string; token: string } | null = null;
+
+/**
+ * Store the current room info so we can auto-rejoin on reconnection.
+ * Called when successfully joining or reclaiming a room.
+ */
+export function setCurrentRoom(roomCode: string, token: string): void {
+  currentRoom = { roomCode, token };
+}
+
+/**
+ * Clear the current room tracking (on leave/disconnect).
+ */
+export function clearCurrentRoom(): void {
+  currentRoom = null;
+}
+
 /**
  * Connect to the multiplayer server
  */
@@ -20,16 +38,33 @@ export function connect(): Socket {
   socket = io(SERVER_URL, {
     transports: ['websocket', 'polling'],
     reconnection: true,
-    reconnectionAttempts: 5,
+    reconnectionAttempts: 10,
     reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000,
   });
 
   socket.on('connect', () => {
-    console.log('Connected to multiplayer server');
+    console.log('Connected to multiplayer server, id:', socket?.id);
+
+    // Auto-rejoin room after reconnection (socket.io gives us a new socket.id)
+    if (currentRoom) {
+      console.log('Auto-rejoining room:', currentRoom.roomCode);
+      socket?.emit('rejoin-room', {
+        roomCode: currentRoom.roomCode,
+        token: currentRoom.token,
+      }, (result: { success: boolean; role?: string; error?: string }) => {
+        if (result.success) {
+          console.log('Auto-rejoin succeeded, role:', result.role);
+        } else {
+          console.error('Auto-rejoin failed:', result.error);
+          currentRoom = null;
+        }
+      });
+    }
   });
 
-  socket.on('disconnect', () => {
-    console.log('Disconnected from multiplayer server');
+  socket.on('disconnect', (reason) => {
+    console.log('Disconnected from multiplayer server, reason:', reason);
   });
 
   socket.on('connect_error', (error: Error) => {

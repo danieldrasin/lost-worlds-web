@@ -101,14 +101,23 @@ export const BattleViewNew: React.FC = () => {
       applyMultiplayerExchange(myMove, oppMove);
     };
 
+    // Opponent disconnected - reset waiting state so player isn't stuck
+    const handleOpponentDisconnected = () => {
+      console.warn('Opponent disconnected!');
+      setWaitingForOpponent(false);
+      setOpponentReady(false);
+    };
+
     sock.on('opponent-ready', handleOpponentReady);
     sock.on('moves-revealed', handleMovesRevealed);
+    sock.on('opponent-disconnected', handleOpponentDisconnected);
 
     return () => {
       sock.off('opponent-ready', handleOpponentReady);
       sock.off('moves-revealed', handleMovesRevealed);
+      sock.off('opponent-disconnected', handleOpponentDisconnected);
     };
-  }, [isMultiplayer, isHost, setOpponentReady, applyMultiplayerExchange]);
+  }, [isMultiplayer, isHost, setOpponentReady, setWaitingForOpponent, applyMultiplayerExchange]);
 
   if (!battle) {
     return <div className="bg-gray-900 flex items-center justify-center text-white" style={{ minHeight: '100dvh' }}>No battle in progress</div>;
