@@ -182,13 +182,6 @@ export const InviteView: React.FC<InviteViewProps> = ({
   const [challengerEmail, setChallengerEmail] = useState(savedPrefs.email || '');
   const [challengerTelegramChatId, setChallengerTelegramChatId] = useState(savedPrefs.telegramChatId || '');
 
-  // --- Guest form: How to notify the challenged/guest (Step 3 for them) ---
-  const [guestNotifyChannel, setGuestNotifyChannel] = useState<NotifyChannel>(
-    savedPrefs.telegramChatId ? 'telegram' : 'email'
-  );
-  const [guestEmail, setGuestEmail] = useState(savedPrefs.email || '');
-  const [guestTelegramChatId, setGuestTelegramChatId] = useState(savedPrefs.telegramChatId || '');
-
   // WhatsApp link (generated after room creation)
   const [whatsAppUrl, setWhatsAppUrl] = useState<string | null>(null);
   // Copyable invite text (for 'copy' channel)
@@ -316,17 +309,9 @@ export const InviteView: React.FC<InviteViewProps> = ({
     setStep('guest-joining');
     setError(null);
 
-    // Save preferences
-    socket.saveNotificationPrefs({
-      email: guestEmail.trim() || undefined,
-      telegramChatId: guestTelegramChatId || undefined,
-    });
-
     const result = await socket.joinInvite({
       roomCode: roomCode,
       characterId: character,
-      guestEmail: guestNotifyChannel === 'email' ? guestEmail.trim() || undefined : undefined,
-      guestTelegramChatId: guestNotifyChannel === 'telegram' ? guestTelegramChatId || undefined : undefined,
     });
 
     if (!result.success) {
@@ -353,11 +338,6 @@ export const InviteView: React.FC<InviteViewProps> = ({
 
   const handleTelegramConnected = useCallback((chatId: string) => {
     setChallengerTelegramChatId(chatId);
-    socket.saveNotificationPrefs({ telegramChatId: chatId });
-  }, []);
-
-  const handleGuestTelegramConnected = useCallback((chatId: string) => {
-    setGuestTelegramChatId(chatId);
     socket.saveNotificationPrefs({ telegramChatId: chatId });
   }, []);
 
@@ -635,48 +615,6 @@ export const InviteView: React.FC<InviteViewProps> = ({
               </div>
             </div>
 
-            {/* Guest Notification Preferences */}
-            <div className="mb-5">
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Notify me when opponent returns via
-                <span className="text-gray-500"> (optional)</span>
-              </label>
-              <ChannelPicker<NotifyChannel>
-                options={[
-                  { value: 'email', label: 'Email' },
-                  { value: 'telegram', label: 'Telegram' },
-                ]}
-                value={guestNotifyChannel}
-                onChange={setGuestNotifyChannel}
-              />
-              {guestNotifyChannel === 'email' && (
-                <input
-                  type="email"
-                  value={guestEmail}
-                  onChange={(e) => setGuestEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg border border-gray-600
-                           focus:border-blue-500 focus:outline-none placeholder:text-gray-500"
-                />
-              )}
-              {guestNotifyChannel === 'telegram' && (
-                guestTelegramChatId ? (
-                  <div className="flex items-center justify-between py-2">
-                    <span className="text-green-400 text-sm">&#10003; Telegram connected</span>
-                    <button
-                      type="button"
-                      onClick={() => setGuestTelegramChatId('')}
-                      className="text-gray-500 text-xs underline hover:text-gray-400"
-                    >
-                      Reconnect
-                    </button>
-                  </div>
-                ) : (
-                  <TelegramConnect onConnected={handleGuestTelegramConnected} />
-                )
-              )}
-            </div>
-
             <button
               onClick={handleGuestJoin}
               disabled={!character}
@@ -720,7 +658,7 @@ export const InviteView: React.FC<InviteViewProps> = ({
 
             <div className="bg-blue-900/30 border border-blue-700 rounded-lg p-4 mb-6">
               <p className="text-blue-300 text-sm">
-                {(guestEmail || challengerEmail || guestTelegramChatId || challengerTelegramChatId)
+                {(challengerEmail || challengerTelegramChatId)
                   ? "We'll notify you when they're ready. Feel free to close this page!"
                   : "You'll need to wait here, or go back and add your contact info to get notified."
                 }
