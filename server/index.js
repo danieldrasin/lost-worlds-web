@@ -793,29 +793,53 @@ io.on('connection', (socket) => {
     }
 
     const room = rooms.get(roomCode);
-    if (!room) return;
+    if (!room) {
+      playerRooms.delete(socket.id);
+      return;
+    }
 
-    const isHost = room.host === socket.id;
-    const opponentId = isHost ? room.guest : room.host;
+    // CRITICAL: Determine role by checking if this socket is ACTUALLY
+    // the current host or guest. A stale socket (from a previous page load)
+    // may still have a playerRooms entry but room.host/guest already points
+    // to the new socket. We must NOT clobber the active player.
+    const isCurrentHost = room.host === socket.id;
+    const isCurrentGuest = room.guest === socket.id;
+    const isStaleSocket = !isCurrentHost && !isCurrentGuest;
 
     gameLog('disconnect', {
       socketId: socket.id,
       room: roomCode,
-      role: isHost ? 'host' : 'guest',
+      role: isCurrentHost ? 'host' : isCurrentGuest ? 'guest' : 'stale',
       isInvite: room.isInviteRoom,
       hostMove: !!room.hostMove,
       guestMove: !!room.guestMove,
     });
 
+    // Always clean up the playerRooms entry for this socket
+    playerRooms.delete(socket.id);
+
+    // If this is a stale socket that's no longer the active host or guest,
+    // just clean up and return — don't touch the room or notify anyone
+    if (isStaleSocket) {
+      gameLog('disconnect-stale', {
+        socketId: socket.id,
+        room: roomCode,
+        currentHost: room.host,
+        currentGuest: room.guest,
+      });
+      return;
+    }
+
+    const opponentId = isCurrentHost ? room.guest : room.host;
+
     // For invite rooms, don't delete the room when host/guest disconnects
     // They can reclaim it later with their token
     if (room.isInviteRoom) {
-      if (isHost) {
+      if (isCurrentHost) {
         room.host = null;
       } else {
         room.guest = null;
       }
-      playerRooms.delete(socket.id);
 
       // Notify opponent if they're still connected
       if (opponentId) {
@@ -829,9 +853,7 @@ io.on('connection', (socket) => {
       io.to(opponentId).emit('opponent-disconnected');
     }
 
-    playerRooms.delete(socket.id);
-
-    if (isHost) {
+    if (isCurrentHost) {
       if (room.guest) {
         room.host = room.guest;
         room.hostCharacter = room.guestCharacter;

@@ -35,6 +35,14 @@ export function connect(): Socket {
     return socket;
   }
 
+  // Clean up any existing disconnected socket to prevent orphaned connections
+  if (socket) {
+    console.log('Cleaning up stale socket before reconnecting');
+    socket.removeAllListeners();
+    socket.disconnect();
+    socket = null;
+  }
+
   socket = io(SERVER_URL, {
     transports: ['websocket', 'polling'],
     reconnection: true,
