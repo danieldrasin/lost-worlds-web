@@ -25,13 +25,12 @@ import {
 const app = express();
 const httpServer = createServer(app);
 
-// Configure CORS for production and development
+// Configure CORS — all origins come from env vars (no hardcoded deploy URLs)
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
-  'https://lost-worlds-web.vercel.app',
   process.env.CLIENT_URL,
   process.env.FRONTEND_URL
 ].filter(Boolean);
@@ -46,7 +45,8 @@ const io = new Server(httpServer, {
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'https://lost-worlds-web.vercel.app';
+const FRONTEND_URL = process.env.FRONTEND_URL;
+if (!FRONTEND_URL) console.warn('WARNING: FRONTEND_URL not set — invite links and notifications will not work correctly.');
 const INVITE_ROOM_TTL = parseInt(process.env.INVITE_ROOM_TTL || '86400') * 1000; // 24h default
 
 // ============================================
@@ -232,7 +232,7 @@ app.post('/api/invites/create', async (req, res) => {
 
   rooms.set(roomCode, room);
 
-  const FRONTEND = process.env.FRONTEND_URL || 'https://lost-worlds-web.vercel.app';
+  const FRONTEND = FRONTEND_URL;
   const joinUrl = `${FRONTEND}?room=${roomCode}&invite=true`;
 
   try {

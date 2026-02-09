@@ -14,7 +14,7 @@
 import crypto from 'crypto';
 
 const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
-const FRONTEND_URL = process.env.FRONTEND_URL || 'https://lost-worlds-web.vercel.app';
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 // ============================================
 // Email via Resend

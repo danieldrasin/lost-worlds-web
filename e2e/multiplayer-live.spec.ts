@@ -316,7 +316,7 @@ test.describe('Multiplayer Live Tests', () => {
 
 test.describe('Connection Tests', () => {
   test('Server Health Check', async ({ request }) => {
-    const serverUrl = 'https://lost-worlds-server.onrender.com';
+    const serverUrl = process.env.TEST_SERVER_URL || 'https://lost-worlds-server.onrender.com';
 
     const response = await request.get(`${serverUrl}/health`);
     expect(response.ok()).toBeTruthy();
