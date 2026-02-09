@@ -10,7 +10,13 @@ set -e
 #   - Render (production server)
 #
 # Usage: bash scripts/promote-to-production.sh
+#        bash scripts/promote-to-production.sh --yes   (skip confirmation)
 # ============================================================
+
+AUTO_CONFIRM=false
+if [ "$1" = "--yes" ] || [ "$1" = "-y" ]; then
+  AUTO_CONFIRM=true
+fi
 
 echo ""
 echo "=== Promoting master → production ==="
@@ -46,12 +52,16 @@ echo "Commits to promote ($DIFF_COUNT):"
 git log --oneline production..master
 echo ""
 
-read -p "Proceed with promotion? (y/N) " -n 1 -r
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-  echo "Aborted."
-  git checkout master
-  exit 0
+if [ "$AUTO_CONFIRM" = false ]; then
+  read -p "Proceed with promotion? (y/N) " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Aborted."
+    git checkout master
+    exit 0
+  fi
+else
+  echo "Auto-confirmed (--yes flag)"
 fi
 
 # Merge master into production

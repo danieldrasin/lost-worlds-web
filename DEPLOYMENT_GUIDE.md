@@ -38,12 +38,15 @@ For local dev, the fallback in `socket.ts` defaults to `http://localhost:3001`.
 |----------|---------|------------|
 | `FRONTEND_URL` | `https://lost-worlds-web.vercel.app` | `https://lost-worlds-prod.vercel.app` |
 | `CLIENT_URL` | `https://lost-worlds-web.vercel.app` | `https://lost-worlds-prod.vercel.app` |
-| `RESEND_API_KEY` | (same key for both) | (same key for both) |
-| `TELEGRAM_BOT_TOKEN` | *omit — no Telegram on staging* | (set in Render) |
+| `RESEND_API_KEY` | (same key for both — from `server/.env`) | (same key for both — from `server/.env`) |
+| `TELEGRAM_BOT_TOKEN` | (staging bot token) | (production bot token — separate bot) |
+| `TELEGRAM_BOT_USERNAME` | `LostWorldsCombatBot` | (production bot username) |
 | `INVITE_ROOM_TTL` | `86400` | `86400` |
 | `PORT` | (Render sets automatically) | (Render sets automatically) |
 
 `FRONTEND_URL` and `CLIENT_URL` control CORS origins and invite link URLs. They must match the Vercel URL for that environment.
+
+Each environment needs its **own Telegram bot** (created via @BotFather) because only one server can register a webhook per bot token. The `TELEGRAM_BOT_USERNAME` env var tells the server which bot link to generate for `t.me/` URLs.
 
 ---
 
@@ -84,14 +87,15 @@ The Render production service needs to be created manually in the Render dashboa
 5. Under **Environment Variables**, add:
    - `FRONTEND_URL` = `https://lost-worlds-prod.vercel.app`
    - `CLIENT_URL` = `https://lost-worlds-prod.vercel.app`
-   - `RESEND_API_KEY` = (copy from staging service)
-   - `TELEGRAM_BOT_TOKEN` = (copy from staging service, then **remove** it from staging)
+   - `RESEND_API_KEY` = (copy from staging service — same key for both)
+   - `TELEGRAM_BOT_TOKEN` = (production bot token — create a separate bot via @BotFather)
+   - `TELEGRAM_BOT_USERNAME` = (production bot username, e.g. `LostWorldsProdBot`)
    - `INVITE_ROOM_TTL` = `86400`
 6. Click **"Create Web Service"**
 7. Wait for the first deploy to complete (takes 2-5 minutes)
 8. Verify the service is running: visit `https://lost-worlds-server-prod.onrender.com` — you should see the server respond
 
-**Important:** After creating the production service, remove `TELEGRAM_BOT_TOKEN` from the staging Render service. Only one server can register the Telegram webhook for a given bot token. Production should own the bot.
+**Important:** Each environment needs its own Telegram bot. The existing bot (`LostWorldsCombatBot`) stays on staging. Create a new bot via @BotFather for production (e.g. `LostWorldsProdBot`). Only one server can register a webhook per bot token.
 
 ### Code Changes Made (commit 2a8f468)
 
@@ -121,13 +125,14 @@ git push origin master
 Once staging looks good, promote:
 
 ```bash
-bash scripts/promote-to-production.sh
+bash scripts/promote-to-production.sh          # interactive (asks for confirmation)
+bash scripts/promote-to-production.sh --yes    # non-interactive (for Claude sessions)
 ```
 
 This script:
 1. Checks for a clean working tree
 2. Shows you the commits being promoted (diff between production and master)
-3. Asks for confirmation
+3. Asks for confirmation (unless `--yes` flag is passed)
 4. Merges master → production and pushes
 5. Returns to master branch
 
@@ -208,9 +213,22 @@ When tests fail, Playwright saves screenshots to `test-results/<test-name>/test-
 
 ---
 
-## Telegram Bot
+## Telegram Bots
 
-Only production runs the Telegram bot. The bot token should be set only on the production Render service. If you need Telegram on staging for testing, create a separate bot via @BotFather and use that token on staging.
+Each environment has its own Telegram bot (because only one server can register a webhook per bot token):
+
+| Environment | Bot Username | Purpose |
+|-------------|-------------|---------|
+| Staging | `LostWorldsCombatBot` | Testing invites and notifications |
+| Production | *(create via @BotFather)* | Public-facing notifications |
+
+To create the production bot:
+1. Open Telegram → message [@BotFather](https://t.me/BotFather)
+2. Send `/newbot`
+3. Name: `Lost Worlds Combat` (or similar)
+4. Username: `LostWorldsProdBot` (must end in `Bot`, must be unique)
+5. Copy the token BotFather gives you
+6. Set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_BOT_USERNAME` on the production Render service
 
 ---
 
