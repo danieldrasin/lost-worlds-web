@@ -23,7 +23,7 @@ echo "=== Promoting master → production ==="
 echo ""
 
 # Ensure working tree is clean
-if [ -n "$(git status --porcelain)" ]; then
+if [ -n "$(git status --porcelain -uno)" ]; then
   echo "ERROR: Working tree has uncommitted changes. Commit or stash them first."
   exit 1
 fi
