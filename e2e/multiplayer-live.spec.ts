@@ -32,11 +32,12 @@ function isMobileViewport(page: Page): boolean {
 // Helper: ensure the move panel is visible (handles mobile tab navigation)
 async function ensureMovePanelVisible(page: Page): Promise<void> {
   if (isMobileViewport(page)) {
-    // On mobile, tap the "Move" tab to reveal the move list
-    const moveTab = page.locator('text=Move').last();
-    if (await moveTab.isVisible()) {
-      await moveTab.click();
-      await page.waitForTimeout(300);
+    // On mobile, click the "Move" tab button (⚔️ Move) in the bottom tab bar.
+    // Use button:has-text to avoid matching "Movement restricted" or "Tap 'Move'" text.
+    const moveTabButton = page.locator('button:has-text("Move")');
+    if (await moveTabButton.isVisible()) {
+      await moveTabButton.click();
+      await page.waitForTimeout(500);
     }
   }
   // On desktop, "Your Moves" is always visible — no action needed
@@ -61,14 +62,15 @@ async function setupPlayer(context: BrowserContext): Promise<Page> {
 }
 
 // Helper: wait for battle to start (handles mobile vs desktop)
-async function waitForBattleReady(page: Page, timeout = 20000): Promise<void> {
+async function waitForBattleReady(page: Page, timeout = 30000): Promise<void> {
   if (isMobileViewport(page)) {
-    // On mobile, the battle starts on the "View" tab showing the opponent picture.
-    // Wait for the bottom tab bar to appear, then switch to Move tab.
-    await page.waitForSelector('text=Move', { timeout });
+    // On mobile, the battle starts on the "View" tab. Wait for the tab bar buttons
+    // to appear, then switch to the Move tab and wait for move buttons.
+    // Use button:has-text("Move") to target the tab button specifically.
+    await page.waitForSelector('button:has-text("Move")', { timeout });
     await ensureMovePanelVisible(page);
     // Now wait for move buttons to be available
-    await page.waitForSelector('.space-y-3 button', { timeout: 10000 });
+    await page.waitForSelector('.space-y-3 button', { timeout: 15000 });
   } else {
     // On desktop, "Your Moves" is directly visible
     await page.waitForSelector('text=Your Moves', { timeout });

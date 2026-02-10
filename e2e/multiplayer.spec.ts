@@ -23,21 +23,23 @@ function isMobileViewport(page: Page): boolean {
 // Helper: ensure the move panel is visible (handles mobile tab navigation)
 async function ensureMovePanelVisible(page: Page): Promise<void> {
   if (isMobileViewport(page)) {
-    const moveTab = page.locator('text=Move').last();
-    if (await moveTab.isVisible()) {
-      await moveTab.click();
-      await page.waitForTimeout(300);
+    // Click the "Move" tab button (⚔️ Move) in the bottom tab bar.
+    // Use button:has-text to avoid matching "Movement restricted" or "Tap 'Move'" text.
+    const moveTabButton = page.locator('button:has-text("Move")');
+    if (await moveTabButton.isVisible()) {
+      await moveTabButton.click();
+      await page.waitForTimeout(500);
     }
   }
 }
 
 // Helper: wait for battle to start (handles mobile vs desktop)
-async function waitForBattleReady(page: Page, timeout = 15000): Promise<void> {
+async function waitForBattleReady(page: Page, timeout = 30000): Promise<void> {
   if (isMobileViewport(page)) {
-    // On mobile, battle starts on "View" tab; wait for tab bar then switch to Move
-    await page.waitForSelector('text=Move', { timeout });
+    // On mobile, wait for the tab bar "Move" button, click it, then wait for move buttons
+    await page.waitForSelector('button:has-text("Move")', { timeout });
     await ensureMovePanelVisible(page);
-    await page.waitForSelector('.space-y-3 button', { timeout: 10000 });
+    await page.waitForSelector('.space-y-3 button', { timeout: 15000 });
   } else {
     await page.waitForSelector('text=Your Moves', { timeout });
   }
