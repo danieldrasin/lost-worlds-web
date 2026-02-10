@@ -105,8 +105,9 @@ async function waitForExchangeResolution(page: Page, timeout = 30000): Promise<s
 }
 
 test.describe('Multiplayer Live Tests', () => {
-  // Use generous timeouts for live server tests
-  test.setTimeout(isRemote ? 90000 : 60000);
+  // Use generous timeouts for live server tests.
+  // Mobile WebKit is slower — lobby+room+battle setup can take 60-90s alone.
+  test.setTimeout(isRemote ? 180000 : 60000);
 
   test('Room Creation - should create a room and get a 6-character code', async ({ browser }) => {
     const context = await browser.newContext();
@@ -166,7 +167,7 @@ test.describe('Multiplayer Live Tests', () => {
   });
 
   test('Move Exchange - both players can submit moves and see results', async ({ browser }) => {
-    test.setTimeout(isRemote ? 120000 : 60000);
+    test.setTimeout(isRemote ? 180000 : 60000);
 
     const player1Context = await browser.newContext();
     const player2Context = await browser.newContext();

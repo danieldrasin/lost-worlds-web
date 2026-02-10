@@ -71,7 +71,8 @@ async function waitForExchangeResolution(page: Page, timeout = 30000): Promise<s
 }
 
 test.describe('Multiplayer Battle', () => {
-  test.setTimeout(isRemote ? 90000 : 60000);
+  // Mobile WebKit is slower — lobby+room+battle setup can take 60-90s alone.
+  test.setTimeout(isRemote ? 180000 : 60000);
 
   test('two players can create and join a room', async ({ browser }) => {
     // Create two browser contexts (simulates two different users)
@@ -129,7 +130,7 @@ test.describe('Multiplayer Battle', () => {
   });
 
   test('players can exchange moves', async ({ browser }) => {
-    test.setTimeout(isRemote ? 120000 : 60000);
+    test.setTimeout(isRemote ? 180000 : 60000);
 
     const player1Context = await browser.newContext();
     const player2Context = await browser.newContext();
