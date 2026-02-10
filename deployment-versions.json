@@ -5,6 +5,6 @@
   },
   "production": {
     "version": "0.1.0",
-    "description": "Initial version tracking"
+    "description": "Fix promote script: ignore untracked files in clean-tree check"
   }
 }
