@@ -15,7 +15,7 @@
  * Run with: TEST_URL=https://lost-worlds-web.vercel.app npx playwright test e2e/multiplayer-live.spec.ts
  */
 
-import { test, expect, Page, BrowserContext } from '@playwright/test';
+import { test, expect, Page, BrowserContext, Locator } from '@playwright/test';
 
 // Use production URL by default
 const BASE_URL = process.env.TEST_URL || 'https://lost-worlds-web.vercel.app';
@@ -23,10 +23,14 @@ const BASE_URL = process.env.TEST_URL || 'https://lost-worlds-web.vercel.app';
 // Detect if we're testing against a live (remote) server
 const isRemote = BASE_URL.includes('vercel.app');
 
-// Helper: check if viewport is mobile-sized
+// Helper: check if viewport uses mobile layout.
+// BattleViewNew switches layouts at Tailwind's lg breakpoint (1024px):
+//   Desktop: "hidden lg:flex" — visible at >= 1024px
+//   Mobile:  "lg:hidden" — visible at < 1024px
+// iPad (810px) uses the mobile layout, so the threshold must be 1024, not 768.
 function isMobileViewport(page: Page): boolean {
   const size = page.viewportSize();
-  return !!size && size.width < 768;
+  return !!size && size.width < 1024;
 }
 
 // Helper: ensure the move panel is visible (handles mobile tab navigation)
@@ -41,6 +45,19 @@ async function ensureMovePanelVisible(page: Page): Promise<void> {
     }
   }
   // On desktop, "Your Moves" is always visible — no action needed
+}
+
+// Helper: scope a locator to the visible layout to avoid matching hidden desktop/mobile duplicates.
+// BattleViewNew renders BOTH desktop and mobile layouts to the DOM (hidden via CSS responsive classes).
+// On mobile viewports, the desktop layout's MoveSelector buttons are in the DOM but display:none.
+// locator.count() includes hidden elements, so unscoped selectors return double the expected count,
+// and nth(randomIndex).click() can pick a hidden button and timeout.
+function scopedLocator(page: Page, selector: string): Locator {
+  if (isMobileViewport(page)) {
+    // Scope to the mobile layout container (class contains "lg:hidden")
+    return page.locator('[class*="lg:hidden"]').locator(selector);
+  }
+  return page.locator(selector);
 }
 
 // Helper to create a player context and navigate to online mode
@@ -65,12 +82,14 @@ async function setupPlayer(context: BrowserContext): Promise<Page> {
 async function waitForBattleReady(page: Page, timeout = 30000): Promise<void> {
   if (isMobileViewport(page)) {
     // On mobile, the battle starts on the "View" tab. Wait for the tab bar buttons
-    // to appear, then switch to the Move tab and wait for move buttons.
-    // Use button:has-text("Move") to target the tab button specifically.
+    // to appear, then switch to the Move tab and wait for the mobile-only heading.
+    // IMPORTANT: We wait for "Select Your Move" (MobileMoveTab heading) instead of
+    // ".space-y-3 button" because the desktop layout (hidden lg:flex) also renders
+    // MoveSelector buttons in the DOM. waitForSelector locks onto the first DOM match,
+    // which would be a hidden desktop button, causing an infinite timeout.
     await page.waitForSelector('button:has-text("Move")', { timeout });
     await ensureMovePanelVisible(page);
-    // Now wait for move buttons to be available
-    await page.waitForSelector('.space-y-3 button', { timeout: 15000 });
+    await page.waitForSelector('text=Select Your Move', { timeout: 15000 });
   } else {
     // On desktop, "Your Moves" is directly visible
     await page.waitForSelector('text=Your Moves', { timeout });
@@ -196,9 +215,10 @@ test.describe('Multiplayer Live Tests', () => {
       await ensureMovePanelVisible(player2Page);
 
       // Both players click a move — this DIRECTLY submits in BattleViewNew (no FIGHT button)
-      // Charge is an Extended Range move, available first turn
-      const p1ChargeButton = player1Page.locator('button:has-text("Charge")').first();
-      const p2ChargeButton = player2Page.locator('button:has-text("Charge")').first();
+      // Charge is an Extended Range move, available first turn.
+      // Use scopedLocator to avoid matching hidden desktop-layout buttons on mobile viewports.
+      const p1ChargeButton = scopedLocator(player1Page, 'button:has-text("Charge")').first();
+      const p2ChargeButton = scopedLocator(player2Page, 'button:has-text("Charge")').first();
 
       // Click moves for both players — each click auto-submits to server
       await p1ChargeButton.click();
@@ -268,9 +288,10 @@ test.describe('Multiplayer Live Tests', () => {
         await ensureMovePanelVisible(player1Page);
         await ensureMovePanelVisible(player2Page);
 
-        // Find available (non-disabled) move buttons for both players
-        const p1Moves = player1Page.locator('.space-y-3 button:not([disabled])');
-        const p2Moves = player2Page.locator('.space-y-3 button:not([disabled])');
+        // Find available (non-disabled) move buttons for both players.
+        // Use scopedLocator to avoid matching hidden desktop-layout buttons on mobile viewports.
+        const p1Moves = scopedLocator(player1Page, '.space-y-3 button:not([disabled])');
+        const p2Moves = scopedLocator(player2Page, '.space-y-3 button:not([disabled])');
 
         const p1Count = await p1Moves.count();
         const p2Count = await p2Moves.count();

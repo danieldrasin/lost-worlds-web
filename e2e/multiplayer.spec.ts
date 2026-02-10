@@ -9,15 +9,19 @@
  * In AI mode, clicking a move auto-executes the exchange after a 150ms delay.
  */
 
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, Page, Locator } from '@playwright/test';
 
 const BASE_URL = process.env.TEST_URL || 'http://localhost:5173';
 const isRemote = BASE_URL.includes('vercel.app');
 
-// Helper: check if viewport is mobile-sized
+// Helper: check if viewport uses mobile layout.
+// BattleViewNew switches layouts at Tailwind's lg breakpoint (1024px):
+//   Desktop: "hidden lg:flex" — visible at >= 1024px
+//   Mobile:  "lg:hidden" — visible at < 1024px
+// iPad (810px) uses the mobile layout, so the threshold must be 1024, not 768.
 function isMobileViewport(page: Page): boolean {
   const size = page.viewportSize();
-  return !!size && size.width < 768;
+  return !!size && size.width < 1024;
 }
 
 // Helper: ensure the move panel is visible (handles mobile tab navigation)
@@ -36,13 +40,26 @@ async function ensureMovePanelVisible(page: Page): Promise<void> {
 // Helper: wait for battle to start (handles mobile vs desktop)
 async function waitForBattleReady(page: Page, timeout = 30000): Promise<void> {
   if (isMobileViewport(page)) {
-    // On mobile, wait for the tab bar "Move" button, click it, then wait for move buttons
+    // On mobile, wait for the tab bar "Move" button, click it, then wait for the
+    // mobile-only heading. We use "Select Your Move" (MobileMoveTab heading) instead
+    // of ".space-y-3 button" because the desktop layout also renders MoveSelector
+    // buttons in the DOM (hidden via CSS). waitForSelector locks onto the first DOM
+    // match which would be a hidden desktop button, causing an infinite timeout.
     await page.waitForSelector('button:has-text("Move")', { timeout });
     await ensureMovePanelVisible(page);
-    await page.waitForSelector('.space-y-3 button', { timeout: 15000 });
+    await page.waitForSelector('text=Select Your Move', { timeout: 15000 });
   } else {
     await page.waitForSelector('text=Your Moves', { timeout });
   }
+}
+
+// Helper: scope a locator to the visible layout to avoid matching hidden desktop/mobile duplicates.
+// BattleViewNew renders BOTH desktop and mobile layouts to the DOM (hidden via CSS responsive classes).
+function scopedLocator(page: Page, selector: string): Locator {
+  if (isMobileViewport(page)) {
+    return page.locator('[class*="lg:hidden"]').locator(selector);
+  }
+  return page.locator(selector);
 }
 
 // Helper: wait for exchange resolution (multiplayer)
@@ -167,8 +184,9 @@ test.describe('Multiplayer Battle', () => {
     await ensureMovePanelVisible(player2Page);
 
     // Both players: Click Charge — this auto-submits (no FIGHT button in BattleViewNew)
-    const player1MoveButton = player1Page.locator('button:has-text("Charge")').first();
-    const player2MoveButton = player2Page.locator('button:has-text("Charge")').first();
+    // Use scopedLocator to avoid matching hidden desktop-layout buttons on mobile viewports.
+    const player1MoveButton = scopedLocator(player1Page, 'button:has-text("Charge")').first();
+    const player2MoveButton = scopedLocator(player2Page, 'button:has-text("Charge")').first();
 
     await player1MoveButton.click();
     await player2MoveButton.click();
@@ -202,7 +220,8 @@ test.describe('Local Battle', () => {
     await ensureMovePanelVisible(page);
 
     // Find a Charge button (Extended Range move, always available first turn)
-    const chargeButton = page.locator('button:has-text("Charge")').first();
+    // Use scopedLocator to avoid matching hidden desktop-layout buttons on mobile viewports.
+    const chargeButton = scopedLocator(page, 'button:has-text("Charge")').first();
     await expect(chargeButton).toBeVisible({ timeout: 5000 });
 
     // Click the move — in AI mode, this auto-executes the exchange (no FIGHT button)
