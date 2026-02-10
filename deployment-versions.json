@@ -5,6 +5,6 @@
   },
   "production": {
     "version": "0.1.0",
-    "description": "Fix promote script: ignore untracked files in clean-tree check"
+    "description": "fix mobile e2e: scope selectors to visible layout, fix viewport threshold"
   }
 }
