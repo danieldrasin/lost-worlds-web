@@ -68,8 +68,23 @@ fi
 git merge master --no-edit
 git push origin production
 
-# Return to master
+# Update deployment-versions.json with the promoted version
+PROMOTED_VERSION=$(node -p "require('./package.json').version")
+DESCRIPTION=$(git log --format=%s -n 1)
+node -e "
+const fs = require('fs');
+const d = JSON.parse(fs.readFileSync('deployment-versions.json', 'utf-8'));
+d.production = { version: '$PROMOTED_VERSION', description: '$DESCRIPTION' };
+fs.writeFileSync('deployment-versions.json', JSON.stringify(d, null, 2) + '\n');
+"
+git add deployment-versions.json
+git commit -m "Release: update production version to $PROMOTED_VERSION [skip ci]"
+git push origin production
+
+# Return to master and sync the tracking file
 git checkout master
+git merge production --no-edit
+git push origin master
 
 echo ""
 echo "=== Promotion complete ==="

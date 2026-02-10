@@ -122,21 +122,95 @@ git push origin master
 
 ### Promoting Staging to Production
 
-Once staging looks good, promote:
+**STRICT RULE: Promotion is always a separate step after staging verification. Never promote in one straight shot — always verify staging e2e tests first, then explicitly confirm promotion.**
 
-```bash
-bash scripts/promote-to-production.sh          # interactive (asks for confirmation)
-bash scripts/promote-to-production.sh --yes    # non-interactive (for Claude sessions)
-```
+The workflow is:
 
-This script:
+1. **Push to master** → staging auto-deploys (wait 2-5 min)
+2. **Run staging e2e tests** including version verification:
+   ```bash
+   npm run test:e2e:staging
+   ```
+3. **Confirm all tests pass** — if any fail, fix and repeat from step 1
+4. **Explicitly confirm promotion** — operator (or Claude) must consciously decide to promote
+5. **Run the promote script:**
+   ```bash
+   bash scripts/promote-to-production.sh          # interactive (asks for confirmation)
+   bash scripts/promote-to-production.sh --yes    # non-interactive (for Claude sessions)
+   ```
+6. **Wait for production to deploy** (2-5 min)
+7. **Run production e2e tests** including version verification:
+   ```bash
+   npm run test:e2e:prod
+   ```
+
+The promote script:
 1. Checks for a clean working tree
 2. Shows you the commits being promoted (diff between production and master)
 3. Asks for confirmation (unless `--yes` flag is passed)
 4. Merges master → production and pushes
-5. Returns to master branch
+5. Updates `deployment-versions.json` production entry to match the promoted version
+6. Commits the tracking file update and pushes to both branches
+7. Returns to master branch
 
 After pushing, both Vercel and Render auto-deploy the production environment.
+
+---
+
+## Version Tracking
+
+### How It Works
+
+Each build embeds the `version` field from `package.json` (e.g., `"0.1.0"`):
+
+- **Client:** Vite injects `__APP_VERSION__` at build time (defined in `vite.config.ts`). The `BuildInfo` component in `App.tsx` displays it as `build <date> v0.1.0` in the bottom corner.
+- **Server:** `server/index.js` reads `../package.json` at startup. The `/health` endpoint returns `{ version: "0.1.0", ... }`.
+
+### Tracking File: `deployment-versions.json`
+
+This file records the expected version for each environment:
+
+```json
+{
+  "staging": { "version": "0.1.0", "description": "Initial version tracking" },
+  "production": { "version": "0.1.0", "description": "Initial version tracking" }
+}
+```
+
+The e2e tests read this file and verify that the deployed client and server versions match the expected value for the target environment.
+
+### Bumping the Version
+
+When starting new work, bump the version first:
+
+```bash
+bash scripts/bump-version.sh           # patch bump: 0.1.0 → 0.1.1
+bash scripts/bump-version.sh minor     # minor bump: 0.1.0 → 0.2.0
+bash scripts/bump-version.sh major     # major bump: 0.1.0 → 1.0.0
+```
+
+This script:
+1. Bumps `package.json` version via `npm version`
+2. Updates `deployment-versions.json` staging entry to the new version
+3. Stages both files for commit
+4. Shows next steps (does **not** commit or push — lets operator review first)
+
+### Version Verification E2E Tests
+
+The `e2e/deployment-version.spec.ts` test suite verifies:
+
+1. **Client displays version** — looks for `v0.1.0` pattern in the build info text
+2. **Server returns version** — calls `/health` and checks the `version` field
+3. **Client and server match** — both must report the same version
+4. **Deployed version matches tracking file** — for staging or production, the deployed version must equal the expected version in `deployment-versions.json`
+
+The tracking-file test is skipped for local dev (where versions aren't meaningful).
+
+### Why package.json Version (Not Git SHAs)
+
+Using git SHAs for version tracking creates a circular dependency: updating a tracking file with a SHA creates a new commit with a different SHA, making exact matching impossible. A package.json version is set once and stays stable across the commit that includes it.
+
+---
 
 ### Rolling Back Production
 

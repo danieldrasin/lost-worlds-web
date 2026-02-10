@@ -10,14 +10,16 @@ import { MenuView } from './ui/components/MenuView';
 import { BattleViewNew } from './ui/components/BattleViewNew';
 
 const buildTime = typeof __BUILD_TIME__ === 'string' ? __BUILD_TIME__ : '';
+const appVersion = typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : '';
 
 const BuildInfo: React.FC = () => {
   if (!buildTime) return null;
   const d = new Date(buildTime);
   const label = d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+  const ver = appVersion ? ` v${appVersion}` : '';
   return (
     <div className="fixed bottom-14 lg:bottom-1 right-2 text-gray-500 text-[10px] pointer-events-none select-none z-50">
-      build {label}
+      build {label}{ver}
     </div>
   );
 };

@@ -1,0 +1,10 @@
+{
+  "staging": {
+    "version": "0.1.0",
+    "description": "Initial version tracking"
+  },
+  "production": {
+    "version": "0.1.0",
+    "description": "Initial version tracking"
+  }
+}

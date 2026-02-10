@@ -13,6 +13,19 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import { nanoid } from 'nanoid';
 import crypto from 'crypto';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+// Read app version from root package.json
+const __dirname = dirname(fileURLToPath(import.meta.url));
+let APP_VERSION = 'unknown';
+try {
+  const rootPkg = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf-8'));
+  APP_VERSION = rootPkg.version;
+} catch {
+  console.warn('Could not read root package.json for version');
+}
 import {
   sendInvite,
   sendReadyNotification,
@@ -136,6 +149,7 @@ setInterval(cleanupRooms, 5 * 60 * 1000);
 app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
+    version: APP_VERSION,
     rooms: rooms.size,
     players: playerRooms.size,
     inviteRooms: [...rooms.values()].filter(r => r.isInviteRoom).length
