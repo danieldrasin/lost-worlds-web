@@ -12,7 +12,7 @@
     "test:run": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:staging": "TEST_URL=https://lost-worlds-web.vercel.app TEST_SERVER_URL=https://lost-worlds-server.onrender.com LIVE_TEST=true playwright test",
-    "test:e2e:prod": "TEST_URL=https://lost-worlds-prod.vercel.app TEST_SERVER_URL=https://lost-worlds-server-prod.onrender.com LIVE_TEST=true playwright test",
+    "test:e2e:prod": "TEST_URL=https://lost-worlds-prod.vercel.app TEST_SERVER_URL=https://lost-worlds-web-prod.onrender.com LIVE_TEST=true playwright test",
     "test:layout": "node scripts/verify-layout.mjs"
   },
   "dependencies": {

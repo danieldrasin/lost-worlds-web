@@ -20,7 +20,7 @@ Both environments are externally accessible. Only Production should be linked fr
 |-------------|-----------------|-----------------|
 | Local Dev | `http://localhost:5173` | `http://localhost:3001` |
 | Staging | `https://lost-worlds-web.vercel.app` | `https://lost-worlds-server.onrender.com` |
-| Production | `https://lost-worlds-prod.vercel.app` | `https://lost-worlds-server-prod.onrender.com` |
+| Production | `https://lost-worlds-prod.vercel.app` | `https://lost-worlds-web-prod.onrender.com` |
 
 ## Environment Variables
 
@@ -28,7 +28,7 @@ Both environments are externally accessible. Only Production should be linked fr
 
 | Variable | Staging | Production |
 |----------|---------|------------|
-| `VITE_SERVER_URL` | `https://lost-worlds-server.onrender.com` | `https://lost-worlds-server-prod.onrender.com` |
+| `VITE_SERVER_URL` | `https://lost-worlds-server.onrender.com` | `https://lost-worlds-web-prod.onrender.com` |
 
 For local dev, the fallback in `socket.ts` defaults to `http://localhost:3001`.
 
@@ -60,7 +60,7 @@ The production Vercel project was created programmatically using the Vercel REST
 
 2. **Set production branch** to `production` via `PATCH /v9/projects/lost-worlds-prod/branch` — this is an undocumented endpoint that the Vercel dashboard uses internally. The standard API docs don't expose it, but it works with: `{"branch": "production"}`.
 
-3. **Set environment variable** `VITE_SERVER_URL=https://lost-worlds-server-prod.onrender.com` via `POST /v10/projects/lost-worlds-prod/env`.
+3. **Set environment variable** `VITE_SERVER_URL=https://lost-worlds-web-prod.onrender.com` via `POST /v10/projects/lost-worlds-prod/env`.
 
 4. **Triggered first deployment** via `POST /v13/deployments` with `gitSource.ref: "production"` and `target: "production"`.
 
@@ -76,7 +76,7 @@ The Render production service needs to be created manually in the Render dashboa
 2. Click **"New +"** → **"Web Service"**
 3. Connect your GitHub repo: **`danieldrasin/lost-worlds-web`**
 4. Configure the service:
-   - **Name:** `lost-worlds-server-prod`
+   - **Name:** `lost-worlds-web-prod`
    - **Region:** Oregon (US West) — same as staging
    - **Branch:** `production`
    - **Root Directory:** `server`
@@ -93,7 +93,7 @@ The Render production service needs to be created manually in the Render dashboa
    - `INVITE_ROOM_TTL` = `86400`
 6. Click **"Create Web Service"**
 7. Wait for the first deploy to complete (takes 2-5 minutes)
-8. Verify the service is running: visit `https://lost-worlds-server-prod.onrender.com` — you should see the server respond
+8. Verify the service is running: visit `https://lost-worlds-web-prod.onrender.com` — you should see the server respond
 
 **Important:** Each environment needs its own Telegram bot. The existing bot (`LostWorldsCombatBot`) stays on staging. Create a new bot via @BotFather for production (e.g. `LostWorldsProdBot`). Only one server can register a webhook per bot token.
 
