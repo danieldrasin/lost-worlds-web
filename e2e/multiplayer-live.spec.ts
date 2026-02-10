@@ -7,6 +7,11 @@
  * - Multiple rounds of combat
  * - Game completion
  *
+ * IMPORTANT: BattleViewNew has NO separate FIGHT button.
+ * Clicking a move button directly submits it (multiplayer) or executes it (AI).
+ * After clicking a move in multiplayer, "Waiting for opponent..." appears.
+ * When both players have submitted, the exchange resolves automatically.
+ *
  * Run with: TEST_URL=https://lost-worlds-web.vercel.app npx playwright test e2e/multiplayer-live.spec.ts
  */
 
@@ -37,13 +42,8 @@ async function ensureMovePanelVisible(page: Page): Promise<void> {
   // On desktop, "Your Moves" is always visible — no action needed
 }
 
-// Helper to wait for network to be idle
-async function waitForStableState(page: Page, timeout = 5000) {
-  await page.waitForLoadState('networkidle', { timeout });
-}
-
 // Helper to create a player context and navigate to online mode
-async function setupPlayer(context: BrowserContext, characterName = 'Man in Chainmail'): Promise<Page> {
+async function setupPlayer(context: BrowserContext): Promise<Page> {
   const page = await context.newPage();
   await page.goto(BASE_URL);
   await page.waitForLoadState('domcontentloaded');
@@ -73,6 +73,33 @@ async function waitForBattleReady(page: Page, timeout = 20000): Promise<void> {
     // On desktop, "Your Moves" is directly visible
     await page.waitForSelector('text=Your Moves', { timeout });
   }
+}
+
+// Helper: wait for "Waiting for opponent..." to disappear (exchange resolved)
+async function waitForExchangeResolution(page: Page, timeout = 30000): Promise<string> {
+  const startTime = Date.now();
+
+  while (Date.now() - startTime < timeout) {
+    // Check if game ended
+    const victory = await page.locator('text=Victory').count();
+    const defeat = await page.locator('text=Defeated').count();
+    if (victory > 0 || defeat > 0) {
+      return 'game-over';
+    }
+
+    // Check if we're still waiting for opponent
+    const waiting = await page.locator('text=Waiting for opponent').count();
+    if (waiting === 0) {
+      // No longer waiting — exchange resolved or never entered waiting state
+      // Give the UI a moment to settle
+      await page.waitForTimeout(500);
+      return 'resolved';
+    }
+
+    await page.waitForTimeout(1000);
+  }
+
+  return 'timeout';
 }
 
 test.describe('Multiplayer Live Tests', () => {
@@ -165,43 +192,25 @@ test.describe('Multiplayer Live Tests', () => {
       await ensureMovePanelVisible(player1Page);
       await ensureMovePanelVisible(player2Page);
 
-      // Both players select a move (Charge is an Extended Range move, available first turn)
+      // Both players click a move — this DIRECTLY submits in BattleViewNew (no FIGHT button)
+      // Charge is an Extended Range move, available first turn
       const p1ChargeButton = player1Page.locator('button:has-text("Charge")').first();
       const p2ChargeButton = player2Page.locator('button:has-text("Charge")').first();
 
+      // Click moves for both players — each click auto-submits to server
       await p1ChargeButton.click();
+      console.log('Player 1 submitted Charge');
+
       await p2ChargeButton.click();
+      console.log('Player 2 submitted Charge');
 
-      console.log('Both players selected Charge');
+      // Wait for the exchange to resolve — "Waiting for opponent..." should appear then disappear
+      const resolution = await waitForExchangeResolution(player1Page, 60000);
+      console.log(`✓ Move exchange completed (resolved via: ${resolution})`);
 
-      // Both players click FIGHT
-      await Promise.all([
-        player1Page.click('button:has-text("FIGHT")'),
-        player2Page.click('button:has-text("FIGHT")'),
-      ]);
-
-      // Wait for exchange to resolve — look for any sign the round completed:
-      // "Round 1" in history, "used" in result text, or the move panel reappearing for next turn
-      const roundResolved = await Promise.race([
-        player1Page.waitForSelector('text=Round 1', { timeout: 30000 }).then(() => 'history'),
-        player1Page.waitForSelector('text=used', { timeout: 30000 }).then(() => 'result'),
-        // On mobile, the View tab might show after resolution
-        player1Page.waitForSelector('text=Select your', { timeout: 30000 }).then(() => 'next-turn'),
-      ]).catch(() => 'timeout');
-
-      if (roundResolved === 'timeout') {
-        // Check if we're just in the "Waiting" state still
-        const waiting = await player1Page.locator('text=Waiting').count();
-        if (waiting > 0) {
-          // Server is slow but connection is alive — wait more
-          await Promise.race([
-            player1Page.waitForSelector('text=Round 1', { timeout: 30000 }),
-            player1Page.waitForSelector('text=used', { timeout: 30000 }),
-          ]);
-        }
-      }
-
-      console.log(`✓ Move exchange completed (resolved via: ${roundResolved})`);
+      // Verify that the round history shows the exchange
+      const historyVisible = await player1Page.locator('text=Round 1').count();
+      expect(historyVisible).toBeGreaterThan(0);
 
     } finally {
       await player1Context.close();
@@ -256,7 +265,7 @@ test.describe('Multiplayer Live Tests', () => {
         await ensureMovePanelVisible(player1Page);
         await ensureMovePanelVisible(player2Page);
 
-        // Find and click first available move for both players
+        // Find available (non-disabled) move buttons for both players
         const p1Moves = player1Page.locator('.space-y-3 button:not([disabled])');
         const p2Moves = player2Page.locator('.space-y-3 button:not([disabled])');
 
@@ -268,51 +277,36 @@ test.describe('Multiplayer Live Tests', () => {
           break;
         }
 
-        // Random move selection
+        // Random move selection — each click auto-submits (no FIGHT button)
         const p1Index = Math.floor(Math.random() * p1Count);
         const p2Index = Math.floor(Math.random() * p2Count);
 
         await p1Moves.nth(p1Index).click();
         await p2Moves.nth(p2Index).click();
 
-        // Click FIGHT
-        await Promise.all([
-          player1Page.click('button:has-text("FIGHT")'),
-          player2Page.click('button:has-text("FIGHT")'),
-        ]);
+        // Wait for exchange to resolve
+        const resolution = await waitForExchangeResolution(player1Page, isRemote ? 30000 : 10000);
 
-        // Wait for exchange to resolve with generous timeout
-        // Look for the "Waiting" state to clear, or next turn's move panel
-        let resolved = false;
-        const roundTimeout = isRemote ? 30000 : 10000;
-        const startTime = Date.now();
-
-        while (Date.now() - startTime < roundTimeout) {
-          // Check if game ended this round
-          const victory = await player1Page.locator('text=Victory').count();
-          const defeat = await player1Page.locator('text=Defeated').count();
-          if (victory > 0 || defeat > 0) {
-            resolved = true;
-            break;
-          }
-
-          // Check if we're past the waiting state
-          const waiting = await player1Page.locator('text=Waiting').count();
-          if (waiting === 0) {
-            // No longer waiting — round resolved
-            // Give a moment for the UI to settle
-            await player1Page.waitForTimeout(1000);
-            resolved = true;
-            break;
-          }
-
-          await player1Page.waitForTimeout(1000);
-        }
-
-        if (!resolved) {
+        if (resolution === 'timeout') {
           console.log(`⚠ Round ${round} timed out waiting for resolution`);
           break;
         }
+
+        if (resolution === 'game-over') {
+          console.log(`✓ Game ended during round ${round}`);
+          break;
+        }
+
+        // On mobile, switch back to Move tab for next round
+        if (isMobileViewport(player1Page)) {
+          await ensureMovePanelVisible(player1Page);
+        }
+        if (isMobileViewport(player2Page)) {
+          await ensureMovePanelVisible(player2Page);
+        }
+
+        // Brief pause between rounds for UI to settle
+        await player1Page.waitForTimeout(500);
       }
 
       // Verify game completed or we hit max rounds

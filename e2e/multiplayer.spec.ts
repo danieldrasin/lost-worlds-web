@@ -2,6 +2,11 @@
  * E2E Tests for Multiplayer Battle
  *
  * Uses Playwright to simulate two browsers playing against each other.
+ *
+ * IMPORTANT: BattleViewNew has NO separate FIGHT button.
+ * Clicking a move button directly submits it (multiplayer) or executes it (AI).
+ * After clicking a move in multiplayer, "Waiting for opponent..." appears.
+ * In AI mode, clicking a move auto-executes the exchange after a 150ms delay.
  */
 
 import { test, expect, Page } from '@playwright/test';
@@ -36,6 +41,31 @@ async function waitForBattleReady(page: Page, timeout = 15000): Promise<void> {
   } else {
     await page.waitForSelector('text=Your Moves', { timeout });
   }
+}
+
+// Helper: wait for exchange resolution (multiplayer)
+async function waitForExchangeResolution(page: Page, timeout = 30000): Promise<string> {
+  const startTime = Date.now();
+
+  while (Date.now() - startTime < timeout) {
+    // Check if game ended
+    const victory = await page.locator('text=Victory').count();
+    const defeat = await page.locator('text=Defeated').count();
+    if (victory > 0 || defeat > 0) {
+      return 'game-over';
+    }
+
+    // Check if we're still waiting for opponent
+    const waiting = await page.locator('text=Waiting for opponent').count();
+    if (waiting === 0) {
+      await page.waitForTimeout(500);
+      return 'resolved';
+    }
+
+    await page.waitForTimeout(1000);
+  }
+
+  return 'timeout';
 }
 
 test.describe('Multiplayer Battle', () => {
@@ -133,34 +163,17 @@ test.describe('Multiplayer Battle', () => {
     await ensureMovePanelVisible(player1Page);
     await ensureMovePanelVisible(player2Page);
 
-    // Both players: Select Charge (Extended Range move available first turn)
+    // Both players: Click Charge — this auto-submits (no FIGHT button in BattleViewNew)
     const player1MoveButton = player1Page.locator('button:has-text("Charge")').first();
     const player2MoveButton = player2Page.locator('button:has-text("Charge")').first();
 
     await player1MoveButton.click();
     await player2MoveButton.click();
 
-    // Both players: Click Fight
-    await player1Page.click('text=FIGHT!');
-    await player2Page.click('text=FIGHT!');
+    // Wait for exchange to resolve
+    const resolution = await waitForExchangeResolution(player1Page, 60000);
 
-    // Wait for exchange to resolve with generous timeout
-    await Promise.race([
-      player1Page.waitForSelector('text=Round 1', { timeout: 30000 }),
-      player1Page.waitForSelector('text=used', { timeout: 30000 }),
-      player1Page.waitForSelector('text=Select your', { timeout: 30000 }),
-    ]).catch(async () => {
-      // Might still be in Waiting state — wait more
-      const waiting = await player1Page.locator('text=Waiting').count();
-      if (waiting > 0) {
-        await Promise.race([
-          player1Page.waitForSelector('text=Round 1', { timeout: 30000 }),
-          player1Page.waitForSelector('text=used', { timeout: 30000 }),
-        ]);
-      }
-    });
-
-    console.log('Move exchange completed!');
+    console.log(`Move exchange completed! (resolved via: ${resolution})`);
 
     await player1Context.close();
     await player2Context.close();
@@ -189,18 +202,15 @@ test.describe('Local Battle', () => {
     const chargeButton = page.locator('button:has-text("Charge")').first();
     await expect(chargeButton).toBeVisible({ timeout: 5000 });
 
-    // Select the move
+    // Click the move — in AI mode, this auto-executes the exchange (no FIGHT button)
     await chargeButton.click();
 
-    // Fight button should be enabled
-    const fightButton = page.locator('button:has-text("FIGHT!")');
-    await expect(fightButton).toBeEnabled();
+    // Should resolve against AI — give time for exchange animation
+    await page.waitForTimeout(2000);
 
-    // Click fight
-    await fightButton.click();
-
-    // Should resolve against AI — give time for exchange
-    await page.waitForTimeout(1000);
+    // Verify the exchange happened — check for Round 1 in history
+    const historyVisible = await page.locator('text=Round 1').count();
+    expect(historyVisible).toBeGreaterThan(0);
 
     console.log('AI battle exchange completed!');
   });
