@@ -286,9 +286,16 @@ function getValidMovesForCharacter(character: Character): Maneuver[] {
       const category = maneuver.category;
       const name = maneuver.name.toUpperCase();
 
-      // Without weapon, limited moves
+      // Without weapon, limited moves: JUMP, RAGE, KICK, RETRIEVE,
+      // and non-attack EXTENDED_RANGE moves (Charge, Dodge, Jump Back, Block & Close)
       if (category !== 'JUMP' && category !== 'RAGE') {
-        if (category !== 'SPECIAL' || (!name.includes('KICK') && !name.includes('RETRIEVE'))) {
+        if (category === 'EXTENDED_RANGE') {
+          // At extended range without weapon: allow movement/defense moves, not attacks
+          const weaponFreeExtended = ['CHARGE', 'DODGE', 'JUMP BACK', 'BLOCK & CLOSE', 'BLOCK'];
+          if (!weaponFreeExtended.some(m => name.includes(m))) {
+            return false;
+          }
+        } else if (category !== 'SPECIAL' || (!name.includes('KICK') && !name.includes('RETRIEVE'))) {
           return false;
         }
       }

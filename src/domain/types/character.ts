@@ -159,17 +159,25 @@ export function getValidManeuvers(character: Character): Maneuver[] {
   return sheet.maneuvers.filter(maneuver => {
     // Check weapon requirement
     if (!state.hasWeapon) {
-      // Without weapon, only certain moves are valid
+      // Without weapon, only certain moves are valid:
+      // JUMP, RAGE, KICK, RETRIEVE, and non-attack EXTENDED_RANGE moves
       const allowedWithoutWeapon = ['JUMP', 'RAGE'];
       if (!allowedWithoutWeapon.includes(maneuver.category)) {
-        // Also allow SPECIAL moves that don't require weapon
-        if (maneuver.category !== 'SPECIAL') {
+        if (maneuver.category === 'EXTENDED_RANGE') {
+          // At extended range without weapon: allow movement/defense moves, not attacks
+          const nameUpper = maneuver.name.toUpperCase();
+          const weaponFreeExtended = ['CHARGE', 'DODGE', 'JUMP BACK', 'BLOCK & CLOSE', 'BLOCK'];
+          if (!weaponFreeExtended.some(m => nameUpper.includes(m))) {
+            return false;
+          }
+        } else if (maneuver.category !== 'SPECIAL') {
           return false;
-        }
-        // Check if it's a kick or retrieve weapon
-        const nameUpper = maneuver.name.toUpperCase();
-        if (!nameUpper.includes('KICK') && !nameUpper.includes('RETRIEVE')) {
-          return false;
+        } else {
+          // Check if it's a kick or retrieve weapon
+          const nameUpper = maneuver.name.toUpperCase();
+          if (!nameUpper.includes('KICK') && !nameUpper.includes('RETRIEVE')) {
+            return false;
+          }
         }
       }
     }

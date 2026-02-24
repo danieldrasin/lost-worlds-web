@@ -30,7 +30,12 @@ function getValidMoves(character: Character): Maneuver[] {
       const category = maneuver.category;
       const name = maneuver.name.toUpperCase();
       if (category !== 'JUMP' && category !== 'RAGE') {
-        if (category !== 'SPECIAL' || (!name.includes('KICK') && !name.includes('RETRIEVE'))) {
+        if (category === 'EXTENDED_RANGE') {
+          const weaponFreeExtended = ['CHARGE', 'DODGE', 'JUMP BACK', 'BLOCK & CLOSE', 'BLOCK'];
+          if (!weaponFreeExtended.some(m => name.includes(m))) {
+            return false;
+          }
+        } else if (category !== 'SPECIAL' || (!name.includes('KICK') && !name.includes('RETRIEVE'))) {
           return false;
         }
       }
