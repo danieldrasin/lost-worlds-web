@@ -42,10 +42,12 @@
 
   .phones-container {
     display: flex;
-    gap: 2.5rem;
+    gap: 1.5rem;
     align-items: flex-start;
     opacity: 0;
     animation: fadeIn 0.8s 0.5s ease forwards;
+    transform: scale(var(--phone-scale, 1));
+    transform-origin: top center;
   }
 
   .player-label {
@@ -61,8 +63,8 @@
 
   /* Phone frame */
   .phone {
-    width: 280px;
-    height: 560px;
+    width: 250px;
+    height: 500px;
     border-radius: 32px;
     background: #1a1a2e;
     border: 3px solid #333;
@@ -110,11 +112,16 @@
     flex-direction: column;
     gap: 2px;
     flex: 1;
+    min-width: 0;
+    overflow: hidden;
   }
 
   .hp-label {
     font-weight: 600;
-    font-size: 0.6rem;
+    font-size: 0.55rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .hp-label.blue { color: #60a5fa; }
   .hp-label.red { color: #f87171; }
@@ -452,6 +459,16 @@
   .play-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
   /* Animations */
+  @media (max-width: 700px) {
+    :root { --phone-scale: 0.75; }
+    .demo-title { font-size: 1.5rem; }
+    .demo-subtitle { font-size: 0.75rem; margin-bottom: 0.75rem; }
+  }
+  @media (max-width: 500px) {
+    :root { --phone-scale: 0.6; }
+    .phones-container { gap: 0.75rem; }
+  }
+
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes spin { to { transform: rotate(360deg); } }
   @keyframes tabPulse { 0%, 100% { text-shadow: none; } 50% { text-shadow: 0 0 8px #eab308; } }
@@ -489,7 +506,7 @@
       <div class="phone-screen">
         <div class="status-bar">
           <div class="hp-section">
-            <div class="hp-label blue">Man in Chainmail</div>
+            <div class="hp-label blue">Chainmail</div>
             <div class="hp-bar-bg"><div class="hp-bar-fill blue" id="p1-hp-bar" style="width: 100%"></div></div>
           </div>
           <div class="round-badge" id="p1-round">R1</div>
@@ -529,7 +546,7 @@
           </div>
           <div class="round-badge" id="p2-round">R1</div>
           <div class="hp-section" style="text-align: right">
-            <div class="hp-label red">Man in Chainmail</div>
+            <div class="hp-label red">Chainmail</div>
             <div class="hp-bar-bg"><div class="hp-bar-fill red" id="p2-opp-hp-bar" style="width: 100%"></div></div>
           </div>
         </div>
