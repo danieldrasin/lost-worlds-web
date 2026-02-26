@@ -197,8 +197,8 @@
   }
 
   .move-category-label {
-    font-size: 0.45rem;
-    color: #9ca3af;
+    font-size: 0.5rem;
+    color: #e5e7eb;
     font-weight: 700;
     margin: 5px 0 2px;
   }
@@ -212,10 +212,10 @@
   .move-chip {
     display: inline-flex;
     align-items: center;
-    padding: 3px 6px;
+    padding: 3px 8px;
     background: #374151;
     border: 1px solid #4b5563;
-    border-radius: 4px;
+    border-radius: 12px;
     font-size: 0.5rem;
     color: #fff;
     cursor: pointer;
@@ -224,7 +224,7 @@
   }
 
   .move-chip .mod {
-    opacity: 0.6;
+    opacity: 0.7;
     margin-left: 2px;
   }
 
@@ -700,7 +700,7 @@ function stopBgMusic() {
 // ===== Move data (matching real app categories and colors) =====
 // MC extended range moves
 const MC_EXT = [
-  { cat: 'Extended', color: '#eab308', moves: [
+  { cat: 'Extended', color: '#3b82f6', moves: [
     { name: 'Charge', mod: '+3' },
     { name: 'Swing High', mod: '-6' },
     { name: 'Swing Low', mod: '-6' },
@@ -757,7 +757,7 @@ const MC_NORMAL = [
 
 // HT extended range moves
 const HT_EXT = [
-  { cat: 'Extended', color: '#eab308', moves: [
+  { cat: 'Extended', color: '#3b82f6', moves: [
     { name: 'Charge', mod: '+3' },
     { name: 'Swing High', mod: '-4' },
     { name: 'Swing Low', mod: '-4' },
@@ -817,7 +817,7 @@ function showMoveScreen(phone, moveGroups, selectedCat = -1, selectedIdx = -1) {
 
   const title = document.createElement('div');
   title.className = 'move-title';
-  title.textContent = 'Select Your Move';
+  title.textContent = 'Your Moves';
   screen.appendChild(title);
 
   moveGroups.forEach((group, gi) => {
@@ -832,8 +832,10 @@ function showMoveScreen(phone, moveGroups, selectedCat = -1, selectedIdx = -1) {
     group.moves.forEach((m, mi) => {
       const chip = document.createElement('div');
       chip.className = 'move-chip';
-      chip.style.borderLeftWidth = '3px';
-      chip.style.borderLeftColor = group.color;
+      if (group.cat === 'Extended') {
+        chip.style.borderLeftWidth = '3px';
+        chip.style.borderLeftColor = group.color;
+      }
       if (gi === selectedCat && mi === selectedIdx) chip.classList.add('selected');
       chip.id = `${phone}-chip-${gi}-${mi}`;
       chip.innerHTML = m.mod ? `${m.name} <span class="mod">${m.mod}</span>` : m.name;
@@ -1027,21 +1029,38 @@ async function startDemo() {
   setHP(mcHp, MC_HP, htHp, HT_HP);
 
   // -- R1: Extended range — both Charge (0-7s) --
-  setRound(1);
-  showMoveScreen('p1', MC_EXT);
-  showMoveScreen('p2', HT_EXT);
-  await wait(1200);
+  // Real app shows all moves + Extended category at bottom
+  const MC_ALL_EXT = [...MC_NORMAL, ...MC_EXT];
+  const HT_ALL_EXT = [...HT_NORMAL, ...HT_EXT];
+  const mcExtGroupIdx = MC_NORMAL.length; // index of Extended category in combined list
+  const htExtGroupIdx = HT_NORMAL.length;
 
-  // P1 taps Charge
-  await animateFinger('phone1', 60, 160, 0);
-  showMoveScreen('p1', MC_EXT, 0, 0);
+  setRound(1);
+  showMoveScreen('p1', MC_ALL_EXT);
+  showMoveScreen('p2', HT_ALL_EXT);
+
+  // Scroll to bottom to show Extended section, then tap
+  await wait(800);
+  const p1Screen = document.getElementById('p1-move-screen');
+  const p2Screen = document.getElementById('p2-move-screen');
+  if (p1Screen) p1Screen.scrollTo({ top: p1Screen.scrollHeight, behavior: 'smooth' });
+  if (p2Screen) p2Screen.scrollTo({ top: p2Screen.scrollHeight, behavior: 'smooth' });
+  await wait(600);
+
+  // P1 taps Charge (first move in Extended group)
+  await animateFinger('phone1', 60, 410, 0);
+  showMoveScreen('p1', MC_ALL_EXT, mcExtGroupIdx, 0);
+  const p1ScreenAfter = document.getElementById('p1-move-screen');
+  if (p1ScreenAfter) p1ScreenAfter.scrollTo({ top: p1ScreenAfter.scrollHeight, behavior: 'instant' });
   await wait(500);
   showWaitingBanner('p1');
   await wait(800);
 
   // P2 taps Charge
-  await animateFinger('phone2', 60, 160, 0);
-  showMoveScreen('p2', HT_EXT, 0, 0);
+  await animateFinger('phone2', 60, 410, 0);
+  showMoveScreen('p2', HT_ALL_EXT, htExtGroupIdx, 0);
+  const p2ScreenAfter = document.getElementById('p2-move-screen');
+  if (p2ScreenAfter) p2ScreenAfter.scrollTo({ top: p2ScreenAfter.scrollHeight, behavior: 'instant' });
   await wait(400);
 
   // Results: both charged, no damage
