@@ -42,12 +42,10 @@
 
   .phones-container {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     align-items: flex-start;
     opacity: 0;
     animation: fadeIn 0.8s 0.5s ease forwards;
-    transform: scale(var(--phone-scale, 1));
-    transform-origin: top center;
   }
 
   .player-label {
@@ -63,8 +61,8 @@
 
   /* Phone frame */
   .phone {
-    width: 250px;
-    height: 500px;
+    width: min(230px, 44vw);
+    height: min(480px, 92vw);
     border-radius: 32px;
     background: #1a1a2e;
     border: 3px solid #333;
@@ -459,14 +457,11 @@
   .play-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
   /* Animations */
-  @media (max-width: 700px) {
-    :root { --phone-scale: 0.75; }
+  @media (max-width: 600px) {
     .demo-title { font-size: 1.5rem; }
     .demo-subtitle { font-size: 0.75rem; margin-bottom: 0.75rem; }
-  }
-  @media (max-width: 500px) {
-    :root { --phone-scale: 0.6; }
-    .phones-container { gap: 0.75rem; }
+    .player-label { font-size: 0.7rem; }
+    .phones-container { gap: 0.5rem; }
   }
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
