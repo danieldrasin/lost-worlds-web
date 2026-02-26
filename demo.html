@@ -76,59 +76,61 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
-    height: 24px;
+    width: 100px;
+    height: 22px;
     background: #1a1a2e;
-    border-radius: 0 0 16px 16px;
+    border-radius: 0 0 14px 14px;
     z-index: 100;
   }
 
   .phone-screen {
     position: absolute;
-    top: 8px;
-    left: 8px;
-    right: 8px;
-    bottom: 8px;
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
     border-radius: 24px;
     background: #111827;
     overflow: hidden;
-  }
-
-  /* Status bar */
-  .status-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 28px 10px 6px;
-    background: #1f2937;
-    font-size: 0.65rem;
-    border-bottom: 1px solid #374151;
-  }
-
-  .hp-section {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
   }
 
-  .hp-label {
-    font-weight: 600;
-    font-size: 0.55rem;
+  /* ===== Status bar (matches real app) ===== */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    padding: 26px 8px 5px;
+    background: #1f2937;
+    border-bottom: 1px solid #374151;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .hp-group {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+  }
+  .hp-group.right { justify-content: flex-end; }
+
+  .hp-name {
+    font-weight: 700;
+    font-size: 0.5rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 42px;
   }
-  .hp-label.blue { color: #60a5fa; }
-  .hp-label.red { color: #f87171; }
+  .hp-name.blue { color: #60a5fa; }
+  .hp-name.red { color: #f87171; }
 
   .hp-bar-bg {
-    height: 4px;
-    background: #374151;
+    width: 28px;
+    height: 3px;
+    background: #4b5563;
     border-radius: 2px;
     overflow: hidden;
+    flex-shrink: 0;
   }
 
   .hp-bar-fill {
@@ -138,31 +140,42 @@
   }
   .hp-bar-fill.blue { background: #3b82f6; }
   .hp-bar-fill.red { background: #ef4444; }
+  .hp-bar-fill.yellow { background: #eab308; }
+
+  .hp-num {
+    font-size: 0.5rem;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'SF Mono', 'Menlo', monospace;
+    flex-shrink: 0;
+  }
 
   .round-badge {
-    background: #374151;
     color: #9ca3af;
-    padding: 2px 8px;
-    border-radius: 8px;
     font-weight: 700;
+    font-size: 0.5rem;
+    flex-shrink: 0;
+    margin: 0 2px;
+  }
+
+  .menu-x {
+    color: #6b7280;
     font-size: 0.6rem;
-    margin: 0 6px;
-    white-space: nowrap;
+    margin-left: 1px;
+    flex-shrink: 0;
   }
 
-  /* Screen content area */
+  /* ===== Screen content ===== */
   .screen-content {
-    height: calc(100% - 46px);
-    display: flex;
-    flex-direction: column;
+    flex: 1;
     position: relative;
+    overflow: hidden;
   }
 
-  /* Move selection screen */
+  /* ===== Move selection (matches real app: pill chips in flex-wrap rows) ===== */
   .move-screen {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
+    padding: 8px 6px;
+    overflow-y: auto;
     height: 100%;
     opacity: 0;
     position: absolute;
@@ -171,79 +184,91 @@
   }
   .move-screen.active { opacity: 1; z-index: 2; }
 
+  .move-screen::-webkit-scrollbar { width: 3px; }
+  .move-screen::-webkit-scrollbar-track { background: transparent; }
+  .move-screen::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 2px; }
+
   .move-title {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #e5e7eb;
-    margin-bottom: 6px;
-  }
-
-  .move-category {
-    font-size: 0.55rem;
-    color: #9ca3af;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 4px 0 2px;
-    font-weight: 600;
-  }
-
-  .move-btn {
-    display: flex;
-    align-items: center;
-    padding: 5px 8px;
-    margin: 2px 0;
-    background: #1f2937;
-    border-radius: 6px;
     font-size: 0.65rem;
-    color: #d1d5db;
-    border-left: 3px solid #6b7280;
-    transition: all 0.2s;
-    cursor: pointer;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+    text-align: center;
   }
 
-  .move-btn.swing { border-left-color: #dc2626; }
-  .move-btn.thrust { border-left-color: #2563eb; }
-  .move-btn.block { border-left-color: #16a34a; }
-  .move-btn.special { border-left-color: #ea580c; }
-  .move-btn.ext { border-left-color: #eab308; }
-
-  .move-btn.selected {
-    box-shadow: 0 0 0 2px #eab308;
-    background: #292524;
-  }
-
-  .move-btn .mod {
-    margin-left: auto;
-    font-size: 0.55rem;
+  .move-category-label {
+    font-size: 0.45rem;
     color: #9ca3af;
+    font-weight: 700;
+    margin: 5px 0 2px;
   }
 
-  /* Waiting overlay */
+  .move-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  .move-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 6px;
+    background: #374151;
+    border: 1px solid #4b5563;
+    border-radius: 4px;
+    font-size: 0.5rem;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .move-chip .mod {
+    opacity: 0.6;
+    margin-left: 2px;
+  }
+
+  .move-chip.selected {
+    box-shadow: 0 0 0 2px #eab308;
+    background: #1c1917;
+  }
+
+  .move-chip.disabled {
+    background: #1f2937;
+    border-color: #374151;
+    color: #6b7280;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+
+  /* ===== Waiting banner ===== */
   .waiting-banner {
     background: #854d0e;
     color: #fef08a;
-    padding: 6px 10px;
+    padding: 4px 8px;
     text-align: center;
-    font-size: 0.65rem;
+    font-size: 0.55rem;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 5px;
+    border-radius: 4px;
+    margin-bottom: 4px;
     opacity: 0;
     transition: opacity 0.3s ease;
   }
   .waiting-banner.active { opacity: 1; }
 
   .spinner {
-    width: 12px; height: 12px;
+    width: 10px; height: 10px;
     border: 2px solid transparent;
     border-top-color: #fef08a;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
 
-  /* Picture page screen */
+  /* ===== Picture page (matches real app) ===== */
   .picture-screen {
     display: flex;
     flex-direction: column;
@@ -255,33 +280,57 @@
   }
   .picture-screen.active { opacity: 1; z-index: 2; }
 
+  .pic-section-label {
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: #fff;
+    padding: 4px 8px 2px;
+    background: #111827;
+  }
+  .pic-section-label span {
+    font-weight: 400;
+    color: #9ca3af;
+    font-size: 0.45rem;
+  }
+
   .pic-header {
     background: #374151;
-    padding: 6px 10px;
+    padding: 4px 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
   .pic-char-name {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: 700;
     color: #fff;
   }
 
-  .pic-label {
-    font-size: 0.55rem;
-    color: #9ca3af;
+  .pic-toggle {
+    display: flex;
+    gap: 3px;
   }
+
+  .pic-toggle-btn {
+    padding: 2px 5px;
+    font-size: 0.4rem;
+    font-weight: 600;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+  }
+  .pic-toggle-btn.bw { background: #6b7280; color: #fff; }
+  .pic-toggle-btn.color { background: #f97316; color: #fff; }
 
   .pic-image-area {
     flex: 1;
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    background: #111827;
-    padding: 6px;
+    background: #1f2937;
     overflow: hidden;
+    min-height: 0;
   }
 
   .pic-image-area img {
@@ -289,153 +338,137 @@
     max-width: 100%;
     object-fit: contain;
     object-position: top;
-    border-radius: 6px;
   }
 
   .pic-result {
-    padding: 8px 10px;
-    background: #1f2937;
-    border-top: 1px solid #374151;
+    padding: 5px 8px;
+    background: #111827;
+    text-align: center;
+    flex-shrink: 0;
   }
 
   .pic-result-title {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: 700;
     color: #fff;
   }
 
   .pic-result-damage {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     font-weight: 800;
     color: #f87171;
-    margin-top: 2px;
   }
 
   .pic-result-nodamage {
-    font-size: 0.75rem;
+    font-size: 0.6rem;
     font-weight: 600;
     color: #4ade80;
-    margin-top: 2px;
   }
 
-  .pic-exchange-summary {
-    padding: 6px 10px;
+  .pic-exchange {
+    padding: 4px 8px;
     background: #111827;
-    font-size: 0.6rem;
+    font-size: 0.45rem;
+    text-align: center;
     color: #9ca3af;
     border-top: 1px solid #1f2937;
+    flex-shrink: 0;
   }
 
-  .exchange-line {
-    display: flex;
-    justify-content: space-between;
-    padding: 2px 0;
-  }
-  .exchange-line .name { font-weight: 600; }
-  .exchange-line .name.blue { color: #60a5fa; }
-  .exchange-line .name.red { color: #f87171; }
+  .pic-exchange .you { color: #60a5fa; font-weight: 600; }
+  .pic-exchange .opp { color: #f87171; font-weight: 600; }
+  .pic-exchange .move-name { color: #fff; font-weight: 700; }
+  .pic-exchange .dmg-red { color: #f87171; }
+  .pic-exchange .dmg-green { color: #4ade80; }
 
-  /* Tab bar */
+  /* ===== Tab bar (matches real app) ===== */
   .tab-bar {
     display: flex;
     background: #1f2937;
     border-top: 1px solid #374151;
-    padding: 4px 0 6px;
+    flex-shrink: 0;
   }
 
   .tab {
     flex: 1;
-    text-align: center;
-    font-size: 0.55rem;
-    color: #6b7280;
-    padding: 3px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0 4px;
+    font-size: 0.4rem;
+    color: #9ca3af;
     cursor: pointer;
+    position: relative;
+    transition: all 0.15s;
   }
-  .tab.active { color: #fff; }
-  .tab .tab-icon { font-size: 0.85rem; display: block; }
-  .tab.pulse .tab-icon {
-    animation: tabPulse 1.5s ease infinite;
+  .tab.active {
+    color: #fff;
+    background: #374151;
+  }
+  .tab .tab-icon { font-size: 0.7rem; }
+  .tab .tab-label { margin-top: 1px; }
+
+  .tab.highlight {
+    color: #eab308;
+    border-top: 2px solid #eab308;
+    animation: tabHighlight 2s ease-in-out infinite;
   }
 
-  /* Finger tap indicator */
+  .tab .badge {
+    position: absolute;
+    top: 2px;
+    right: calc(50% - 14px);
+    background: #22c55e;
+    color: #fff;
+    font-size: 0.35rem;
+    font-weight: 700;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== Finger tap ===== */
   .finger-tap {
     position: absolute;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     pointer-events: none;
     z-index: 200;
     opacity: 0;
   }
 
-  .finger-tap svg {
-    width: 100%;
-    height: 100%;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-  }
+  .finger-tap svg { width: 100%; height: 100%; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
 
   .finger-tap.tapping {
     animation: fingerTap 0.5s ease forwards;
   }
 
-  .finger-tap.moving {
-    transition: top 0.3s ease, left 0.3s ease;
-  }
-
-  /* Ripple on tap */
   .tap-ripple {
     position: absolute;
-    width: 40px;
-    height: 40px;
+    width: 36px; height: 36px;
     border-radius: 50%;
     border: 2px solid rgba(255, 165, 0, 0.7);
     pointer-events: none;
     z-index: 199;
     opacity: 0;
   }
-  .tap-ripple.active {
-    animation: ripple 0.6s ease forwards;
-  }
+  .tap-ripple.active { animation: ripple 0.6s ease forwards; }
 
-  /* Intro overlay */
-  .intro-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(17, 24, 39, 0.95);
-    z-index: 50;
-    transition: opacity 0.5s ease;
-  }
-  .intro-overlay.hidden { opacity: 0; pointer-events: none; }
-
-  .intro-vs {
-    font-size: 2rem;
-    font-weight: 900;
-    color: #fbbf24;
-    text-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
-  }
-
-  .intro-char {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #e5e7eb;
-    margin: 4px 0;
-  }
-
-  /* Progress bar at bottom */
+  /* ===== Progress bar ===== */
   .progress-bar {
     position: fixed;
-    bottom: 0;
-    left: 0;
+    bottom: 0; left: 0;
     height: 3px;
     background: linear-gradient(90deg, #3b82f6, #a78bfa, #f472b6);
     transition: width 0.3s linear;
     z-index: 1000;
   }
 
-  /* Play button */
+  /* ===== Play button ===== */
   .play-btn {
     margin-top: 1.5rem;
     padding: 12px 36px;
@@ -452,11 +485,10 @@
     opacity: 0;
     animation: fadeIn 0.8s 0.8s ease forwards;
   }
-  .play-btn:hover { transform: scale(1.05); box-shadow: 0 6px 30px rgba(99, 102, 241, 0.5); }
+  .play-btn:hover { transform: scale(1.05); }
   .play-btn:active { transform: scale(0.97); }
   .play-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-  /* Animations */
   @media (max-width: 600px) {
     .demo-title { font-size: 1.5rem; }
     .demo-subtitle { font-size: 0.75rem; margin-bottom: 0.75rem; }
@@ -464,9 +496,9 @@
     .phones-container { gap: 0.5rem; }
   }
 
+  /* ===== Animations ===== */
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes tabPulse { 0%, 100% { text-shadow: none; } 50% { text-shadow: 0 0 8px #eab308; } }
   @keyframes fingerTap {
     0% { opacity: 0.8; transform: scale(1); }
     30% { opacity: 1; transform: scale(0.85) translateY(3px); }
@@ -478,8 +510,12 @@
     100% { opacity: 0; transform: scale(1.8); }
   }
   @keyframes damageFlash {
-    0%, 100% { background-color: #111827; }
+    0%, 100% { background-color: #1f2937; }
     50% { background-color: #450a0a; }
+  }
+  @keyframes tabHighlight {
+    0%, 100% { box-shadow: inset 0 0 0 0 transparent; }
+    50% { box-shadow: inset 0 0 12px 0 rgba(234, 179, 8, 0.15); }
   }
   @keyframes slideUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -500,30 +536,27 @@
       <div class="phone-notch"></div>
       <div class="phone-screen">
         <div class="status-bar">
-          <div class="hp-section">
-            <div class="hp-label blue">Chainmail</div>
-            <div class="hp-bar-bg"><div class="hp-bar-fill blue" id="p1-hp-bar" style="width: 100%"></div></div>
+          <div class="hp-group">
+            <span class="hp-name blue">Man in Chai...</span>
+            <div class="hp-bar-bg"><div class="hp-bar-fill blue" id="p1-hp-bar" style="width:100%"></div></div>
+            <span class="hp-num" id="p1-hp-num">12</span>
           </div>
-          <div class="round-badge" id="p1-round">R1</div>
-          <div class="hp-section" style="text-align: right">
-            <div class="hp-label red">Hill Troll</div>
-            <div class="hp-bar-bg"><div class="hp-bar-fill red" id="p1-opp-hp-bar" style="width: 100%"></div></div>
+          <span class="round-badge" id="p1-round">R1</span>
+          <span class="menu-x">✕</span>
+          <div class="hp-group right">
+            <span class="hp-num" id="p1-opp-hp-num">35</span>
+            <div class="hp-bar-bg"><div class="hp-bar-fill red" id="p1-opp-hp-bar" style="width:100%"></div></div>
+            <span class="hp-name red">Hill Troll wi...</span>
           </div>
         </div>
-        <div class="screen-content" id="p1-content">
-          <!-- Screens inserted by JS -->
-        </div>
-        <div class="tab-bar">
-          <div class="tab" id="p1-tab-view"><span class="tab-icon">👁️</span>View</div>
-          <div class="tab active" id="p1-tab-move"><span class="tab-icon">⚔️</span>Move</div>
-          <div class="tab" id="p1-tab-history"><span class="tab-icon">📜</span>Log</div>
+        <div class="screen-content" id="p1-content"></div>
+        <div class="tab-bar" id="p1-tabs">
+          <div class="tab" id="p1-tab-view"><span class="tab-icon">👁️</span><span class="tab-label">View</span></div>
+          <div class="tab active highlight" id="p1-tab-move"><span class="tab-icon">⚔️</span><span class="tab-label">Move</span></div>
+          <div class="tab" id="p1-tab-history"><span class="tab-icon">📜</span><span class="tab-label">History</span></div>
         </div>
       </div>
-      <div class="finger-tap" id="finger1">
-        <svg viewBox="0 0 48 48" fill="none">
-          <path d="M24 4C18 4 14 9 14 14v8l-4 2c-2 1-3 3-3 5v6c0 5 4 9 9 9h8c5 0 9-4 9-9V18c0-2-2-4-4-4h-1V10c0-3-2-6-4-6z" fill="rgba(255,255,255,0.9)" stroke="#333" stroke-width="1.5"/>
-        </svg>
-      </div>
+      <div class="finger-tap" id="finger1"><svg viewBox="0 0 48 48" fill="none"><path d="M24 4C18 4 14 9 14 14v8l-4 2c-2 1-3 3-3 5v6c0 5 4 9 9 9h8c5 0 9-4 9-9V18c0-2-2-4-4-4h-1V10c0-3-2-6-4-6z" fill="rgba(255,255,255,0.9)" stroke="#333" stroke-width="1.5"/></svg></div>
       <div class="tap-ripple" id="ripple1"></div>
     </div>
   </div>
@@ -535,37 +568,33 @@
       <div class="phone-notch"></div>
       <div class="phone-screen">
         <div class="status-bar">
-          <div class="hp-section">
-            <div class="hp-label blue">Hill Troll</div>
-            <div class="hp-bar-bg"><div class="hp-bar-fill blue" id="p2-hp-bar" style="width: 100%"></div></div>
+          <div class="hp-group">
+            <span class="hp-name blue">Hill Troll wi...</span>
+            <div class="hp-bar-bg"><div class="hp-bar-fill blue" id="p2-hp-bar" style="width:100%"></div></div>
+            <span class="hp-num" id="p2-hp-num">35</span>
           </div>
-          <div class="round-badge" id="p2-round">R1</div>
-          <div class="hp-section" style="text-align: right">
-            <div class="hp-label red">Chainmail</div>
-            <div class="hp-bar-bg"><div class="hp-bar-fill red" id="p2-opp-hp-bar" style="width: 100%"></div></div>
+          <span class="round-badge" id="p2-round">R1</span>
+          <span class="menu-x">✕</span>
+          <div class="hp-group right">
+            <span class="hp-num" id="p2-opp-hp-num">12</span>
+            <div class="hp-bar-bg"><div class="hp-bar-fill red" id="p2-opp-hp-bar" style="width:100%"></div></div>
+            <span class="hp-name red">Man in Chai...</span>
           </div>
         </div>
-        <div class="screen-content" id="p2-content">
-          <!-- Screens inserted by JS -->
-        </div>
-        <div class="tab-bar">
-          <div class="tab" id="p2-tab-view"><span class="tab-icon">👁️</span>View</div>
-          <div class="tab active" id="p2-tab-move"><span class="tab-icon">⚔️</span>Move</div>
-          <div class="tab" id="p2-tab-history"><span class="tab-icon">📜</span>Log</div>
+        <div class="screen-content" id="p2-content"></div>
+        <div class="tab-bar" id="p2-tabs">
+          <div class="tab" id="p2-tab-view"><span class="tab-icon">👁️</span><span class="tab-label">View</span></div>
+          <div class="tab active highlight" id="p2-tab-move"><span class="tab-icon">⚔️</span><span class="tab-label">Move</span></div>
+          <div class="tab" id="p2-tab-history"><span class="tab-icon">📜</span><span class="tab-label">History</span></div>
         </div>
       </div>
-      <div class="finger-tap" id="finger2">
-        <svg viewBox="0 0 48 48" fill="none">
-          <path d="M24 4C18 4 14 9 14 14v8l-4 2c-2 1-3 3-3 5v6c0 5 4 9 9 9h8c5 0 9-4 9-9V18c0-2-2-4-4-4h-1V10c0-3-2-6-4-6z" fill="rgba(255,255,255,0.9)" stroke="#333" stroke-width="1.5"/>
-        </svg>
-      </div>
+      <div class="finger-tap" id="finger2"><svg viewBox="0 0 48 48" fill="none"><path d="M24 4C18 4 14 9 14 14v8l-4 2c-2 1-3 3-3 5v6c0 5 4 9 9 9h8c5 0 9-4 9-9V18c0-2-2-4-4-4h-1V10c0-3-2-6-4-6z" fill="rgba(255,255,255,0.9)" stroke="#333" stroke-width="1.5"/></svg></div>
       <div class="tap-ripple" id="ripple2"></div>
     </div>
   </div>
 </div>
 
 <button class="play-btn" id="playBtn" onclick="startDemo()">▶  Play Demo</button>
-
 <div class="progress-bar" id="progressBar" style="width: 0%"></div>
 
 <script>
@@ -573,7 +602,7 @@ const IMG_BASE = 'https://lost-worlds-web.vercel.app/images';
 const MC_IMGS = `${IMG_BASE}/man-in-chainmail`;
 const HT_IMGS = `${IMG_BASE}/hill-troll`;
 
-// Audio context (created on user interaction)
+// ===== Audio =====
 let audioCtx = null;
 
 function initAudio() {
@@ -591,8 +620,7 @@ function playTapSound() {
   o.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.08);
   g.gain.setValueAtTime(0.15, audioCtx.currentTime);
   g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-  o.start(audioCtx.currentTime);
-  o.stop(audioCtx.currentTime + 0.1);
+  o.start(audioCtx.currentTime); o.stop(audioCtx.currentTime + 0.1);
 }
 
 function playSwordClash() {
@@ -603,24 +631,16 @@ function playSwordClash() {
   for (let i = 0; i < bufferSize; i++) {
     data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.04));
   }
-  const src = audioCtx.createBufferSource();
-  src.buffer = buffer;
-
-  const hp = audioCtx.createBiquadFilter();
-  hp.type = 'highpass';
-  hp.frequency.value = 2000;
-
+  const src = audioCtx.createBufferSource(); src.buffer = buffer;
+  const hp = audioCtx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 2000;
   const g = audioCtx.createGain();
   g.gain.setValueAtTime(0.3, audioCtx.currentTime);
   g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-
-  src.connect(hp); hp.connect(g); g.connect(audioCtx.destination);
-  src.start();
+  src.connect(hp); hp.connect(g); g.connect(audioCtx.destination); src.start();
 }
 
 function playHitSound() {
   if (!audioCtx) return;
-  // Thud
   const o = audioCtx.createOscillator();
   const g = audioCtx.createGain();
   o.connect(g); g.connect(audioCtx.destination);
@@ -630,19 +650,15 @@ function playHitSound() {
   g.gain.setValueAtTime(0.4, audioCtx.currentTime);
   g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
   o.start(); o.stop(audioCtx.currentTime + 0.25);
-
-  // Noise layer
-  const bufSize = audioCtx.sampleRate * 0.15;
-  const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
-  const d = buf.getChannelData(0);
-  for (let i = 0; i < bufSize; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.03));
-  const ns = audioCtx.createBufferSource();
-  ns.buffer = buf;
+  const bs = audioCtx.sampleRate * 0.15;
+  const b = audioCtx.createBuffer(1, bs, audioCtx.sampleRate);
+  const d = b.getChannelData(0);
+  for (let i = 0; i < bs; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(audioCtx.sampleRate*0.03));
+  const ns = audioCtx.createBufferSource(); ns.buffer = b;
   const ng = audioCtx.createGain();
   ng.gain.setValueAtTime(0.2, audioCtx.currentTime);
   ng.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-  ns.connect(ng); ng.connect(audioCtx.destination);
-  ns.start();
+  ns.connect(ng); ng.connect(audioCtx.destination); ns.start();
 }
 
 function playChargeSound() {
@@ -662,18 +678,12 @@ function playChargeSound() {
 let bgMusicNodes = null;
 function startBgMusic() {
   if (!audioCtx || bgMusicNodes) return;
-  // Simple ambient drone
   const o1 = audioCtx.createOscillator();
   const o2 = audioCtx.createOscillator();
   const g = audioCtx.createGain();
-
   o1.type = 'sine'; o1.frequency.value = 55;
   o2.type = 'sine'; o2.frequency.value = 82.5;
-
-  o1.connect(g); o2.connect(g);
-  g.gain.value = 0;
-  g.connect(audioCtx.destination);
-
+  o1.connect(g); o2.connect(g); g.gain.value = 0; g.connect(audioCtx.destination);
   o1.start(); o2.start();
   g.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 2);
   bgMusicNodes = { o1, o2, g };
@@ -687,10 +697,117 @@ function stopBgMusic() {
   bgMusicNodes = null;
 }
 
-// ===== Demo state =====
-const TOTAL_DURATION = 30000; // 30 seconds
+// ===== Move data (matching real app categories and colors) =====
+// MC extended range moves
+const MC_EXT = [
+  { cat: 'Extended', color: '#eab308', moves: [
+    { name: 'Charge', mod: '+3' },
+    { name: 'Swing High', mod: '-6' },
+    { name: 'Swing Low', mod: '-6' },
+    { name: 'Thrust High', mod: '-5' },
+    { name: 'Thrust Low', mod: '-3' },
+    { name: 'Block & Close', mod: '' },
+    { name: 'Dodge', mod: '' },
+    { name: 'Jump Back', mod: '' },
+  ]}
+];
 
-function showMoveScreen(phone, moves, selectedIndex = -1) {
+// MC normal range moves (matching real app screenshot)
+const MC_NORMAL = [
+  { cat: 'Down Swing', color: '#dc2626', moves: [
+    { name: 'Smash', mod: '+3' },
+  ]},
+  { cat: 'Side Swing', color: '#dc2626', moves: [
+    { name: 'Strong', mod: '+2' },
+    { name: 'High', mod: '+1' },
+    { name: 'Low', mod: '+1' },
+  ]},
+  { cat: 'Thrust', color: '#2563eb', moves: [
+    { name: 'High', mod: '' },
+    { name: 'Low', mod: '' },
+  ]},
+  { cat: 'Fake', color: '#ea580c', moves: [
+    { name: 'High', mod: '' },
+    { name: 'Low', mod: '' },
+    { name: 'Side Swing', mod: '-1' },
+    { name: 'Thrust', mod: '' },
+  ]},
+  { cat: 'Protected', color: '#16a34a', moves: [
+    { name: 'Down Swing', mod: '+2' },
+    { name: 'Side Swing', mod: '' },
+    { name: 'Thrust', mod: '-1' },
+  ]},
+  { cat: 'Special', color: '#ea580c', moves: [
+    { name: 'Kick', mod: '' },
+    { name: 'Wild Swing', mod: '+2' },
+    { name: 'Dislodge Weapon', mod: '-4' },
+    { name: 'Retrieve Weapon', mod: '-6' },
+  ]},
+  { cat: 'Block', color: '#16a34a', moves: [
+    { name: 'High', mod: '+1' },
+    { name: 'Low', mod: '+1' },
+  ]},
+  { cat: 'Jump', color: '#eab308', moves: [
+    { name: 'Up', mod: '' },
+    { name: 'Dodge', mod: '' },
+    { name: 'Duck', mod: '' },
+    { name: 'Away', mod: '' },
+  ]},
+];
+
+// HT extended range moves
+const HT_EXT = [
+  { cat: 'Extended', color: '#eab308', moves: [
+    { name: 'Charge', mod: '+3' },
+    { name: 'Swing High', mod: '-4' },
+    { name: 'Swing Low', mod: '-4' },
+    { name: 'Thrust High', mod: '-3' },
+    { name: 'Block & Regen', mod: '' },
+    { name: 'Dodge', mod: '' },
+    { name: 'Jump Back', mod: '' },
+  ]}
+];
+
+// HT normal range moves
+const HT_NORMAL = [
+  { cat: 'Down Swing', color: '#dc2626', moves: [
+    { name: 'Smash', mod: '+4' },
+    { name: 'Chop', mod: '+3' },
+  ]},
+  { cat: 'Side Swing', color: '#dc2626', moves: [
+    { name: 'Strong', mod: '+3' },
+    { name: 'High', mod: '+2' },
+    { name: 'Low', mod: '+2' },
+  ]},
+  { cat: 'Thrust', color: '#2563eb', moves: [
+    { name: 'High', mod: '+1' },
+    { name: 'Low', mod: '' },
+  ]},
+  { cat: 'Rage', color: '#dc2626', moves: [
+    { name: 'Bite', mod: '' },
+    { name: 'Grab', mod: '' },
+    { name: 'Throw', mod: '' },
+  ]},
+  { cat: 'Special', color: '#ea580c', moves: [
+    { name: 'Kick', mod: '' },
+    { name: 'Wild Swing', mod: '+3' },
+  ]},
+  { cat: 'Block', color: '#16a34a', moves: [
+    { name: 'High', mod: '+1' },
+    { name: 'Low', mod: '+1' },
+  ]},
+  { cat: 'Jump', color: '#eab308', moves: [
+    { name: 'Up', mod: '' },
+    { name: 'Dodge', mod: '' },
+    { name: 'Duck', mod: '' },
+    { name: 'Away', mod: '' },
+  ]},
+];
+
+// ===== UI functions =====
+const TOTAL_DURATION = 30000;
+
+function showMoveScreen(phone, moveGroups, selectedCat = -1, selectedIdx = -1) {
   const content = document.getElementById(`${phone}-content`);
   content.innerHTML = '';
 
@@ -700,31 +817,36 @@ function showMoveScreen(phone, moves, selectedIndex = -1) {
 
   const title = document.createElement('div');
   title.className = 'move-title';
-  title.textContent = '⚔️ Your Moves';
+  title.textContent = 'Select Your Move';
   screen.appendChild(title);
 
-  moves.forEach((group, gi) => {
-    const cat = document.createElement('div');
-    cat.className = 'move-category';
-    cat.textContent = group.category;
-    screen.appendChild(cat);
+  moveGroups.forEach((group, gi) => {
+    const catLabel = document.createElement('div');
+    catLabel.className = 'move-category-label';
+    catLabel.textContent = group.cat;
+    screen.appendChild(catLabel);
+
+    const row = document.createElement('div');
+    row.className = 'move-row';
 
     group.moves.forEach((m, mi) => {
-      const btn = document.createElement('div');
-      btn.className = `move-btn ${group.type}`;
-      const globalIdx = moves.slice(0, gi).reduce((s, g) => s + g.moves.length, 0) + mi;
-      if (globalIdx === selectedIndex) btn.classList.add('selected');
-      btn.id = `${phone}-move-${globalIdx}`;
-      btn.innerHTML = `${m.name}<span class="mod">${m.mod}</span>`;
-      screen.appendChild(btn);
+      const chip = document.createElement('div');
+      chip.className = 'move-chip';
+      chip.style.borderLeftWidth = '3px';
+      chip.style.borderLeftColor = group.color;
+      if (gi === selectedCat && mi === selectedIdx) chip.classList.add('selected');
+      chip.id = `${phone}-chip-${gi}-${mi}`;
+      chip.innerHTML = m.mod ? `${m.name} <span class="mod">${m.mod}</span>` : m.name;
+      row.appendChild(chip);
     });
+
+    screen.appendChild(row);
   });
 
   content.appendChild(screen);
 
-  // Update tabs
-  document.getElementById(`${phone}-tab-move`).classList.add('active');
-  document.getElementById(`${phone}-tab-view`).classList.remove('active');
+  // Update tab highlights
+  setTab(phone, 'move');
 }
 
 function showWaitingBanner(phone) {
@@ -736,7 +858,13 @@ function showWaitingBanner(phone) {
   const banner = document.createElement('div');
   banner.className = 'waiting-banner active';
   banner.innerHTML = '<div class="spinner"></div> Waiting for opponent...';
-  screen.insertBefore(banner, screen.firstChild.nextSibling);
+  // Insert after title
+  const title = screen.querySelector('.move-title');
+  if (title && title.nextSibling) {
+    screen.insertBefore(banner, title.nextSibling);
+  } else {
+    screen.appendChild(banner);
+  }
 }
 
 function showPictureScreen(phone, config) {
@@ -746,10 +874,22 @@ function showPictureScreen(phone, config) {
   const screen = document.createElement('div');
   screen.className = 'picture-screen active';
 
-  // Header
+  // "What You See" label
+  const sectionLabel = document.createElement('div');
+  sectionLabel.className = 'pic-section-label';
+  sectionLabel.innerHTML = `What You See <span>(Opponent's Book)</span>`;
+  screen.appendChild(sectionLabel);
+
+  // Character name header with B&W/Color toggle
   const header = document.createElement('div');
   header.className = 'pic-header';
-  header.innerHTML = `<span class="pic-char-name">${config.charName}</span><span class="pic-label">${config.label || 'What You See'}</span>`;
+  header.innerHTML = `
+    <span class="pic-char-name">${config.charName}</span>
+    <div class="pic-toggle">
+      <span class="pic-toggle-btn bw">B&W</span>
+      <span class="pic-toggle-btn color">Color</span>
+    </div>
+  `;
   screen.appendChild(header);
 
   // Image
@@ -766,60 +906,62 @@ function showPictureScreen(phone, config) {
   // Result
   const result = document.createElement('div');
   result.className = 'pic-result';
-  result.innerHTML = `<div class="pic-result-title">${config.resultTitle}</div>`;
+  let html = `<div class="pic-result-title">${config.resultTitle}</div>`;
   if (config.damage > 0) {
-    result.innerHTML += `<div class="pic-result-damage">Takes ${config.damage} damage!</div>`;
+    html += `<div class="pic-result-damage">Takes ${config.damage} damage!</div>`;
   } else {
-    result.innerHTML += `<div class="pic-result-nodamage">No damage</div>`;
+    html += `<div class="pic-result-nodamage">No damage</div>`;
   }
+  if (config.restriction) {
+    html += `<div style="color:#eab308;font-size:0.45rem;margin-top:2px">⚠️ ${config.restriction}</div>`;
+  }
+  result.innerHTML = html;
   screen.appendChild(result);
 
   // Exchange summary
-  const summary = document.createElement('div');
-  summary.className = 'pic-exchange-summary';
-  summary.innerHTML = `
-    <div class="exchange-line"><span class="name blue">${config.p1Name}</span><span>${config.p1Move}</span></div>
-    <div class="exchange-line"><span class="name red">${config.p2Name}</span><span>${config.p2Move}</span></div>
+  const exchange = document.createElement('div');
+  exchange.className = 'pic-exchange';
+  exchange.innerHTML = `
+    <span class="you">${config.youName}</span> <span class="move-name">${config.youMove}</span>
+    vs
+    <span class="opp">${config.oppName}</span> <span class="move-name">${config.oppMove}</span>
+    <br/>
+    <span class="${config.youDmg > 0 ? 'dmg-red' : 'dmg-green'}">You: ${config.youDmg > 0 ? '-' + config.youDmg : 'no dmg'}</span>
+    · <span class="${config.oppDmg > 0 ? 'dmg-red' : 'dmg-green'}">${config.oppLabel}: ${config.oppDmg > 0 ? '-' + config.oppDmg : 'no dmg'}</span>
   `;
-  screen.appendChild(summary);
+  screen.appendChild(exchange);
 
   content.appendChild(screen);
+  setTab(phone, 'view');
 
-  // Update tabs
-  document.getElementById(`${phone}-tab-view`).classList.add('active');
-  document.getElementById(`${phone}-tab-move`).classList.remove('active');
-
-  // Flash if damage
   if (config.damage > 0) {
     imgArea.style.animation = 'damageFlash 0.4s ease';
   }
 }
 
-function showIntro(phone, text) {
-  const content = document.getElementById(`${phone}-content`);
-  content.innerHTML = `
-    <div class="intro-overlay" id="${phone}-intro">
-      <div class="intro-char">${text}</div>
-      <div class="intro-vs" style="animation: slideUp 0.5s ease forwards">⚔️</div>
-    </div>
-  `;
+function setTab(phone, active) {
+  ['view', 'move', 'history'].forEach(t => {
+    const tab = document.getElementById(`${phone}-tab-${t}`);
+    tab.classList.remove('active', 'highlight');
+    if (t === active) tab.classList.add('active');
+    if (t === 'move' && active === 'move') tab.classList.add('highlight');
+  });
 }
 
 function animateFinger(phoneId, targetX, targetY, delay) {
   return new Promise(resolve => {
     setTimeout(() => {
-      const phone = document.getElementById(phoneId);
       const finger = document.getElementById(phoneId === 'phone1' ? 'finger1' : 'finger2');
       const ripple = document.getElementById(phoneId === 'phone1' ? 'ripple1' : 'ripple2');
 
-      finger.style.left = (targetX - 18) + 'px';
+      finger.style.left = (targetX - 16) + 'px';
       finger.style.top = (targetY - 5) + 'px';
       finger.style.opacity = '0.9';
 
       setTimeout(() => {
         finger.className = 'finger-tap tapping';
-        ripple.style.left = (targetX - 20) + 'px';
-        ripple.style.top = (targetY - 20) + 'px';
+        ripple.style.left = (targetX - 18) + 'px';
+        ripple.style.top = (targetY - 18) + 'px';
         ripple.className = 'tap-ripple active';
         playTapSound();
 
@@ -834,11 +976,26 @@ function animateFinger(phoneId, targetX, targetY, delay) {
   });
 }
 
-function setHP(phone, myHP, oppHP) {
-  const myPct = Math.max(0, myHP);
-  const oppPct = Math.max(0, oppHP);
-  document.getElementById(`${phone}-hp-bar`).style.width = myPct + '%';
-  document.getElementById(`${phone}-opp-hp-bar`).style.width = oppPct + '%';
+function setHP(p1hp, p1max, p2hp, p2max) {
+  const p1pct = Math.round((p1hp / p1max) * 100);
+  const p2pct = Math.round((p2hp / p2max) * 100);
+
+  document.getElementById('p1-hp-bar').style.width = p1pct + '%';
+  document.getElementById('p1-hp-num').textContent = p1hp;
+  document.getElementById('p2-opp-hp-num').textContent = p1hp;
+  document.getElementById('p2-opp-hp-bar').style.width = p1pct + '%';
+
+  document.getElementById('p2-hp-bar').style.width = p2pct + '%';
+  document.getElementById('p2-hp-num').textContent = p2hp;
+  document.getElementById('p1-opp-hp-num').textContent = p2hp;
+  document.getElementById('p1-opp-hp-bar').style.width = p2pct + '%';
+
+  // Color change when low
+  if (p2pct <= 25) {
+    document.getElementById('p2-hp-bar').className = 'hp-bar-fill red';
+  } else if (p2pct <= 50) {
+    document.getElementById('p2-hp-bar').className = 'hp-bar-fill yellow';
+  }
 }
 
 function setRound(r) {
@@ -847,72 +1004,8 @@ function setRound(r) {
 }
 
 function updateProgress(elapsed) {
-  const pct = Math.min(100, (elapsed / TOTAL_DURATION) * 100);
-  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressBar').style.width = Math.min(100, (elapsed / TOTAL_DURATION) * 100) + '%';
 }
-
-// ===== MC Move Data (simplified) =====
-const MC_MOVES_EXT = [
-  { category: 'Extended Range', type: 'ext', moves: [
-    { name: 'Charge', mod: '' },
-    { name: 'Dodge', mod: '' },
-    { name: 'Jump Back', mod: '' },
-  ]}
-];
-
-const MC_MOVES_NORMAL = [
-  { category: 'Down Swing', type: 'swing', moves: [
-    { name: 'Smash', mod: '+0' },
-    { name: 'Chop', mod: '+1' },
-  ]},
-  { category: 'Side Swing', type: 'swing', moves: [
-    { name: 'Swing High', mod: '+2' },
-    { name: 'Swing Low', mod: '+1' },
-  ]},
-  { category: 'Thrust', type: 'thrust', moves: [
-    { name: 'Thrust High', mod: '+3' },
-    { name: 'Thrust Low', mod: '+2' },
-  ]},
-  { category: 'Block', type: 'block', moves: [
-    { name: 'Block High', mod: '' },
-    { name: 'Block Low', mod: '' },
-  ]},
-  { category: 'Special', type: 'special', moves: [
-    { name: 'Kick', mod: '' },
-    { name: 'Jump', mod: '' },
-  ]},
-];
-
-const HT_MOVES_EXT = [
-  { category: 'Extended Range', type: 'ext', moves: [
-    { name: 'Charge', mod: '' },
-    { name: 'Block & Regen', mod: '' },
-    { name: 'Jump Back', mod: '' },
-  ]}
-];
-
-const HT_MOVES_NORMAL = [
-  { category: 'Down Swing', type: 'swing', moves: [
-    { name: 'Smash', mod: '+0' },
-    { name: 'Chop', mod: '+2' },
-  ]},
-  { category: 'Side Swing', type: 'swing', moves: [
-    { name: 'Swing High', mod: '+1' },
-    { name: 'Swing Low', mod: '+2' },
-  ]},
-  { category: 'Thrust', type: 'thrust', moves: [
-    { name: 'Thrust High', mod: '+1' },
-    { name: 'Thrust Low', mod: '+0' },
-  ]},
-  { category: 'Block', type: 'block', moves: [
-    { name: 'Parry High', mod: '' },
-    { name: 'Parry Low', mod: '' },
-  ]},
-  { category: 'Rage', type: 'special', moves: [
-    { name: 'Enraged Bite', mod: '+3' },
-    { name: 'Enraged Grab', mod: '+2' },
-  ]},
-];
 
 // ===== BATTLE SCRIPT =====
 async function startDemo() {
@@ -923,154 +1016,146 @@ async function startDemo() {
   initAudio();
   startBgMusic();
 
+  const MC_HP = 12, HT_HP = 35;
+  let mcHp = MC_HP, htHp = HT_HP;
+
   const startTime = Date.now();
   const elapsed = () => Date.now() - startTime;
   const wait = (ms) => new Promise(r => { const id = setInterval(() => updateProgress(elapsed()), 100); setTimeout(() => { clearInterval(id); r(); }, ms); });
 
-  // -- Scene 1: Extended range start (0-2s) --
-  showIntro('p1', 'Extended Range');
-  showIntro('p2', 'Extended Range');
-  await wait(1500);
+  // Reset HP
+  setHP(mcHp, MC_HP, htHp, HT_HP);
 
-  // -- Scene 2: Both see extended range moves (2-6s) --
+  // -- R1: Extended range — both Charge (0-7s) --
   setRound(1);
-  showMoveScreen('p1', MC_MOVES_EXT);
-  showMoveScreen('p2', HT_MOVES_EXT);
-  await wait(1000);
+  showMoveScreen('p1', MC_EXT);
+  showMoveScreen('p2', HT_EXT);
+  await wait(1200);
 
   // P1 taps Charge
-  await animateFinger('phone1', 140, 215, 0);
-  showMoveScreen('p1', MC_MOVES_EXT, 0);
+  await animateFinger('phone1', 60, 160, 0);
+  showMoveScreen('p1', MC_EXT, 0, 0);
   await wait(500);
-
-  // P1 waiting
   showWaitingBanner('p1');
   await wait(800);
 
   // P2 taps Charge
-  await animateFinger('phone2', 140, 215, 0);
-  showMoveScreen('p2', HT_MOVES_EXT, 0);
-  await wait(300);
+  await animateFinger('phone2', 60, 160, 0);
+  showMoveScreen('p2', HT_EXT, 0, 0);
+  await wait(400);
 
-  // -- Scene 3: Both charged → picture pages (6-10s) --
+  // Results: both charged, no damage
   playChargeSound();
   showPictureScreen('p1', {
-    charName: 'Hill Troll',
-    label: 'What You See',
+    charName: 'Hill Troll with Club',
     imgSrc: `${HT_IMGS}/charging_color.webp`,
     resultTitle: 'Charging!',
     damage: 0,
-    p1Name: 'Man in Chainmail', p1Move: 'Charge',
-    p2Name: 'Hill Troll', p2Move: 'Charge',
+    youName: 'You', youMove: 'Charge',
+    oppName: 'Hill Troll', oppMove: 'Charge',
+    youDmg: 0, oppDmg: 0, oppLabel: 'Opp',
   });
   showPictureScreen('p2', {
     charName: 'Man in Chainmail',
-    label: 'What You See',
     imgSrc: `${MC_IMGS}/charging_color.webp`,
     resultTitle: 'Charging!',
     damage: 0,
-    p1Name: 'Hill Troll', p1Move: 'Charge',
-    p2Name: 'Man in Chainmail', p2Move: 'Charge',
+    youName: 'You', youMove: 'Charge',
+    oppName: 'Chainmail', oppMove: 'Charge',
+    youDmg: 0, oppDmg: 0, oppLabel: 'Opp',
   });
   await wait(3000);
 
-  // -- Scene 4: Normal range — Round 2 moves (10-16s) --
+  // -- R2: Normal range — MC Swing High, HT Smash (7-17s) --
   setRound(2);
-  showMoveScreen('p1', MC_MOVES_NORMAL);
-  showMoveScreen('p2', HT_MOVES_NORMAL);
+  showMoveScreen('p1', MC_NORMAL);
+  showMoveScreen('p2', HT_NORMAL);
   await wait(1200);
 
-  // P1 picks Swing High (index 2)
-  await animateFinger('phone1', 140, 270, 0);
-  showMoveScreen('p1', MC_MOVES_NORMAL, 2);
-  await wait(600);
+  // P1 picks Side Swing > High (cat 1, idx 2)
+  await animateFinger('phone1', 115, 205, 0);
+  showMoveScreen('p1', MC_NORMAL, 1, 2);
+  await wait(500);
   showWaitingBanner('p1');
-  await wait(600);
+  await wait(800);
 
-  // P2 picks Smash (index 0)
-  await animateFinger('phone2', 140, 200, 0);
-  showMoveScreen('p2', HT_MOVES_NORMAL, 0);
+  // P2 picks Down Swing > Smash (cat 0, idx 0)
+  await animateFinger('phone2', 50, 155, 0);
+  showMoveScreen('p2', HT_NORMAL, 0, 0);
   await wait(400);
 
-  // -- Scene 5: Round 2 results (16-22s) --
+  // Results: MC's Swing High hit HT for 4 body damage
   playSwordClash();
   await wait(200);
   playHitSound();
+  htHp -= 4;
+  setHP(mcHp, MC_HP, htHp, HT_HP);
 
   showPictureScreen('p1', {
-    charName: 'Hill Troll',
-    label: 'What You See',
+    charName: 'Hill Troll with Club',
     imgSrc: `${HT_IMGS}/body_wound_color.webp`,
     resultTitle: 'Body Wound!',
     damage: 4,
-    p1Name: 'Man in Chainmail', p1Move: 'Swing High',
-    p2Name: 'Hill Troll', p2Move: 'Smash',
+    youName: 'You', youMove: 'Swing High',
+    oppName: 'Hill Troll', oppMove: 'Smash',
+    youDmg: 0, oppDmg: 4, oppLabel: 'Opp',
   });
-
-  // HT sees MC blocking/parrying (swing went through)
   showPictureScreen('p2', {
     charName: 'Man in Chainmail',
-    label: 'What You See',
     imgSrc: `${MC_IMGS}/swinging_high_color.webp`,
     resultTitle: 'Swinging High',
     damage: 0,
-    p1Name: 'Hill Troll', p1Move: 'Smash',
-    p2Name: 'Man in Chainmail', p2Move: 'Swing High',
+    youName: 'You', youMove: 'Smash',
+    oppName: 'Chainmail', oppMove: 'Swing High',
+    youDmg: 4, oppDmg: 0, oppLabel: 'Opp',
   });
-
-  // Update HP: HT took 4 damage (assume 16 total → 75%)
-  setHP('p1', 100, 75);
-  setHP('p2', 75, 100);
   await wait(3500);
 
-  // -- Scene 6: Round 3 (22-28s) --
+  // -- R3: HT Enraged Bite, MC Thrust High (17-27s) --
   setRound(3);
-  showMoveScreen('p1', MC_MOVES_NORMAL);
-  showMoveScreen('p2', HT_MOVES_NORMAL);
+  showMoveScreen('p1', MC_NORMAL);
+  showMoveScreen('p2', HT_NORMAL);
   await wait(1000);
 
-  // P2 picks Enraged Bite (index 8)
-  await animateFinger('phone2', 140, 400, 0);
-  showMoveScreen('p2', HT_MOVES_NORMAL, 8);
+  // P2 picks Rage > Bite (cat 3, idx 0)
+  await animateFinger('phone2', 50, 280, 0);
+  showMoveScreen('p2', HT_NORMAL, 3, 0);
   await wait(500);
   showWaitingBanner('p2');
-  await wait(500);
+  await wait(600);
 
-  // P1 picks Thrust High (index 4)
-  await animateFinger('phone1', 140, 310, 0);
-  showMoveScreen('p1', MC_MOVES_NORMAL, 4);
-  await wait(300);
+  // P1 picks Thrust > High (cat 2, idx 0)
+  await animateFinger('phone1', 50, 245, 0);
+  showMoveScreen('p1', MC_NORMAL, 2, 0);
+  await wait(400);
 
-  // -- Scene 7: Round 3 results (28-30s) --
+  // Results: both take damage
   playSwordClash();
   await wait(150);
   playHitSound();
+  mcHp -= 3;
+  htHp -= 5;
+  setHP(mcHp, MC_HP, htHp, HT_HP);
 
   showPictureScreen('p1', {
-    charName: 'Hill Troll',
-    label: 'What You See',
+    charName: 'Hill Troll with Club',
     imgSrc: `${HT_IMGS}/enraged_bite_color.webp`,
     resultTitle: 'Enraged Bite!',
     damage: 3,
-    p1Name: 'Man in Chainmail', p1Move: 'Thrust High',
-    p2Name: 'Hill Troll', p2Move: 'Enraged Bite',
+    youName: 'You', youMove: 'Thrust High',
+    oppName: 'Hill Troll', oppMove: 'Enraged Bite',
+    youDmg: 3, oppDmg: 5, oppLabel: 'Opp',
   });
-
   showPictureScreen('p2', {
     charName: 'Man in Chainmail',
-    label: 'What You See',
     imgSrc: `${MC_IMGS}/thrusting_high_color.webp`,
     resultTitle: 'Thrusting High',
     damage: 5,
-    p1Name: 'Hill Troll', p1Move: 'Enraged Bite',
-    p2Name: 'Man in Chainmail', p2Move: 'Thrust High',
+    youName: 'You', youMove: 'Enraged Bite',
+    oppName: 'Chainmail', oppMove: 'Thrust High',
+    youDmg: 5, oppDmg: 3, oppLabel: 'Opp',
   });
-
-  // Both took damage
-  setHP('p1', 81, 44);  // MC took 3 → ~81%, HT took 5 more → ~44%
-  setHP('p2', 44, 81);
-
-  await wait(2500);
+  await wait(3000);
 
   // End
   stopBgMusic();
