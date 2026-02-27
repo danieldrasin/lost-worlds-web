@@ -953,6 +953,7 @@ function setTab(phone, active) {
 function animateFinger(phoneId, targetX, targetY, delay) {
   return new Promise(resolve => {
     setTimeout(() => {
+      const phone = document.getElementById(phoneId);
       const finger = document.getElementById(phoneId === 'phone1' ? 'finger1' : 'finger2');
       const ripple = document.getElementById(phoneId === 'phone1' ? 'ripple1' : 'ripple2');
 
@@ -976,6 +977,23 @@ function animateFinger(phoneId, targetX, targetY, delay) {
       }, 200);
     }, delay);
   });
+}
+
+// Animate finger to land on a specific chip element by ID
+function animateFingerToChip(phoneId, playerPrefix, groupIdx, moveIdx, delay) {
+  const chipId = `${playerPrefix}-chip-${groupIdx}-${moveIdx}`;
+  const chip = document.getElementById(chipId);
+  const phone = document.getElementById(phoneId);
+  if (!chip || !phone) {
+    // Fallback to center of phone
+    return animateFinger(phoneId, 100, 300, delay);
+  }
+  const phoneRect = phone.getBoundingClientRect();
+  const chipRect = chip.getBoundingClientRect();
+  // Get chip center relative to the phone element
+  const targetX = chipRect.left - phoneRect.left + chipRect.width / 2;
+  const targetY = chipRect.top - phoneRect.top + chipRect.height / 2;
+  return animateFinger(phoneId, targetX, targetY, delay);
 }
 
 function setHP(p1hp, p1max, p2hp, p2max) {
@@ -1048,7 +1066,7 @@ async function startDemo() {
   await wait(600);
 
   // P1 taps Charge (first move in Extended group)
-  await animateFinger('phone1', 60, 410, 0);
+  await animateFingerToChip('phone1', 'p1', mcExtGroupIdx, 0, 0);
   showMoveScreen('p1', MC_ALL_EXT, mcExtGroupIdx, 0);
   const p1ScreenAfter = document.getElementById('p1-move-screen');
   if (p1ScreenAfter) p1ScreenAfter.scrollTo({ top: p1ScreenAfter.scrollHeight, behavior: 'instant' });
@@ -1057,7 +1075,7 @@ async function startDemo() {
   await wait(800);
 
   // P2 taps Charge
-  await animateFinger('phone2', 60, 410, 0);
+  await animateFingerToChip('phone2', 'p2', htExtGroupIdx, 0, 0);
   showMoveScreen('p2', HT_ALL_EXT, htExtGroupIdx, 0);
   const p2ScreenAfter = document.getElementById('p2-move-screen');
   if (p2ScreenAfter) p2ScreenAfter.scrollTo({ top: p2ScreenAfter.scrollHeight, behavior: 'instant' });
@@ -1092,14 +1110,14 @@ async function startDemo() {
   await wait(1200);
 
   // P1 picks Side Swing > High (cat 1, idx 2)
-  await animateFinger('phone1', 115, 205, 0);
+  await animateFingerToChip('phone1', 'p1', 1, 2, 0);
   showMoveScreen('p1', MC_NORMAL, 1, 2);
   await wait(500);
   showWaitingBanner('p1');
   await wait(800);
 
   // P2 picks Down Swing > Smash (cat 0, idx 0)
-  await animateFinger('phone2', 50, 155, 0);
+  await animateFingerToChip('phone2', 'p2', 0, 0, 0);
   showMoveScreen('p2', HT_NORMAL, 0, 0);
   await wait(400);
 
@@ -1137,14 +1155,14 @@ async function startDemo() {
   await wait(1000);
 
   // P2 picks Rage > Bite (cat 3, idx 0)
-  await animateFinger('phone2', 50, 280, 0);
+  await animateFingerToChip('phone2', 'p2', 3, 0, 0);
   showMoveScreen('p2', HT_NORMAL, 3, 0);
   await wait(500);
   showWaitingBanner('p2');
   await wait(600);
 
   // P1 picks Thrust > High (cat 2, idx 0)
-  await animateFinger('phone1', 50, 245, 0);
+  await animateFingerToChip('phone1', 'p1', 2, 0, 0);
   showMoveScreen('p1', MC_NORMAL, 2, 0);
   await wait(400);
 
